@@ -115,14 +115,23 @@ console.log('📤 Gesendete Nutzerdaten:', userData);
             <p className="mb-6 text-base">Bitte melde dich mit deinem Geschäfts-Google-Konto an</p>
 
             <div className="flex justify-center mb-4">
-              <GoogleLogin
-                onSuccess={handleGoogleLoginSuccess}
-                onError={() => setError('Google Login fehlgeschlagen.')}
-                useOneTap={false}
-                text="signin_with"
-                shape="pill"
-                theme="filled_black"
-              />
+            <GoogleLogin
+  onSuccess={(credentialResponse) => {
+    console.log('✅ GoogleLogin onSuccess ausgelöst');
+    console.log('🔐 credentialResponse:', credentialResponse);
+    handleGoogleLoginSuccess(credentialResponse);
+  }}
+  onError={() => {
+    console.error('❌ Google Login fehlgeschlagen (onError)');
+    setError('Google Login fehlgeschlagen.');
+  }}
+  useOneTap={false}
+  text="signin_with"
+  shape="pill"
+  theme="filled_black"
+/>
+
+
             </div>
 
             {error && <p className="mt-4 text-red-600 text-sm">{error}</p>}
