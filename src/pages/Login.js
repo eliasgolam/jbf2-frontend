@@ -39,19 +39,24 @@ const Login = () => {
       });
       
 
-      if (!res.ok) {
-        const fehler = await res.text();
-        console.error('❌ Backend-Antwort:', fehler);
-        throw new Error('Fehler beim Speichern im Backend');
+      let savedUser;
+
+      try {
+        savedUser = await res.json();
+        console.log('✅ Benutzer gespeichert:', savedUser);
+      } catch (parseError) {
+        const raw = await res.text();
+        console.error('❌ Fehler beim Parsen der Antwort:', raw);
+        throw new Error('Antwort ist kein gültiges JSON');
       }
-
-      const savedUser = await res.json();
+      
       setUser(savedUser);
-
-    
+      
       if (role === 'admin') {
+        console.log('🎯 Weiterleitung zu /admin-auswahl');
         hashNavigate('/admin-auswahl');
       } else {
+        console.log('🎯 Weiterleitung zu /berater-auswahl');
         hashNavigate('/berater-auswahl');
       }
       
