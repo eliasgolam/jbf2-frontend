@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_BASE } from './config';
+import { API_BASE } from '../config';
 
 // Wichtig: installieren mit `npm install react-places-autocomplete`
 import PlacesAutocomplete, {

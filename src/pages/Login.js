@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import { API_BASE } from '../config';
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ const Login = () => {
       const userData = { username: name, email, role };
 
       // Backend-Aufruf (achte auf http://localhost:5000)
-      const res = await fetch('/api/user', {
+      const res = await fetch(`${API_BASE}/api/user`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
