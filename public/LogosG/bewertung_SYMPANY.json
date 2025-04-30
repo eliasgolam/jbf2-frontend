@@ -1,0 +1,47 @@
+{
+  "fitness": {
+    "eingabe": "500",
+    "punkte": 250,
+    "text": "Bis CHF 500 für Fitness und Prävention (premium natura)【161†Seite 5】"
+  },
+  "brille": {
+    "eingabe": "420",
+    "punkte": 210,
+    "text": "CHF 420 innerhalb 3 Jahre ab 18 Jahre (premium)【161†Seite 5】"
+  },
+  "alternativmedizin": {
+    "eingabe": "80% / 10000",
+    "punkte": 8000,
+    "text": "80 % bis CHF 10’000 inkl. erweiterte Methoden & Naturheilmittel【161†Seite 5】"
+  },
+  "zahnversicherung": {
+    "eingabe": "75% / 15000",
+    "punkte": 11250,
+    "text": "75 % bis CHF 15’000 für Zahnbehandlungen & KFO (premium)【161†Seite 5】"
+  },
+  "halbprivat": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Halbprivat mit max. CHF 3000 Kostenbeteiligung (hospita flex Variante 1)【161†Seite 6】"
+  },
+  "privat": {
+    "wahl": "hoch",
+    "punkte": 100,
+    "text": "Privat mit max. CHF 4500 Kostenbeteiligung (hospita flex Variante 2)【161†Seite 6】"
+  },
+  "digitalservices": {
+    "wahl": "gut",
+    "punkte": 250,
+    "text": "mySympany App & Onlineportal, digitale Dokumente & Direktkontakt【161†Seite 8】"
+  },
+  "preisleistung": {
+    "wahl": "hoch",
+    "punkte": 300,
+    "text": "Sehr gute Bewertungen + umfangreiche Leistungen mit Kombioptionen"
+  },
+  "familienrabatt": {
+    "eingabe": "10%",
+    "punkte": 50,
+    "text": "10 % Rabatt ab 3 Personen mit gleicher Spitalzusatzvariante【161†Seite 7】"
+  }
+}

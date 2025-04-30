@@ -1,0 +1,47 @@
+{
+  "fitness": {
+    "eingabe": "350",
+    "punkte": 175,
+    "text": "Bis zu CHF 350/Jahr für Fitness & Gesundheitsförderung (Ambulant/Basic)【132†Seite 12】"
+  },
+  "brille": {
+    "eingabe": "250",
+    "punkte": 125,
+    "text": "90 % bis CHF 250 für Brillen/Kontaktlinsen (Ambulant II)【132†Seite 10】"
+  },
+  "alternativmedizin": {
+    "eingabe": "90% / 10000",
+    "punkte": 9000,
+    "text": "90 % bis CHF 10’000 Komplementär III (inkl. nicht anerkannte Therapien)【132†Seite 9】"
+  },
+  "zahnversicherung": {
+    "eingabe": "75% / 3000",
+    "punkte": 2250,
+    "text": "Bis CHF 3000 (Zahnversicherung VISANA-Zusatz)【132†Seite 9】"
+  },
+  "halbprivat": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Halbprivat mit CHF 4000 max. Kostenbeteiligung (Flex)【132†Seite 8】"
+  },
+  "privat": {
+    "wahl": "hoch",
+    "punkte": 100,
+    "text": "Privat mit CHF 8000 max. Kostenbeteiligung (Flex)【132†Seite 8】"
+  },
+  "digitalservices": {
+    "wahl": "gut",
+    "punkte": 250,
+    "text": "myVisana App, Well-App, Bonusprogramm myPoints【132†Seite 11】"
+  },
+  "preisleistung": {
+    "wahl": "hoch",
+    "punkte": 300,
+    "text": "Preis-Leistung: Hoch (viele Kombirabatte, umfassende Deckung)"
+  },
+  "familienrabatt": {
+    "eingabe": "10%",
+    "punkte": 50,
+    "text": "10 % Familienrabatt ab 3 Personen【132†Seite 9】"
+  }
+}

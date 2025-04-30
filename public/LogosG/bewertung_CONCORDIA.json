@@ -1,0 +1,47 @@
+{
+  "fitness": {
+    "eingabe": "200",
+    "punkte": 100,
+    "text": "50 % bis CHF 200 für Fitness, Rücken, Haltung etc. (NATURA/NATURAplus)"
+  },
+  "brille": {
+    "eingabe": "300",
+    "punkte": 150,
+    "text": "CHF 300 alle 3 Jahre ab 18 (DIVERSApremium)"
+  },
+  "alternativmedizin": {
+    "eingabe": "75% / 6000",
+    "punkte": 4500,
+    "text": "75 % bis CHF 6000 für Naturheilpraktik & Therapien (NATURAplus)"
+  },
+  "zahnversicherung": {
+    "eingabe": "75% / 2000",
+    "punkte": 1500,
+    "text": "75 % bis CHF 2000 je nach Variante (Zahnversicherung Variante 4)"
+  },
+  "halbprivat": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Halbprivat mit Selbstbehalt 20 %, max. CHF 2000/Jahr"
+  },
+  "privat": {
+    "wahl": "hoch",
+    "punkte": 100,
+    "text": "Privat mit Selbstbehalt 35 %, max. CHF 4000/Jahr"
+  },
+  "digitalservices": {
+    "wahl": "gut",
+    "punkte": 200,
+    "text": "concordiaMed Telefonberatung, Terminservice"
+  },
+  "preisleistung": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Preis-Leistung: Mittel (breites Angebot, solide Leistungen)"
+  },
+  "familienrabatt": {
+    "eingabe": "10%",
+    "punkte": 50,
+    "text": "10 % Familienrabatt (geschätzt bei mehreren versicherten Personen)"
+  }
+}

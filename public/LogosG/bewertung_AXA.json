@@ -1,0 +1,47 @@
+{
+  "fitness": {
+    "eingabe": "300",
+    "punkte": 150,
+    "text": "75 % Rückerstattung bis max. CHF 300 für Fitness"
+  },
+  "brille": {
+    "eingabe": "300",
+    "punkte": 150,
+    "text": "CHF 300 für Korrekturgläser oder Kontaktlinsen"
+  },
+  "alternativmedizin": {
+    "eingabe": "75% / 3000",
+    "punkte": 2250,
+    "text": "75 % bis CHF 3000 für Komplementärmedizin"
+  },
+  "zahnversicherung": {
+    "eingabe": "75% / 3000",
+    "punkte": 2250,
+    "text": "75 % bis CHF 3000 für Zahnbehandlungen"
+  },
+  "halbprivat": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Halbprivat mit 20 % Kostenbeteiligung bis CHF 2000"
+  },
+  "privat": {
+    "wahl": "hoch",
+    "punkte": 100,
+    "text": "Privat mit 35 % Kostenbeteiligung bis CHF 4000"
+  },
+  "digitalservices": {
+    "wahl": "gut",
+    "punkte": 250,
+    "text": "myAXA App & Onlineportal verfügbar"
+  },
+  "preisleistung": {
+    "wahl": "hoch",
+    "punkte": 300,
+    "text": "Preis-Leistung: Hoch (laut Auszeichnung VZ Vermögenszentrum)"
+  },
+  "familienrabatt": {
+    "eingabe": "20%",
+    "punkte": 100,
+    "text": "20 % Familienrabatt auf Zusatzversicherung (bis CHF 2000/Jahr Ersparnis)"
+  }
+}

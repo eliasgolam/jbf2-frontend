@@ -1,0 +1,47 @@
+{
+  "fitness": {
+    "eingabe": "1300",
+    "punkte": 650,
+    "text": "Bis zu CHF 1300 Rückerstattung für Fitness mit Produktkombination (FORTE, OPTIMA, PRAEVENTA, SUPPLEMENTA)"
+  },
+  "brille": {
+    "eingabe": "300",
+    "punkte": 200,
+    "text": "90 % bis CHF 300 alle 3 Jahre (OPTIMA / SUPPLEMENTA)"
+  },
+  "alternativmedizin": {
+    "eingabe": "90% / 3000",
+    "punkte": 2700,
+    "text": "90 % bis CHF 3000 bei SWICA-anerkannten Therapeuten (OPTIMA)"
+  },
+  "zahnversicherung": {
+    "eingabe": "75% / 2000",
+    "punkte": 1500,
+    "text": "75 % bis CHF 2000 mit DENTA 4 Zusatz"
+  },
+  "halbprivat": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Halbprivat mit CHF 300/Tag max. CHF 6000 Selbstbehalt (HOSPITA FLEX)"
+  },
+  "privat": {
+    "wahl": "hoch",
+    "punkte": 100,
+    "text": "Privat mit CHF 400/Tag max. CHF 8000 Selbstbehalt (HOSPITA PRIVAT)"
+  },
+  "digitalservices": {
+    "wahl": "gut",
+    "punkte": 250,
+    "text": "mySWICA App, BENEVITA Coach, BENECURA SymptomCheck"
+  },
+  "preisleistung": {
+    "wahl": "hoch",
+    "punkte": 300,
+    "text": "Preis-Leistung: Hoch (z. B. Abschlussaltertarif bleibt konstant)"
+  },
+  "familienrabatt": {
+    "eingabe": "15%",
+    "punkte": 75,
+    "text": "15 % Familienvorteil angenommen (z. B. durch Prämienrabatt)"
+  }
+}

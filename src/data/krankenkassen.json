@@ -1,0 +1,170 @@
+[
+  {
+    "name": "Agrisano",
+    "adresse": "Laurstrasse 10, 5201 Brugg AG"
+  },
+  {
+    "name": "AMB Assurances SA",
+    "adresse": "Route de Verbier 13, 1934 Le Châble"
+  },
+  {
+    "name": "Aquilana",
+    "adresse": "Bruggerstrasse 46, 5401 Baden"
+  },
+  {
+    "name": "Assura-Basis SA",
+    "adresse": "Avenue C.-F. Ramuz 70, 1009 Pully"
+  },
+  {
+    "name": "Atupri Gesundheitsversicherung AG",
+    "adresse": "Laupenstrasse 18, 3008 Bern"
+  },
+  {
+    "name": "Avenir Krankenversicherung AG",
+    "adresse": "Rue des Cèdres 5, 1919 Martigny"
+  },
+  {
+    "name": "Bildende Künstler/Innen",
+    "adresse": "General Guisan-Quai 40, 8022 Zürich"
+  },
+  {
+    "name": "Birchmeier",
+    "adresse": "Hauptstrasse 22, 5444 Künten"
+  },
+  {
+    "name": "CONCORDIA",
+    "adresse": "Bundesplatz 15, 6002 Luzern"
+  },
+  {
+    "name": "CSS",
+    "adresse": "Tribschenstrasse 21, 6002 Luzern"
+  },
+  {
+    "name": "EGK",
+    "adresse": "Birspark 1, 4242 Laufen"
+  },
+  {
+    "name": "Einsiedler Krankenkasse",
+    "adresse": "Kronenstrasse 19, 8840 Einsiedeln"
+  },
+  {
+    "name": "GALENOS AG",
+    "adresse": "Militärstrasse 36, 8021 Zürich"
+  },
+  {
+    "name": "Gewerbliche",
+    "adresse": "Neuengasse 20, 3001 Bern"
+  },
+  {
+    "name": "Glarner",
+    "adresse": "Abläsch 8, 8762 Schwanden"
+  },
+  {
+    "name": "Helsana",
+    "adresse": "Postfach, 8081 Zürich"
+  },
+  {
+    "name": "Hotela",
+    "adresse": "Rue de la Gare 18, 1820 Montreux"
+  },
+  {
+    "name": "KLuG",
+    "adresse": "Gubelstrasse 22, 6300 Zug"
+  },
+  {
+    "name": "KPT",
+    "adresse": "Wankdorfallee 3, 3001 Bern"
+  },
+  {
+    "name": "Lumneziana",
+    "adresse": "Postfach 41, 7144 Vella"
+  },
+  {
+    "name": "Luzerner Hinterland",
+    "adresse": "Luzernstrasse 19, 6144 Zell"
+  },
+  {
+    "name": "Metallbaufirmen",
+    "adresse": "Rohrstrasse 36, 8152 Glattbrugg"
+  },
+  {
+    "name": "Mutuel Krankenversicherung AG",
+    "adresse": "Rue des Cèdres 5, 1919 Martigny"
+  },
+  {
+    "name": "Mutuelle Neuchâteloise",
+    "adresse": "Rue des Cèdres 5, 1919 Martigny"
+  },
+  {
+    "name": "ÖKK",
+    "adresse": "Bahnhofstrasse 13, 7302 Landquart"
+  },
+  {
+    "name": "Philos Krankenversicherung AG",
+    "adresse": "Rue des Cèdres 5, 1919 Martigny"
+  },
+  {
+    "name": "rhenusana",
+    "adresse": "Widnauerstrasse 6, 9435 Heerbrugg"
+  },
+  {
+    "name": "sana24",
+    "adresse": "Weltpoststrasse 19, 3000 Bern"
+  },
+  {
+    "name": "sanavals",
+    "adresse": "Valléstrasse 146E, 7132 Vals"
+  },
+  {
+    "name": "Sanitas",
+    "adresse": "Jägergasse 3, 8021 Zürich"
+  },
+  {
+    "name": "SLKK",
+    "adresse": "Hofwiesenstrasse 370, 8050 Zürich"
+  },
+  {
+    "name": "sodalis",
+    "adresse": "Balfrinstrasse 15, 3930 Visp"
+  },
+  {
+    "name": "Steffisburg",
+    "adresse": "Unterdorfstrasse 37, 3612 Steffisburg"
+  },
+  {
+    "name": "Sumiswalder",
+    "adresse": "Spitalstrasse 47, 3454 Sumiswald"
+  },
+  {
+    "name": "SWICA",
+    "adresse": "Römerstrasse 38, 8401 Winterthur"
+  },
+  {
+    "name": "Vallée d’Entremont",
+    "adresse": "Place centrale 5, 1937 Orsières"
+  },
+  {
+    "name": "Visana",
+    "adresse": "Weltpoststrasse 19, 3000 Bern"
+  },
+  {
+    "name": "Visperterminen",
+    "adresse": "Dorfstrasse 66, 3932 Visperterminen"
+  },
+  {
+    "name": "vita surselva",
+    "adresse": "Bahnhofstrasse 33, 7130 Ilanz"
+  },
+  {
+    "name": "Vivacare",
+    "adresse": "Weltpoststrasse 19, 3000 Bern"
+  },
+  {
+    "name": "Vivao Sympany",
+    "adresse": "Peter Merian-Weg 4, 4002 Basel"
+  },
+  {
+    "name": "Wädenswil",
+    "adresse": "Industriestrasse 15, 8820 Wädenswil"
+  }
+]

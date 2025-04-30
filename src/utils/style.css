@@ -1,0 +1,57 @@
+/* Die Animation */
+@keyframes grow {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+  
+  /* Die Balken-Klasse, die die Animation verwendet */
+  .balken {
+    animation: grow 1s ease-out;
+  }
+  .balken-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+  
+  .balken-label {
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  
+  .balken-wrapper {
+    display: flex;
+    height: 36px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #eee;
+  }
+  
+  .balken-ist {
+    background-color: #3b3f50; /* dunkles grau */
+    height: 100%;
+    transition: width 1s ease-out;
+  }
+  
+  .balken-luecke {
+    background-color: #f44336; /* rot für Lücke */
+    height: 100%;
+    transition: width 1s ease-out;
+  }
+  
+  .balken-soll {
+    background-color: #90caf9; /* hellblau */
+    height: 100%;
+    transition: width 1s ease-out;
+  }
+

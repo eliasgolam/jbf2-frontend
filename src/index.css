@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.zoomed {
+    transform: scale(1.2);
+    transform-origin: center center;
+    z-index: 10;
+    box-shadow: 0 0 40px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  

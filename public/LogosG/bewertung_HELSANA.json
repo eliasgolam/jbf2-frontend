@@ -1,0 +1,47 @@
+{
+  "fitness": {
+    "eingabe": "200",
+    "punkte": 100,
+    "text": "75 % bis CHF 200 für Fitness und Gesundheitsförderung (TOP/SANA)【139†Seite 2】"
+  },
+  "brille": {
+    "eingabe": "300",
+    "punkte": 200,
+    "text": "90 % bis CHF 300 für Brillen/Kontaktlinsen (COMPLETA)【139†Seite 2】"
+  },
+  "alternativmedizin": {
+    "eingabe": "75% / 5000",
+    "punkte": 3750,
+    "text": "75 % bis CHF 5000 für anerkannte Komplementärmedizin (TOP/SANA)【139†Seite 2】"
+  },
+  "zahnversicherung": {
+    "eingabe": "75% / 10000",
+    "punkte": 7500,
+    "text": "75 % bis CHF 10’000 für Zahnfehlstellungskorrekturen (TOP/SANA)【139†Seite 2】"
+  },
+  "halbprivat": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Halbprivat mit max. 20% Selbstbehalt, max. CHF 2000 (HOSPITAL FLEX)【139†Seite 3】"
+  },
+  "privat": {
+    "wahl": "hoch",
+    "punkte": 100,
+    "text": "Privat mit max. 35% Selbstbehalt, max. CHF 4000 (HOSPITAL FLEX)【139†Seite 3】"
+  },
+  "digitalservices": {
+    "wahl": "gut",
+    "punkte": 250,
+    "text": "Medi24, Online-Services, Gesundheitsberatung 24/7【139†Seite 5】"
+  },
+  "preisleistung": {
+    "wahl": "hoch",
+    "punkte": 300,
+    "text": "Preis-Leistung: Hoch (COMPLETA Testsieger moneyland.ch)【139†Seite 5】"
+  },
+  "familienrabatt": {
+    "eingabe": "10%",
+    "punkte": 50,
+    "text": "10 % Rabatt ab 3 Personen im Vertrag【139†Seite 4】"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "fitness": {
+    "eingabe": "250",
+    "punkte": 125,
+    "text": "75 % Rückerstattung bis CHF 250 für Fitness-Abos"
+  },
+  "brille": {
+    "eingabe": "200",
+    "punkte": 133,
+    "text": "75 % Rückerstattung bis CHF 200 alle drei Jahre"
+  },
+  "alternativmedizin": {
+    "eingabe": "75% / 3000",
+    "punkte": 2250,
+    "text": "75 % bis CHF 3000 für komplementärmedizinische Therapien"
+  },
+  "zahnversicherung": {
+    "eingabe": "75% / 3000",
+    "punkte": 2250,
+    "text": "75 % bis CHF 3000 für Zahnbehandlungen bis 20 Jahre"
+  },
+  "halbprivat": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Halbprivat mit 75 CHF Selbstbehalt pro Tag"
+  },
+  "privat": {
+    "wahl": "hoch",
+    "punkte": 100,
+    "text": "Privat mit 200 CHF Selbstbehalt pro Tag"
+  },
+  "digitalservices": {
+    "wahl": "gut",
+    "punkte": 250,
+    "text": "myinnova App und Onlineportal verfügbar"
+  },
+  "preisleistung": {
+    "wahl": "hoch",
+    "punkte": 300,
+    "text": "Preis-Leistung: Hoch (dank Nichtraucherrabatt bis 35%)"
+  },
+  "familienrabatt": {
+    "eingabe": "20%",
+    "punkte": 100,
+    "text": "20 % Familienrabatt auf Zusatzversicherung geschätzt"
+  }
+}

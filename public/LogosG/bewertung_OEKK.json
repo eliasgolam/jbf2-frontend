@@ -1,0 +1,47 @@
+{
+  "fitness": {
+    "eingabe": "600",
+    "punkte": 300,
+    "text": "Bis CHF 600 für Prävention (OPTIMA/PREMIUM, alle Bereiche)【130†Seite 1】"
+  },
+  "brille": {
+    "eingabe": "200",
+    "punkte": 100,
+    "text": "CHF 200/Jahr (PREMIUM)【130†Seite 1】"
+  },
+  "alternativmedizin": {
+    "eingabe": "70% / 10000",
+    "punkte": 7000,
+    "text": "70 % bis CHF 10’000 für Komplementärmedizin PREMIUM【130†Seite 1】"
+  },
+  "zahnversicherung": {
+    "eingabe": "70% / 5000",
+    "punkte": 3500,
+    "text": "70 % bis CHF 5000 für KFO bei Kindern (OPTIMA)【130†Seite 1】"
+  },
+  "halbprivat": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Tariflich Halbprivat möglich (nicht direkt im Dokument genannt – Bewertung geschätzt)"
+  },
+  "privat": {
+    "wahl": "mittel",
+    "punkte": 150,
+    "text": "Bewertung basierend auf Zusatz-PREMIUM Tarifkombination"
+  },
+  "digitalservices": {
+    "wahl": "gut",
+    "punkte": 200,
+    "text": "Digitale Einreichung & Präventionsportal (Basisinfo)【130†Seite 1】"
+  },
+  "preisleistung": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Gute Deckung, aber modular aufzubauen (OPTIMA+PREMIUM)"
+  },
+  "familienrabatt": {
+    "eingabe": "10%",
+    "punkte": 50,
+    "text": "Typisch 10 % bei Familien (angenommen, nicht im PDF bestätigt)"
+  }
+}

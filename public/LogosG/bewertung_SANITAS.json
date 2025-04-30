@@ -1,0 +1,47 @@
+{
+  "fitness": {
+    "eingabe": "800",
+    "punkte": 400,
+    "text": "80 % bis CHF 800 für Fitness & Prävention (Vital Premium)【131†Seite 2】"
+  },
+  "brille": {
+    "eingabe": "600",
+    "punkte": 300,
+    "text": "100 % bis CHF 600 alle 3 Jahre (Vital Premium)【131†Seite 2】"
+  },
+  "alternativmedizin": {
+    "eingabe": "80% / 10000",
+    "punkte": 8000,
+    "text": "80 % bis CHF 10’000 für Komplementärmedizin (Vital Premium)【131†Seite 2】"
+  },
+  "zahnversicherung": {
+    "eingabe": "80% / 10000",
+    "punkte": 8000,
+    "text": "80 % bis CHF 10’000 für Kieferorthopädie bis 20 (Vital Premium)【131†Seite 2】"
+  },
+  "halbprivat": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Wählbar in Kombi mit Spitalversicherung (nicht direkt im PDF)"
+  },
+  "privat": {
+    "wahl": "hoch",
+    "punkte": 100,
+    "text": "Premium-Paket bietet sehr hohe Einzelleistungen, Bewertung hoch"
+  },
+  "digitalservices": {
+    "wahl": "gut",
+    "punkte": 250,
+    "text": "App, Online-Einreichung, Bonusprogramme"
+  },
+  "preisleistung": {
+    "wahl": "hoch",
+    "punkte": 300,
+    "text": "Top-Deckung bei überschaubarer Preisstruktur (Vital Premium)"
+  },
+  "familienrabatt": {
+    "eingabe": "10%",
+    "punkte": 50,
+    "text": "Typischer Familienvorteil für Zusatz bei Sanitas (angenommen)"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "fitness": {
+    "eingabe": "700",
+    "punkte": 350,
+    "text": "50 % bis CHF 700 für Fitness & Gesundheitsförderung (myFlex Premium)【152†Seite 3】"
+  },
+  "brille": {
+    "eingabe": "300",
+    "punkte": 150,
+    "text": "CHF 300/Jahr ab 19 Jahren, myFlex Premium【152†Seite 2】"
+  },
+  "alternativmedizin": {
+    "eingabe": "75% / 10000",
+    "punkte": 7500,
+    "text": "75 % bis CHF 10’000 für Komplementärmedizin (myFlex Premium)【152†Seite 4】"
+  },
+  "zahnversicherung": {
+    "eingabe": "75% / 5000",
+    "punkte": 3750,
+    "text": "75 % bis CHF 5000 für Zahnbehandlungen, mit CHF 500 Franchise【152†Seite 4】"
+  },
+  "halbprivat": {
+    "wahl": "mittel",
+    "punkte": 200,
+    "text": "Halbprivat mit 20% max. CHF 2000 Selbstbehalt (myFlex Balance)【152†Seite 2】"
+  },
+  "privat": {
+    "wahl": "hoch",
+    "punkte": 100,
+    "text": "Privat mit 35% max. CHF 2000 Selbstbehalt (myFlex Premium)【152†Seite 2】"
+  },
+  "digitalservices": {
+    "wahl": "gut",
+    "punkte": 250,
+    "text": "Well-App, active365 (bis 400 CHF), Kundenportal myCSS【152†Seite 6】"
+  },
+  "preisleistung": {
+    "wahl": "hoch",
+    "punkte": 300,
+    "text": "Sehr flexibel kombinierbares System (myFlex), hohe Leistungen in Premium"
+  },
+  "familienrabatt": {
+    "eingabe": "10%",
+    "punkte": 50,
+    "text": "Typischer Familienvorteil (geschätzt, nicht explizit im PDF)"
+  }
+}
