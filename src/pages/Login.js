@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { API_BASE } from '../config';
+import { hashNavigate } from '../utils/navigation';
 
 console.log("🔍 API_BASE =", API_BASE);
 
@@ -47,12 +48,13 @@ const Login = () => {
       const savedUser = await res.json();
       setUser(savedUser);
 
-      // Weiterleitung
+    
       if (role === 'admin') {
-        navigate('/admin-auswahl');
+        hashNavigate('/admin-auswahl');
       } else {
-        navigate('/berater-auswahl');
+        hashNavigate('/berater-auswahl');
       }
+      
     } catch (err) {
       console.error('❌ Login-Fehler:', err.message || err);
       setError('Login fehlgeschlagen. Bitte Backend prüfen.');
@@ -62,8 +64,9 @@ const Login = () => {
   const handleLogout = () => {
     setUser(null);
     setError('');
-    navigate('/');
+    hashNavigate('/');
   };
+  
 
   return (
     <div
@@ -86,7 +89,7 @@ const Login = () => {
               Logout
             </button>
             <button
-              onClick={() => navigate('/admin-auswahl')}
+              onClick={() => hashNavigate('/admin-auswahl')}
               className="w-full mt-4 p-3 bg-[#4B2E2B] text-white rounded-xl hover:bg-[#3b241f] transition"
             >
               Zur Auswahl
