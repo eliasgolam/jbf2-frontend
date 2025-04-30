@@ -14,6 +14,9 @@ const Login = () => {
   const [user, setUser] = useState(null);
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
+    console.log('🟢 Login-Funktion ausgelöst');
+console.log('🔑 Google Credential:', credentialResponse);
+
     try {
       const decoded = jwtDecode(credentialResponse.credential);
       const email = decoded.email;
@@ -31,17 +34,23 @@ const Login = () => {
       const role = email === adminEmail ? 'admin' : 'mitarbeiter';
       const userData = { username: name, email, role };
 
+      console.log('📡 Anfrage wird gesendet an:', `${API_BASE}/api/user`);
+console.log('📤 Gesendete Nutzerdaten:', userData);
+
+
       // Backend-Aufruf (achte auf http://localhost:5000)
       const res = await fetch(`${API_BASE}/api/user`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
-      
+      console.log('🌐 Antwort erhalten, Status:', res.status);
+
 
       let savedUser;
 
       try {
+        console.log('⏳ Versuche Antwort als JSON zu lesen...');
         savedUser = await res.json();
         console.log('✅ Benutzer gespeichert:', savedUser);
       } catch (parseError) {
