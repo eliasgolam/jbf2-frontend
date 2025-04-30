@@ -63,8 +63,10 @@ import AnalyseAbschliessen from './pages/AnalyseAbschliessen';
 
 
 
-function App() {
+function App() { 
+  
   return (
+    <div>
     <Routes>
       <Route path="/berater-auswahl" element={<BeraterAuswahl />} />
       <Route path="/BeraterDashboard" element={<BeraterDashboard />} />
@@ -178,6 +180,7 @@ function App() {
 
 
     </Routes>
+    </div>
   );
 }
 
