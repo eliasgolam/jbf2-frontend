@@ -27,7 +27,7 @@ const KuendigungStart = () => {
 
       <div className="relative z-10 bg-white/90 backdrop-blur-md p-12 rounded-3xl shadow-2xl w-full max-w-3xl">
         <div className="mb-6 text-center">
-          <img src="/logo.png" alt="JB Finanz Logo" className="h-28 mx-auto mb-4" />
+          <img src="/Logo.png" alt="JB Finanz Logo" className="h-28 mx-auto mb-4" />
           <h1 className="text-3xl font-bold text-[#8C3B4A]">Krankenkasse kündigen</h1>
           <p className="text-sm text-gray-600 mt-1">Wie möchten Sie kündigen?</p>
         </div>

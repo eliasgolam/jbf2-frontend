@@ -18,7 +18,7 @@ const AdminAuswahl = () => {
     >
       <div className="bg-white/80 backdrop-blur-lg p-10 rounded-3xl shadow-2xl max-w-md w-full text-center">
 
-        <img src="/logo.png" alt="JB Finanz Logo" className="h-80 mx-auto mb-6" />
+        <img src="/Logo.png" alt="JB Finanz Logo" className="h-80 mx-auto mb-6" />
 
         <h1 className="text-2xl font-bold mb-2">Hallo, {user?.username}</h1>
         <p className="text-sm mb-8">Was möchtest du als Nächstes tun?</p>

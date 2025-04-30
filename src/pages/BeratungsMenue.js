@@ -22,7 +22,7 @@ const BeratungsMenue = () => {
       <div className={containerStyle}>
         {/* Logo */}
         <div className="mb-6">
-          <img src="/logo.png" alt="JB Finanz Logo" className="h-32 mx-auto" />
+          <img src="/Logo.png" alt="JB Finanz Logo" className="h-32 mx-auto" />
         </div>
 
         {/* Titel */}

@@ -67,7 +67,7 @@ const Login = () => {
       style={{ backgroundImage: "url('/wave-bg.jpg')" }}
     >
       <div className="bg-white/80 backdrop-blur-lg p-10 rounded-3xl shadow-2xl w-full max-w-2xl text-center">
-        <img src="/logo.png" alt="JB Finanz Logo" className="h-80 mx-auto mb-8" />
+        <img src="/Logo.png" alt="JB Finanz Logo" className="h-80 mx-auto mb-8" />
 
         {user ? (
           <>
