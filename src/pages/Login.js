@@ -4,6 +4,8 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { API_BASE } from '../config';
 
+console.log("🔍 API_BASE =", API_BASE);
+
 
 const Login = () => {
   const navigate = useNavigate();
