@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE } from './config';
 
 function KundenVerwalten() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function KundenVerwalten() {
           return;
         }
   
-        const res = await fetch(`/api/kunden/${user.email}`);
+        const res = await fetch(`${API_BASE}/api/kunden/${user.email}`);
         if (!res.ok) throw new Error('Fehler beim Laden der Kunden.');
   
         const kundenVomBackend = await res.json();

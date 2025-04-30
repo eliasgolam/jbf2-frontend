@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE } from './config';
 
 // Wichtig: installieren mit `npm install react-places-autocomplete`
 import PlacesAutocomplete, {
@@ -51,7 +52,8 @@ function NeuerKunde() {
     };
   
     try {
-      const res = await fetch('/api/kunden', {
+      const res = await fetch(`${API_BASE}/api/kunden`, {
+
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(kunde)
