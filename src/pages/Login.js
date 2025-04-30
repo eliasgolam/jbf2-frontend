@@ -63,10 +63,11 @@ console.log('📤 Gesendete Nutzerdaten:', userData);
       
       if (role === 'admin') {
         console.log('🎯 Weiterleitung zu /admin-auswahl');
-        hashNavigate('/admin-auswahl');
+        window.location.replace('#/admin-auswahl');
       } else {
         console.log('🎯 Weiterleitung zu /berater-auswahl');
-        hashNavigate('/berater-auswahl');
+        window.location.replace('#/berater-auswahl');
+
       }
       
     } catch (err) {
@@ -78,7 +79,8 @@ console.log('📤 Gesendete Nutzerdaten:', userData);
   const handleLogout = () => {
     setUser(null);
     setError('');
-    hashNavigate('/');
+    window.location.replace('#/');
+
   };
   
 
@@ -103,7 +105,7 @@ console.log('📤 Gesendete Nutzerdaten:', userData);
               Logout
             </button>
             <button
-              onClick={() => hashNavigate('/admin-auswahl')}
+               onClick={() => window.location.replace('#/admin-auswahl')}
               className="w-full mt-4 p-3 bg-[#4B2E2B] text-white rounded-xl hover:bg-[#3b241f] transition"
             >
               Zur Auswahl
