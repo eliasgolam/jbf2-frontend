@@ -188,17 +188,16 @@ const handleAdminLogin = () => {
               {showDashboard ? 'Dashboard schließen' : 'Dashboard öffnen'}
             </button>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col justify-between ml-2 gap-2">
   <button
     onClick={() => setShowAdminPopup(true)}
-    className="flex-1 px-6 py-3 rounded-full text-white bg-[#8C3B4A] hover:bg-[#722f3a] text-sm font-medium shadow transition"
+    className="bg-white text-[#4B2E2B] border border-[#4B2E2B] hover:bg-[#f3f2f0] transition px-4 py-2 rounded-md text-sm font-medium shadow-sm"
   >
     🔐 Admin Login
   </button>
-
   <button
     onClick={() => alert('Zugang Innendienst kommt bald!')}
-    className="flex-1 px-6 py-3 rounded-full text-white bg-[#4B2E2B] hover:bg-[#3a241f] text-sm font-medium shadow transition"
+    className="bg-white text-[#4B2E2B] border border-[#4B2E2B] hover:bg-[#f3f2f0] transition px-4 py-2 rounded-md text-sm font-medium shadow-sm"
   >
     🏢 Zugang Innendienst
   </button>
