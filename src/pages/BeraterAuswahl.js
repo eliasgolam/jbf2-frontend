@@ -13,6 +13,19 @@ function BeraterAuswahl() {
   const [firstName, setFirstName] = useState('');
   // Dashboard anzeigen?
   const [showDashboard, setShowDashboard] = useState(false);
+  const [showAdminPopup, setShowAdminPopup] = useState(false);
+const [adminPassword, setAdminPassword] = useState('');
+const [showTools, setShowTools] = useState(false);
+const [showProtokolle, setShowProtokolle] = useState(false);
+
+
+const handleAdminLogin = () => {
+  if (adminPassword === 'JBAdmin2025!') {
+    navigate('/admin-dashboard');
+  } else {
+    alert('Falsches Passwort');
+  }
+};
 
   // Simulierter Route für den zuletzt bearbeiteten Kunden
   // (Später DB-Anbindung)
@@ -21,11 +34,16 @@ function BeraterAuswahl() {
     // Du kannst das in Zukunft anpassen
     localStorage.setItem('lastCustomerRoute', '/beratungsseite');
 
-    const fullName = localStorage.getItem('beraterName');
-    if (fullName) {
-      const splitted = fullName.split(' ');
-      setFirstName(splitted[0]);
+    const storedUser = localStorage.getItem('loggedInUser');
+    if (storedUser) {
+      const parsed = JSON.parse(storedUser);
+      if (parsed.email) {
+        const vorname = parsed.email.split('@')[0].split('.')[0];
+        const capitalized = vorname.charAt(0).toUpperCase() + vorname.slice(1);
+        setFirstName(capitalized);
+      }
     }
+    
 
     // Fade-In nach 100ms
     const timer = setTimeout(() => setFadeIn(true), 100);
@@ -169,118 +187,94 @@ function BeraterAuswahl() {
             >
               {showDashboard ? 'Dashboard schließen' : 'Dashboard öffnen'}
             </button>
+
+            <button
+  onClick={() => setShowAdminPopup(true)}
+  className="mt-4 text-sm text-blue-700 underline hover:text-blue-900"
+>
+  🔐 Admin Login
+</button>
+
           </div>
 
-          {/* Dashboard-Inhalt */}
           {showDashboard && (
-            <div className="mt-4 text-left">
-              {/* "Zuletzt bearbeiteter Kunde" mit Icon (Lottie) + klickbar */}
-              <div className="
-                flex 
-                flex-col 
-                sm:flex-row 
-                items-center 
-                gap-4 
-                border 
-                border-white/20 
-                rounded-lg 
-                p-4 
-                mb-6
-                bg-white/10
-              ">
-                <div className="flex-shrink-0">
-                  <Lottie
-                    loop
-                    animationData={handshakeAnimation}
-                    play
-                    style={{ width: 80, height: 80 }}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <h2 className="text-xl font-playfair text-[#4B2E2B] mb-1">
-                    Zuletzt bearbeiteter Kunde:
-                  </h2>
-                  <p 
-                    onClick={handleLastCustomerClick}
-                    className="
-                      text-[#7E6B64] 
-                      mb-2 
-                      cursor-pointer 
-                      hover:underline
-                    "
-                    title="Beratungsseite öffnen"
-                  >
-                    Max Mustermann (Platzhalter – später DB)
-                  </p>
-                  <small className="text-sm text-gray-500">
-                    Klick auf den Kundennamen, um direkt seine Beratungsseite zu öffnen
-                  </small>
-                </div>
-              </div>
+  <div className="mt-4 text-left space-y-6">
 
-              {/* Schnellzugriff-Buttons */}
-              <div className="border border-white/20 rounded-lg p-4 bg-white/10">
-                <h2 className="text-xl font-playfair text-[#4B2E2B] mb-4">
-                  Schnellzugriff
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <button
-                    onClick={() => navigate('/sparrechner')}
-                    className="
-                      bg-[#8C3B4A]
-                      text-white
-                      hover:bg-[#7A3340]
-                      px-4
-                      py-3
-                      rounded-lg
-                      font-medium
-                      shadow
-                      transition
-                      duration-300
-                    "
-                  >
-                    Sparrechner
-                  </button>
-                  <button
-                    onClick={() => navigate('/starten-oder-warten')}
-                    className="
-                      bg-[#8C3B4A]
-                      text-white
-                      hover:bg-[#7A3340]
-                      px-4
-                      py-3
-                      rounded-lg
-                      font-medium
-                      shadow
-                      transition
-                      duration-300
-                    "
-                  >
-                    Starten oder Warten
-                  </button>
-                  <button
-                    onClick={() => navigate('/krankenkassenvergleich')}
-                    className="
-                      bg-[#8C3B4A]
-                      text-white
-                      hover:bg-[#7A3340]
-                      px-4
-                      py-3
-                      rounded-lg
-                      font-medium
-                      shadow
-                      transition
-                      duration-300
-                    "
-                  >
-                    Krankenkassenvergleich
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+    {/* Tools & Rechner Section */}
+    <div className="border border-white/20 rounded-lg p-4 bg-white/10">
+      <button
+        onClick={() => setShowTools(prev => !prev)}
+        className="text-lg font-semibold text-[#4B2E2B] mb-2 underline"
+      >
+        Rechner & Tools
+      </button>
+      {showTools && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+          <button onClick={() => navigate('/sparrechner')} className="bg-[#8C3B4A] text-white px-4 py-3 rounded-lg font-medium shadow hover:bg-[#7A3340]">
+            Sparrechner
+          </button>
+          <button onClick={() => navigate('/krankenkassenvergleich')} className="bg-[#8C3B4A] text-white px-4 py-3 rounded-lg font-medium shadow hover:bg-[#7A3340]">
+            Krankenkassenvergleich
+          </button>
+          {/* weitere Tools hier einfügbar */}
+        </div>
+      )}
+    </div>
+
+    {/* Protokolle & Mandate Section */}
+    <div className="border border-white/20 rounded-lg p-4 bg-white/10">
+      <button
+        onClick={() => setShowProtokolle(prev => !prev)}
+        className="text-lg font-semibold text-[#4B2E2B] mb-2 underline"
+      >
+        Protokolle & Mandate
+      </button>
+      {showProtokolle && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+          <button onClick={() => navigate('/mandat-auswahl')} className="bg-[#8C3B4A] text-white px-4 py-3 rounded-lg font-medium shadow hover:bg-[#7A3340]">
+            Mandat aufnehmen
+          </button>
+          <button onClick={() => navigate('/empfehlung')} className="bg-[#8C3B4A] text-white px-4 py-3 rounded-lg font-medium shadow hover:bg-[#7A3340]">
+            Empfehlungen erfassen
+          </button>
+          <button onClick={() => navigate('/beratung-abschliessen')} className="bg-[#8C3B4A] text-white px-4 py-3 rounded-lg font-medium shadow hover:bg-[#7A3340]">
+            Protokolle
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+)}
+
         </div>
       </main>
+      {showAdminPopup && (
+  <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-xl text-center">
+      <h2 className="text-xl font-semibold mb-4">🔐 Admin-Zugang</h2>
+      <input
+        type="password"
+        placeholder="Admin-Passwort"
+        value={adminPassword}
+        onChange={(e) => setAdminPassword(e.target.value)}
+        className="w-full p-2 border rounded mb-4"
+      />
+      <button
+        onClick={handleAdminLogin}
+        className="w-full bg-[#8C3B4A] text-white py-2 rounded hover:bg-[#722f3a]"
+      >
+        Weiter zum Admin-Dashboard
+      </button>
+      <button
+        onClick={() => setShowAdminPopup(false)}
+        className="mt-2 text-sm text-gray-600 underline"
+      >
+        Abbrechen
+      </button>
+    </div>
+  </div>
+)}
+
 
       {/* Footer */}
       <footer className="relative z-10 flex justify-center items-center py-8 bg-white/10 backdrop-blur-sm">

@@ -24,14 +24,14 @@ console.log('🔑 Google Credential:', credentialResponse);
       const domain = email.split('@')[1];
 
       const erlaubteDomain = 'jbfinanz.ch';
-      const adminEmail = 'elias.golam@jbfinanz.ch';
+      
 
       if (domain !== erlaubteDomain) {
         setError('Nur Nutzer mit @jbfinanz.ch-Adresse erlaubt.');
         return;
       }
 
-      const role = email === adminEmail ? 'admin' : 'mitarbeiter';
+      const role = 'mitarbeiter'; 
       const userData = { username: name, email, role };
 
       console.log('📡 Anfrage wird gesendet an:', `${API_BASE}/api/user`);
@@ -63,14 +63,9 @@ console.log('📤 Gesendete Nutzerdaten:', userData);
 localStorage.setItem('loggedInUser', JSON.stringify(savedUser));
 
       
-      if (role === 'admin') {
-        console.log('🎯 Weiterleitung zu /admin-auswahl');
-        navigate('/admin-auswahl');
-      } else {
-        console.log('🎯 Weiterleitung zu /berater-auswahl');
-        navigate('/berater-auswahl');
-      }
-      
+console.log('🎯 Weiterleitung zu /berater-auswahl');
+navigate('/berater-auswahl');
+
     } catch (err) {
       console.error('❌ Login-Fehler:', err.message || err);
       setError('Login fehlgeschlagen. Bitte Backend prüfen.');
