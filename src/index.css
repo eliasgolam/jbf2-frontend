@@ -13,26 +13,3 @@
     pointer-events: none;
   }
   
-  :root {
-    --base-width: 3440;
-    --base-height: 1440;
-  }
-  
-  
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-  }
-  
-  #app-wrapper {
-    width: var(--base-width)px;
-    height: var(--base-height)px;
-    transform-origin: top left;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  
