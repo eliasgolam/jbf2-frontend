@@ -60,6 +60,8 @@ console.log('📤 Gesendete Nutzerdaten:', userData);
       }
       
       setUser(savedUser);
+localStorage.setItem('loggedInUser', JSON.stringify(savedUser));
+
       
       if (role === 'admin') {
         console.log('🎯 Weiterleitung zu /admin-auswahl');
@@ -78,9 +80,9 @@ console.log('📤 Gesendete Nutzerdaten:', userData);
   const handleLogout = () => {
     setUser(null);
     setError('');
+    localStorage.removeItem('loggedInUser');
     navigate('/');
   };
-  
   
 
   return (
