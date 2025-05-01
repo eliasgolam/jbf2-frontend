@@ -17,22 +17,3 @@ root.render(
   </GoogleOAuthProvider>
 );
 
-function scaleApp() {
-  const baseWidth = 1720;
-  const baseHeight = 1440;
-
-  const scaleX = window.innerWidth / baseWidth;
-  const scaleY = window.innerHeight / baseHeight;
-
-  // WICHTIG: Math.max = Bildschirm füllen, auch wenn etwas übersteht
-  const scale = Math.min(scaleX, scaleY);
-
-
-  const wrapper = document.getElementById('app-wrapper');
-  if (wrapper) {
-    wrapper.style.transform = `scale(${scale})`;
-  }
-}
-
-window.addEventListener('load', scaleApp);
-window.addEventListener('resize', scaleApp);
