@@ -65,7 +65,7 @@ localStorage.setItem('loggedInUser', JSON.stringify(savedUser));
       
 console.log('🎯 Weiterleitung zu /berater-auswahl');
 navigate('/berater-auswahl');
-
+      
     } catch (err) {
       console.error('❌ Login-Fehler:', err.message || err);
       setError('Login fehlgeschlagen. Bitte Backend prüfen.');
@@ -81,41 +81,39 @@ navigate('/berater-auswahl');
   
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center bg-cover bg-center text-[#4B2E2B] px-[4vw]"
+    <div
+      className="min-h-screen flex flex-col items-center justify-center bg-cover bg-center text-[#4B2E2B] px-4"
       style={{ backgroundImage: "url('/wave-bg.jpg')" }}
     >
-      <div className="bg-white/80 backdrop-blur-lg p-[2vw] rounded-3xl shadow-2xl w-[90vw] max-w-[800px] text-center">
-      <img src="/Logo.png" alt="JB Finanz Logo" className="h-[20vh] mx-auto mb-[2vh]" />
+      <div className="bg-white/80 backdrop-blur-lg p-10 rounded-3xl shadow-2xl w-full max-w-2xl text-center">
+        <img src="/Logo.png" alt="JB Finanz Logo" className="h-80 mx-auto mb-8" />
 
         {user ? (
           <>
-            <h1 className="text-[2vw] font-semibold mb-[1vh]">Eingeloggt als</h1>
-            <p className="mb-[1vh] text-[1.5vw]">{user.username}</p>
-            <p className="mb-[1vh] text-[1vw] text-gray-600">{user.email}</p>
-            <p className="mb-[2vh] text-[1vw]">Rolle: <strong>{user.role}</strong></p>
+            <h1 className="text-2xl font-semibold mb-2">Eingeloggt als</h1>
+            <p className="mb-2 text-lg">{user.username}</p>
+            <p className="mb-4 text-sm text-gray-600">{user.email}</p>
+            <p className="mb-6 text-sm">Rolle: <strong>{user.role}</strong></p>
             <button
-  onClick={handleLogout}
-  className="w-full p-[1.2vh] bg-[#8C3B4A] text-white rounded-xl hover:bg-[#722f3a] transition"
->
-  Logout
-</button>
-
-<button
+              onClick={handleLogout}
+              className="w-full p-3 bg-[#8C3B4A] text-white rounded-xl hover:bg-[#722f3a] transition"
+            >
+              Logout
+            </button>
+            <button
   onClick={() => navigate('/admin-auswahl')}
-  className="w-full mt-[1vh] p-[1.2vh] bg-[#4B2E2B] text-white rounded-xl hover:bg-[#3b241f] transition"
+  className="w-full mt-4 p-3 bg-[#4B2E2B] text-white rounded-xl hover:bg-[#3b241f] transition"
 >
   Zur Auswahl
 </button>
 
-
           </>
         ) : (
           <>
-            <h1 className="text-[2.5vw] font-bold mb-[1vh]">Willkommen bei JB Finanz</h1>
-            <p className="mb-[2vh] text-[1.2vw]">Bitte melde dich mit deinem Geschäfts-Google-Konto an</p>
+            <h1 className="text-3xl font-bold mb-4">Willkommen bei JB Finanz</h1>
+            <p className="mb-6 text-base">Bitte melde dich mit deinem Geschäfts-Google-Konto an</p>
 
-
-            <div className="flex justify-center mb-[2vh]">
+            <div className="flex justify-center mb-4">
             <GoogleLogin
   onSuccess={(credentialResponse) => {
     console.log('✅ GoogleLogin onSuccess ausgelöst');
@@ -135,12 +133,11 @@ navigate('/berater-auswahl');
 
             </div>
 
-            {error && <p className="mt-[2vh] text-red-600 text-[0.9vw]">{error}</p>}
+            {error && <p className="mt-4 text-red-600 text-sm">{error}</p>}
           </>
         )}
 
-<p className="mt-[2vh] text-[0.8vw] text-gray-500">© 2025 JB Finanz AG. Alle Rechte vorbehalten.</p>
-
+        <p className="mt-8 text-xs text-gray-500">© 2025 JB Finanz AG. Alle Rechte vorbehalten.</p>
       </div>
     </div>
   );
