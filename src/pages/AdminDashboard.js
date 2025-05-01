@@ -215,7 +215,7 @@ function AdminDashboard() {
       <header className="relative z-10 bg-gradient-to-b from-white via-white/90 to-transparent">
         <div className="max-w-[1100px] h-[160px] mx-auto px-6 flex justify-between items-center" style={{ transform: 'translateY(30%)' }}>
           <button onClick={() => navigate('/admin-auswahl')} className="px-4 py-2 border-2 border-[#4B2E2B] bg-white text-[#4B2E2B] rounded-xl hover:bg-[#f3efec]">ZURÜCK ZUR AUSWAHL</button>
-          <img src="/Logotools.png" alt="Logo" className="h-[250px] object-contain max-w-[240px] mt-[35px]" />
+          <img src="/logotools.png" alt="Logo" className="h-[250px] object-contain max-w-[240px] mt-[35px]" />
         </div>
       </header>
 
