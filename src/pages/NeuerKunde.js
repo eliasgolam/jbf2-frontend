@@ -32,49 +32,53 @@ function NeuerKunde() {
     // console.log("Koordinaten:", latLng);
   };
 
-  // Klick: "Beratung starten"
-  const handleBeratungStart = async () => {
-    const kunde = {
-      vorname: document.querySelector('[placeholder="Vorname"]').value,
-      nachname: document.querySelector('[placeholder="Nachname"]').value,
-      geburtsdatum: document.querySelector('[type="date"]').value,
-      adresse: address,
-      plz: document.querySelector('[placeholder="PLZ"]').value,
-      ort: document.querySelector('[placeholder="Ort"]').value,
-      zivilstand: document.querySelector('[placeholder="Zivilstand"]').value,
-      raucher: document.querySelector('select').value,
-      kinder: document.querySelector('[placeholder="Anzahl Kinder"]').value,
-      beruf: document.querySelector('[placeholder="Beruf"]').value,
-      email: document.querySelector('[placeholder="E-Mail"]').value,
-      telefonnummer: document.querySelector('[placeholder="Telefonnummer"]').value,
-      // Besitzer: aktueller Benutzer aus localStorage
-      besitzer: JSON.parse(localStorage.getItem('loggedInUser'))?.email || 'unbekannt'
-    };
-  
-    try {
-      const res = await fetch(`${API_BASE}/api/kunden`, {
+// Klick: "Beratung starten"
+const handleBeratungStart = async () => {
+  const user = JSON.parse(localStorage.getItem('loggedInUser'));
 
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(kunde)
-      });
-  
-      if (!res.ok) throw new Error('Fehler beim Speichern des Kunden.');
-  
-      const gespeicherterKunde = await res.json();
-      console.log('✅ Kunde erfolgreich gespeichert:', gespeicherterKunde);
-  
-      // Optional: Kunde in localStorage speichern für nächste Seite (nur zur Übergabe)
-      localStorage.setItem('ausgewaehlterKunde', JSON.stringify(gespeicherterKunde));
-  
-      // Weiter zur Beratungsseite
-      navigate('/beratung-starten');
-    } catch (error) {
-      console.error('❌ Fehler beim Speichern des Kunden:', error);
-      alert('Fehler beim Speichern des Kunden.');
-    }
+  if (!user || !user.email) {
+    alert("❌ Benutzer nicht korrekt eingeloggt oder keine E-Mail vorhanden.");
+    return;
+  }
+
+  const kunde = {
+    vorname: document.querySelector('[placeholder="Vorname"]').value,
+    nachname: document.querySelector('[placeholder="Nachname"]').value,
+    geburtsdatum: document.querySelector('[type="date"]').value,
+    adresse: address,
+    plz: document.querySelector('[placeholder="PLZ"]').value,
+    ort: document.querySelector('[placeholder="Ort"]').value,
+    zivilstand: document.querySelector('[placeholder="Zivilstand"]').value,
+    raucher: document.querySelector('select').value,
+    kinder: document.querySelector('[placeholder="Anzahl Kinder"]').value,
+    beruf: document.querySelector('[placeholder="Beruf"]').value,
+    email: document.querySelector('[placeholder="E-Mail"]').value,
+    telefonnummer: document.querySelector('[placeholder="Telefonnummer"]').value,
+    besitzer: user.email
   };
-  
+
+  console.log("📤 Kunde wird gesendet:", kunde);
+
+  try {
+    const res = await fetch(`${API_BASE}/api/kunden`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(kunde)
+    });
+
+    if (!res.ok) throw new Error(await res.text());
+
+    const gespeicherterKunde = await res.json();
+    console.log('✅ Kunde erfolgreich gespeichert:', gespeicherterKunde);
+
+    localStorage.setItem('ausgewaehlterKunde', JSON.stringify(gespeicherterKunde));
+    navigate('/beratung-starten');
+  } catch (error) {
+    console.error('❌ Fehler beim Speichern des Kunden:', error);
+    alert('Fehler beim Speichern des Kunden.');
+  }
+};
+
 
   return (
     <div className="relative min-h-screen w-full flex flex-col font-sans">
