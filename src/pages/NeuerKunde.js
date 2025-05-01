@@ -10,6 +10,9 @@ import PlacesAutocomplete, {
 
 function NeuerKunde() {
   const navigate = useNavigate();
+  const [zeigeDuplikatWarnung, setZeigeDuplikatWarnung] = useState(false);
+const [pendingKunde, setPendingKunde] = useState(null);
+
 
   // Für Fade-in-Effekt
   const [fadeIn, setFadeIn] = useState(false);
@@ -32,52 +35,69 @@ function NeuerKunde() {
     // console.log("Koordinaten:", latLng);
   };
 
-// Klick: "Beratung starten"
-const handleBeratungStart = async () => {
-  const user = JSON.parse(localStorage.getItem('loggedInUser'));
-
-  if (!user || !user.email) {
-    alert("❌ Benutzer nicht korrekt eingeloggt oder keine E-Mail vorhanden.");
-    return;
-  }
-
-  const kunde = {
-    vorname: document.querySelector('[placeholder="Vorname"]').value,
-    nachname: document.querySelector('[placeholder="Nachname"]').value,
-    geburtsdatum: document.querySelector('[type="date"]').value,
-    adresse: address,
-    plz: document.querySelector('[placeholder="PLZ"]').value,
-    ort: document.querySelector('[placeholder="Ort"]').value,
-    zivilstand: document.querySelector('[placeholder="Zivilstand"]').value,
-    raucher: document.querySelector('select').value,
-    kinder: document.querySelector('[placeholder="Anzahl Kinder"]').value,
-    beruf: document.querySelector('[placeholder="Beruf"]').value,
-    email: document.querySelector('[placeholder="E-Mail"]').value,
-    telefonnummer: document.querySelector('[placeholder="Telefonnummer"]').value,
-    besitzer: user.email
+  const handleBeratungStart = async () => {
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+  
+    if (!user || !user.email) {
+      alert("❌ Benutzer nicht korrekt eingeloggt oder keine E-Mail vorhanden.");
+      return;
+    }
+  
+    const kunde = {
+      vorname: document.querySelector('[placeholder="Vorname"]').value,
+      nachname: document.querySelector('[placeholder="Nachname"]').value,
+      geburtsdatum: document.querySelector('[type="date"]').value,
+      adresse: address,
+      plz: document.querySelector('[placeholder="PLZ"]').value,
+      ort: document.querySelector('[placeholder="Ort"]').value,
+      zivilstand: document.querySelector('[placeholder="Zivilstand"]').value,
+      raucher: document.querySelector('select').value,
+      kinder: document.querySelector('[placeholder="Anzahl Kinder"]').value,
+      beruf: document.querySelector('[placeholder="Beruf"]').value,
+      email: document.querySelector('[placeholder="E-Mail"]').value,
+      telefonnummer: document.querySelector('[placeholder="Telefonnummer"]').value,
+      besitzer: user.email
+    };
+  
+    try {
+      const res = await fetch(`${API_BASE}/api/kunden/${user.email}`);
+      const kunden = await res.json();
+  
+      const bereitsVorhanden = kunden.find(k => k.email === kunde.email);
+  
+      if (bereitsVorhanden) {
+        setPendingKunde(kunde);
+        setZeigeDuplikatWarnung(true);
+        return;
+      }
+  
+      await speichereKunde(kunde);
+    } catch (error) {
+      console.error('❌ Fehler:', error);
+      alert('Fehler beim Abrufen der bestehenden Kunden.');
+    }
   };
-
-  console.log("📤 Kunde wird gesendet:", kunde);
-
-  try {
-    const res = await fetch(`${API_BASE}/api/kunden`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(kunde)
-    });
-
-    if (!res.ok) throw new Error(await res.text());
-
-    const gespeicherterKunde = await res.json();
-    console.log('✅ Kunde erfolgreich gespeichert:', gespeicherterKunde);
-
-    localStorage.setItem('ausgewaehlterKunde', JSON.stringify(gespeicherterKunde));
-    navigate('/beratung-starten');
-  } catch (error) {
-    console.error('❌ Fehler beim Speichern des Kunden:', error);
-    alert('Fehler beim Speichern des Kunden.');
-  }
-};
+  
+  const speichereKunde = async (kunde) => {
+    try {
+      const res = await fetch(`${API_BASE}/api/kunden`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(kunde)
+      });
+  
+      if (!res.ok) throw new Error(await res.text());
+  
+      const gespeicherterKunde = await res.json();
+      console.log('✅ Kunde erfolgreich gespeichert:', gespeicherterKunde);
+      localStorage.setItem('ausgewaehlterKunde', JSON.stringify(gespeicherterKunde));
+      navigate('/beratung-starten');
+    } catch (error) {
+      console.error('❌ Fehler beim Speichern des Kunden:', error);
+      alert('Fehler beim Speichern des Kunden.');
+    }
+  };
+  
 
 
   return (
@@ -429,6 +449,35 @@ const handleBeratungStart = async () => {
           </form>
         </div>
       </main>
+
+      {zeigeDuplikatWarnung && (
+  <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div className="bg-white p-6 rounded-xl shadow-xl max-w-sm w-full text-center">
+      <h2 className="text-lg font-bold text-[#4B2E2B] mb-4">⚠️ Kunde bereits erfasst</h2>
+      <p className="text-sm text-gray-600 mb-6">
+        Ein Kunde mit dieser E-Mail existiert bereits. Möchten Sie trotzdem fortfahren?
+      </p>
+      <div className="flex justify-between gap-4">
+        <button
+          onClick={() => setZeigeDuplikatWarnung(false)}
+          className="px-4 py-2 bg-gray-200 rounded text-sm"
+        >
+          Abbrechen
+        </button>
+        <button
+          onClick={() => {
+            setZeigeDuplikatWarnung(false);
+            speichereKunde(pendingKunde);
+          }}
+          className="px-4 py-2 bg-[#8C3B4A] text-white rounded text-sm hover:bg-[#722f3a]"
+        >
+          Trotzdem erfassen
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* FOOTER */}
       <footer
