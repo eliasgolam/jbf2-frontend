@@ -16,3 +16,17 @@ root.render(
     </HashRouter>
   </GoogleOAuthProvider>
 );
+
+function scaleApp() {
+  const scaleX = window.innerWidth / 1720;
+  const scaleY = window.innerHeight / 1440;
+  const scale = Math.min(scaleX, scaleY);
+  const wrapper = document.getElementById('app-wrapper');
+  if (wrapper) {
+    wrapper.style.transform = `scale(${scale})`;
+  }
+}
+
+window.addEventListener('resize', scaleApp);
+window.addEventListener('load', scaleApp);
+
