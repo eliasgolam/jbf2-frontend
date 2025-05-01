@@ -25,7 +25,8 @@ function scaleApp() {
   const scaleY = window.innerHeight / baseHeight;
 
   // WICHTIG: Math.max = Bildschirm füllen, auch wenn etwas übersteht
-  const scale = Math.max(scaleX, scaleY);
+  const scale = Math.min(scaleX, scaleY);
+
 
   const wrapper = document.getElementById('app-wrapper');
   if (wrapper) {
