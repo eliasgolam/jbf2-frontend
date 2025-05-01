@@ -13,8 +13,10 @@ import slideStartenAnimation from '../assets/SlideStarten.json';
 
 const VermoegenTools = () => {
   const navigate = useNavigate();
-  const beraterName = localStorage.getItem('beraterName') || 'Berater';
-  const profilbild = '/default-profile.png';
+  const user = JSON.parse(localStorage.getItem("loggedInUser")) || {};
+const beraterName = user.username || "Berater";
+const profilbild = user.profilbild || "/default-profile.png";
+
   const { bereich } = useParams(); // z. B. 'vermoegen' oder 'gesundheit'
 
 const tools = [

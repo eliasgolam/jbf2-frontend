@@ -7,9 +7,10 @@ import tragbarkeitAnimation from '../assets/Tragbarkeitsrechner.json';
 const Immobilien = () => {
   const navigate = useNavigate();
   const { bereich } = useParams(); // Dynamischer Bereich (vermoegen, gesundheit, immoblie, etc.)
-  const beraterName = localStorage.getItem('beraterName') || 'Berater';
-  const profilbild = '/default-profile.png';
-
+  const user = JSON.parse(localStorage.getItem("loggedInUser")) || {};
+  const beraterName = user.username || "Berater";
+  const profilbild = user.profilbild || "/default-profile.png";
+  
   // Dynamische Tools basierend auf dem Bereich
   const tools = [
     {

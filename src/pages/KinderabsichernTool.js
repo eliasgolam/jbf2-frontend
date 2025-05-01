@@ -11,8 +11,9 @@ const KinderabsichernTool = () => {
   const navigate = useNavigate();
   const { bereich } = useParams(); // z. B. "vermoegen", "gesundheit", ...
 
-  const beraterName = localStorage.getItem('beraterName') || 'Berater';
-  const profilbild = '/default-profile.png';
+  const user = JSON.parse(localStorage.getItem("loggedInUser")) || {};
+const beraterName = user.username || "Berater";
+const profilbild = user.profilbild || "/default-profile.png";
 
   // ✅ tools-Array jetzt korrekt **innerhalb** der Komponente
   const tools = [
