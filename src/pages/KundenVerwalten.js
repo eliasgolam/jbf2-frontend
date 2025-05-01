@@ -7,6 +7,9 @@ function KundenVerwalten() {
   const [suchbegriff, setSuchbegriff] = useState('');
   const [kunden, setKunden] = useState([]);
   const [gefilterteKunden, setGefilterteKunden] = useState([]);
+  const [aktiverKunde, setAktiverKunde] = useState(null);
+const [showModal, setShowModal] = useState(false);
+
 
   useEffect(() => {
     const fetchKunden = async () => {
@@ -132,9 +135,7 @@ function KundenVerwalten() {
               gefilterteKunden.map((kunde, index) => (
                 <div
                   key={index}
-                  onClick={() => waehleKunde(kunde)}
                   className="
-                    cursor-pointer
                     bg-white/10
                     border border-white/20
                     shadow
@@ -149,12 +150,31 @@ function KundenVerwalten() {
                     transition
                   "
                 >
-                  <span className="text-[#4B2E2B] font-semibold">
-                    {kunde.vorname} {kunde.nachname}
-                  </span>
-                  <span className="text-[#4B2E2B] text-lg">➜</span>
+                  <div className="flex items-center gap-4">
+                    <span className="text-[#4B2E2B] font-semibold">
+                      {kunde.vorname} {kunde.nachname}
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <img
+                      src="/stift.png"
+                      alt="Bearbeiten"
+                      className="h-5 w-5 cursor-pointer hover:scale-110 transition"
+                      onClick={() => {
+                        setAktiverKunde(kunde);
+                        setShowModal(true);
+                      }}
+                    />
+                    <span
+                      className="text-[#4B2E2B] text-lg cursor-pointer"
+                      onClick={() => waehleKunde(kunde)}
+                    >
+                      ➜
+                    </span>
+                  </div>
                 </div>
               ))
+              
             )}
           </div>
 
@@ -181,6 +201,73 @@ function KundenVerwalten() {
           </button>
         </div>
       </main>
+      {showModal && aktiverKunde && (
+  <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div className="bg-white p-6 rounded-xl max-w-xl w-full shadow-xl">
+      <h2 className="text-xl font-bold mb-4 text-[#4B2E2B]">Kunde bearbeiten</h2>
+
+      <input
+        defaultValue={aktiverKunde.vorname}
+        placeholder="Vorname"
+        className="w-full mb-2 p-2 border rounded"
+        onChange={(e) => setAktiverKunde({ ...aktiverKunde, vorname: e.target.value })}
+      />
+      <input
+        defaultValue={aktiverKunde.nachname}
+        placeholder="Nachname"
+        className="w-full mb-2 p-2 border rounded"
+        onChange={(e) => setAktiverKunde({ ...aktiverKunde, nachname: e.target.value })}
+      />
+      {/* Weitere Felder hier nach gleichem Prinzip wie oben */}
+
+      <div className="flex justify-between mt-4">
+        <button
+          className="bg-[#8C3B4A] text-white px-4 py-2 rounded"
+          onClick={async () => {
+            const res = await fetch(`${API_BASE}/api/kunden/${aktiverKunde._id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(aktiverKunde)
+            });
+            if (res.ok) {
+              alert('✅ Kunde aktualisiert');
+              setShowModal(false);
+              window.location.reload();
+            } else {
+              alert('❌ Fehler beim Aktualisieren');
+            }
+          }}
+        >
+          Speichern
+        </button>
+
+        <button
+          className="text-red-600 hover:underline"
+          onClick={async () => {
+            const bestaetigt = window.confirm('Möchten Sie diesen Kunden wirklich löschen?');
+            if (!bestaetigt) return;
+            await fetch(`${API_BASE}/api/kunden/${aktiverKunde._id}`, {
+              method: 'DELETE'
+            });
+            alert('🗑️ Kunde gelöscht');
+            setShowModal(false);
+            window.location.reload();
+          }}
+        >
+          🗑️ Löschen
+        </button>
+      </div>
+
+      <button
+        onClick={() => setShowModal(false)}
+        className="mt-4 text-sm text-gray-500 underline"
+      >
+        Abbrechen
+      </button>
+    </div>
+  </div>
+)}
+
 
       {/* FOOTER */}
       <footer className="
