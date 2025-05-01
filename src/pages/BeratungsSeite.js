@@ -16,8 +16,10 @@ function BeratungsSeite() {
     vorname: 'Kunde',
     nachname: '',
   };
-  const beraterName = localStorage.getItem('beraterName') || 'Max Muster';
-  const profilbild = '/default-profile.png';
+  const user = JSON.parse(localStorage.getItem('loggedInUser')) || {};
+const beraterName = user.username || 'Max Muster';
+const profilbild = user.profilbild || '/default-profile.png';
+
 
   const themen = [
     {
