@@ -14,9 +14,10 @@
   }
   
   :root {
-    --base-width: 1720;
+    --base-width: 3440;
     --base-height: 1440;
   }
+  
   
   html, body {
     margin: 0;

@@ -18,7 +18,7 @@ root.render(
 );
 
 function scaleApp() {
-  const scaleX = window.innerWidth / 1720;
+  const scaleX = window.innerWidth / 3440;
   const scaleY = window.innerHeight / 1440;
   const scale = Math.min(scaleX, scaleY);
   const wrapper = document.getElementById('app-wrapper');
@@ -26,6 +26,7 @@ function scaleApp() {
     wrapper.style.transform = `scale(${scale})`;
   }
 }
+
 
 window.addEventListener('resize', scaleApp);
 window.addEventListener('load', scaleApp);
