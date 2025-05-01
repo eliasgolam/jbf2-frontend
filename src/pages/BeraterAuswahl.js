@@ -198,7 +198,7 @@ const handleAdminLogin = () => {
       alt="Admin Icon"
       className="w-4 h-4 object-contain"
     />
-    Admin-Bereich öffnen
+    Admin
   </button>
   <button
     onClick={() => alert('Zugang Innendienst kommt bald!')}
