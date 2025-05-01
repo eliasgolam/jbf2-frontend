@@ -191,17 +191,28 @@ const handleAdminLogin = () => {
             <div className="flex flex-col justify-between ml-2 gap-2">
   <button
     onClick={() => setShowAdminPopup(true)}
-    className="bg-white text-[#4B2E2B] border border-[#4B2E2B] hover:bg-[#f3f2f0] transition px-4 py-2 rounded-md text-sm font-medium shadow-sm"
+    className="flex items-center gap-2 bg-white/70 backdrop-blur-sm text-[#4B2E2B] border border-[#4B2E2B] hover:bg-white transition px-4 py-2 rounded-xl text-sm font-medium shadow-sm"
   >
-    🔐 Admin Login
+    <img
+      src="/schlussel.png"
+      alt="Admin Icon"
+      className="w-4 h-4 object-contain"
+    />
+    Admin-Bereich öffnen
   </button>
   <button
     onClick={() => alert('Zugang Innendienst kommt bald!')}
-    className="bg-white text-[#4B2E2B] border border-[#4B2E2B] hover:bg-[#f3f2f0] transition px-4 py-2 rounded-md text-sm font-medium shadow-sm"
+    className="flex items-center gap-2 bg-white/70 backdrop-blur-sm text-[#4B2E2B] border border-[#4B2E2B] hover:bg-white transition px-4 py-2 rounded-xl text-sm font-medium shadow-sm"
   >
-    🏢 Zugang Innendienst
+    <img
+      src="/ordner.png"
+      alt="Ordner Icon"
+      className="w-4 h-4 object-contain"
+    />
+    Innendienst-Portal starten
   </button>
 </div>
+
 
 
           </div>
