@@ -209,7 +209,7 @@ const handleAdminLogin = () => {
       alt="Ordner Icon"
       className="w-4 h-4 object-contain"
     />
-    Innendienst-Portal starten
+    Innendienst
   </button>
 </div>
 
