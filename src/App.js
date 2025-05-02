@@ -66,7 +66,7 @@ import AnalyseAbschliessen from './pages/AnalyseAbschliessen';
 function App() { 
   
   return (
-    <div id="app-wrapper">
+    <div>
     <Routes>
       <Route path="/berater-auswahl" element={<BeraterAuswahl />} />
       <Route path="/BeraterDashboard" element={<BeraterDashboard />} />

@@ -5,30 +5,10 @@
 @tailwind utilities;
 
 .zoomed {
-    transform: scale(1.2);
-    transform-origin: center center;
-    z-index: 10;
-    box-shadow: 0 0 40px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
-    pointer-events: none;
-  }
-  
-  :root {
-    --base-width: 1720;
-    --base-height: 1440;
-  }
-  
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    background-color: #ffffff;
-  }
-  
-  #app-wrapper {
-    width: var(--base-width)px;
-    height: var(--base-height)px;
-    transform-origin: top left;
-  }
+  transform: scale(1.2);
+  transform-origin: center center;
+  z-index: 10;
+  box-shadow: 0 0 40px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
