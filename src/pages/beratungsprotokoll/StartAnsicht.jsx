@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom'; // Importiere useNavigate
@@ -8,6 +8,23 @@ const StartAnsicht = () => {
   const token = useMemo(() => uuidv4(), []);
   const shareLink = `${window.location.origin}/beratung/protokoll?token=${token}`;
   const navigate = useNavigate(); // Initialisiere den navigate Hook
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (!user?.email) return;
+  
+    fetch(`/api/status/${user.email}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data?.prozessAbgeschlossen) {
+          navigate('/browserunterzeichnen');
+        }
+      })
+      .catch(() => {
+        // Fehler ignorieren – kein Redirect
+      });
+  }, []);
+  
 
   const handleNext = async () => {
     try {

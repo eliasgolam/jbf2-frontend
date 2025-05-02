@@ -58,23 +58,46 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
   };
   
   useEffect(() => {
-    const gespeicherterKunde = JSON.parse(localStorage.getItem('ausgewaehlterKunde'));
-    if (gespeicherterKunde) {
-      setForm({
-        anrede: gespeicherterKunde.anrede || '',
-        vorname: gespeicherterKunde.vorname || '',
-        nachname: gespeicherterKunde.nachname || '',
-        geburtsdatum: gespeicherterKunde.geburtsdatum
-  ? new Date(gespeicherterKunde.geburtsdatum).toLocaleDateString('de-CH')
-  : '',
-        adresse: gespeicherterKunde.adresse || '',
-        plzOrt: `${gespeicherterKunde.plz || ''} ${gespeicherterKunde.ort || ''}`.trim(),
-        telefon: gespeicherterKunde.telefonnummer || '',
-        email: gespeicherterKunde.email || ''
-      });
-    }
+    const fetchKundendaten = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!user?.email) return;
+  
+        const res = await fetch(`/api/kunden/${user.email}`);
+        if (!res.ok) throw new Error('Fehler beim Abrufen der Kundendaten');
+  
+        const kunde = await res.json();
+  
+        setForm({
+          anrede: kunde.anrede || '',
+          vorname: kunde.vorname || '',
+          nachname: kunde.nachname || '',
+          geburtsdatum: kunde.geburtsdatum
+            ? new Date(kunde.geburtsdatum).toLocaleDateString('de-CH')
+            : '',
+          adresse: kunde.adresse || '',
+          plzOrt: `${kunde.plz || ''} ${kunde.ort || ''}`.trim(),
+          telefon: kunde.telefonnummer || '',
+          email: kunde.email || ''
+        });
+      } catch (err) {
+        console.error('❌ Fehler beim Laden des Kunden:', err);
+      }
+    };
+  
+    fetchKundendaten();
   }, []);
 
+  const handleSkip = () => {
+    setStep(3);
+  };
+  
+  const handleBack = () => {
+    if (step > 0) {
+      setStep(prev => prev - 1);
+    }
+  };
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
@@ -291,9 +314,9 @@ saveAntwortenBackend(updated);
         <h1 className="text-2xl font-bold text-center text-white">Beratungsprotokoll ausfüllen</h1>
         {renderStep()}
         <div className="flex justify-between">
-          <button onClick={onBack} className="text-sm underline text-white">Zurück</button>
+        <button onClick={handleBack} className="text-sm underline text-white">Zurück</button>
           <div className="flex gap-4">
-          <button onClick={onNext} className="text-sm underline text-white">Überspringen</button>
+          <button onClick={handleSkip} className="text-sm underline text-white">Überspringen</button>
             <button onClick={handleNext} className="px-6 py-2 bg-[#8C3B4A] text-white rounded shadow hover:bg-[#722f3a]">
               {step < 3 ? 'Weiter' : 'Dokument unterschreiben'}
             </button>

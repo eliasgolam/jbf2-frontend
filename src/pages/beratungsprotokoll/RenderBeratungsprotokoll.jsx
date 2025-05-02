@@ -50,20 +50,9 @@ const RenderBeratungsprotokoll = ({
   }, [pageSizes]); // oder: [showViewer] wenn du das aus BrowserUnterzeichnen steuerst
   
   useEffect(() => {
-    const handleResize = () => {
-      const screenWidth = window.innerWidth;
-  
-      if (screenWidth >= 1440) setViewerWidth(1000);     // große Bildschirme
-      else if (screenWidth >= 1024) setViewerWidth(900); // normale Laptops
-      else if (screenWidth >= 768) setViewerWidth(750);  // Tablets
-      else setViewerWidth(600);                          // Smartphones
-    };
-  
-    handleResize(); // beim Start direkt ausführen
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    setViewerWidth(1000); // Feste Breite, sorgt für gleiche Skalierung überall
   }, []);
-
+  
 
 
   const handleSigSave = () => {
@@ -524,7 +513,9 @@ if (onClose) onClose();
         <div
   ref={wrapperRef}
   className="w-full overflow-x-auto overflow-y-auto"
+  style={{ maxWidth: '100%', maxHeight: '100%' }}
 >
+
       
           <Document file={pdfDatei}>
             {[1, 2, 3, 4].map(page => (
@@ -836,13 +827,18 @@ if (onClose) onClose();
     </div>
   ))}
 </Document>
+<div className="absolute top-1 right-20 z-50">
+  <button
+    onClick={savePDF}
+    disabled={saving}
+    className="px-5 py-2 bg-white/80 text-[#4B2E2B] border border-[#4B2E2B] rounded-xl shadow-sm backdrop-blur-md hover:bg-white hover:shadow-md transition-all duration-200"
+  >
+    {saving ? 'Speichern...' : 'PDF speichern'}
+  </button>
+</div>
 </div>
 
 
-        <div className="flex justify-end mt-4">
-          <button onClick={savePDF} disabled={saving} className="px-6 py-2 bg-[#4B2E2B] text-white rounded-xl shadow hover:bg-[#3a221f]"
-          >{saving ? 'Speichern...' : 'PDF speichern'}</button>
-        </div>
 
         {ortDatumModalOpen && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">

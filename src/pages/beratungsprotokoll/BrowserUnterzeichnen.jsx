@@ -18,12 +18,16 @@ const BrowserUnterzeichnen = () => {
 
   const handleDownload = () => {
     if (!pdfUrl) return;
+  
+    const { vorname = '', nachname = '' } = antworten?.kundendaten || {};
+    const name = `${nachname}_${vorname}`.replace(/\s+/g, '_') || 'Kunde';
+  
     const a = document.createElement('a');
     a.href = pdfUrl;
-    a.download = `Beratungsprotokoll_${antworten?.kundendaten?.vorname || 'Kunde'}.pdf`;
+    a.download = `Beratungsprotokoll_${name}.pdf`;
     a.click();
   };
-
+  
   const handleWeiter = () => {
     navigate('/beratung-abschliessen');
   };
@@ -49,7 +53,14 @@ const BrowserUnterzeichnen = () => {
 
   {/* Vorschau öffnen */}
   <button
-    onClick={() => setShowViewer(true)}
+  onClick={() => {
+    if (!pdfUrl) {
+      alert('Bitte zuerst das PDF speichern.');
+      return;
+    }
+    setShowViewer(true);
+  }}
+
     className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-[#8C3B4A] text-[#8C3B4A] rounded-xl shadow hover:bg-[#fef1f3]"
   >
     <img src="/vollbild.png" alt="Vorschau öffnen" className="h-5 w-5" />
@@ -87,8 +98,9 @@ const BrowserUnterzeichnen = () => {
 
         {showViewer && (
           <div className="relative bg-white rounded-xl shadow-xl p-4 mt-6">
-        <RenderBeratungsprotokoll
-  pdfDatei="/JBFBP.pdf"
+       <RenderBeratungsprotokoll
+  pdfDatei={pdfUrl || "/JBFBP.pdf"}
+
   antworten={antworten}
   setAntworten={(data) => {
     const updated = { ...antworten, ...data };
