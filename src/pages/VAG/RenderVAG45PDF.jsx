@@ -72,7 +72,7 @@ const RenderVAG45PDF = ({ antworten, setAntworten, onClose, onPDFGenerated }) =>
   };
 
   const savePDF = async () => {
-    const existingPdfBytes = await fetch('/VAG45.pdf').then(res => res.arrayBuffer());
+    const existingPdfBytes = await fetch('/Vag45.pdf').then(res => res.arrayBuffer());
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const form = pdfDoc.getForm();
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -135,7 +135,7 @@ const exportCoords = {
         </button>
 
         <div ref={wrapperRef} className="w-full overflow-x-auto">
-          <Document file="/VAG45.pdf">
+          <Document file="/Vag45.pdf">
             {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
               <div key={page} style={{ width: `${viewerWidth}px`, height: `${Math.round(viewerWidth * 1.414)}px`, position: 'relative', margin: '0 auto' }}>
                 <Page
