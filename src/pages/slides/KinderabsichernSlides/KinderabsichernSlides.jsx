@@ -11,19 +11,25 @@ const slideData = [
     title: 'Invalidität bei Kindern',
     SVG: Slide1SVG,
     maxSteps: 4,
-    groups: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4']
+    groups: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4'],
+    svgClass: 'w-[90%] h-auto max-h-[60vh] mx-auto object-contain',
+    zoomSvgClass: 'w-[90%] h-auto max-h-[90vh] mx-auto my-auto object-contain',
   },
   {
     title: 'Invalidität bei Kindern',
     SVG: Slide2SVG,
     maxSteps: 8,
-    groups: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5', 'Gruppe6', 'Gruppe7', 'Gruppe8']
+    groups: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5', 'Gruppe6', 'Gruppe7', 'Gruppe8'],
+    svgClass: 'w-[85%] h-auto max-h-[60vh] mx-auto object-contain',
+    zoomSvgClass: 'w-[85%] h-auto max-h-[90vh] mx-auto my-auto object-contain',
   },
   {
     title: 'Kindersparplan',
     SVG: Slide3SVG,
     maxSteps: 7,
-    groups: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5', 'Gruppe6', 'Gruppe7']
+    groups: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5', 'Gruppe6', 'Gruppe7'],
+    svgClass: 'w-[75%] h-auto max-h-[55vh] mx-auto object-contain mt-auto',
+    zoomSvgClass: 'w-[80%] h-auto max-h-[85vh] mx-auto my-auto object-contain',
   },
 ];
 
@@ -33,7 +39,8 @@ const KinderabsichernSlides = () => {
   const [isZoomed, setIsZoomed] = useState(false);
   const navigate = useNavigate();
   const { bereich } = useParams();
-  const { title, SVG, maxSteps, groups } = slideData[slideIndex];
+  const { title, SVG, maxSteps, groups, svgClass, zoomSvgClass } = slideData[slideIndex];
+
 
   const redirectToTool = () => {
     navigate(`/tools/${bereich}/kinderabsichern`);
@@ -149,8 +156,14 @@ const KinderabsichernSlides = () => {
         </div>
       )}
 
-      <main className="flex justify-center items-center px-4">
-        <div className={`transition-all duration-500 ${isZoomed ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' : 'relative w-full max-w-7xl min-h-[65vh] mt-6 rounded-[2rem] bg-white/60'} backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-visible`}>
+<main className="flex flex-col justify-start items-center px-4">
+
+<div className={`transition-all duration-500 flex flex-col items-center justify-center 
+  ${isZoomed 
+    ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' 
+    : 'relative w-full max-w-7xl h-[680px] sm:h-[600px] md:h-[680px] lg:h-[720px] mt-6 rounded-[2rem] bg-white/60'} 
+  backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-hidden`}>
+
 
           {isZoomed && (
             <div className="absolute top-10 left-1/2 transform -translate-x-1/2 z-[80]">
@@ -162,15 +175,15 @@ const KinderabsichernSlides = () => {
             </div>
           )}
 
-          <div className="absolute inset-0 overflow-hidden rounded-[2rem]">
+<div className="relative overflow-hidden rounded-[2rem] z-10">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
               className="flex items-center justify-center w-full h-full"
             >
-              <div className="max-w-[90%] max-h-[90%] flex items-center justify-center">
-                <SVG className="w-full h-auto object-contain" />
+              <div className="w-full h-full px-4 max-w-6xl flex flex-col items-end justify-center">
+              <SVG className={`${isZoomed ? zoomSvgClass : svgClass} transition-all duration-300 ease-in-out`} />
               </div>
             </motion.div>
           </div>
