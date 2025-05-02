@@ -17,22 +17,3 @@ root.render(
   </GoogleOAuthProvider>
 );
 
-function scaleApp() {
-  const baseWidth = 1720;
-  const baseHeight = 1440;
-
-  const scaleX = window.innerWidth / baseWidth;
-  const scaleY = window.innerHeight / baseHeight;
-  const scale = Math.min(scaleX, scaleY); // proportional
-
-  const wrapper = document.getElementById('app-wrapper');
-  if (wrapper) {
-    wrapper.style.transform = `scale(${scale})`;
-    wrapper.style.position = 'absolute';
-    wrapper.style.left = `${(window.innerWidth - baseWidth * scale) / 2}px`;
-    wrapper.style.top = `${(window.innerHeight - baseHeight * scale) / 2}px`;
-  }
-}
-
-window.addEventListener('load', scaleApp);
-window.addEventListener('resize', scaleApp);
