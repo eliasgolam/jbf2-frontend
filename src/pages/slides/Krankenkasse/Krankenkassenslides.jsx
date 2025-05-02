@@ -15,7 +15,10 @@ const slideData = [
       ['Gruppe1'], ['Gruppe2'], ['Gruppe3'], ['Gruppe4'],
       ['Gruppe5'], ['Gruppe6'], ['Gruppe7'], ['Gruppe8']
     ],
-    allIDs: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5', 'Gruppe6', 'Gruppe7', 'Gruppe8']
+    allIDs: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5', 'Gruppe6', 'Gruppe7', 'Gruppe8'],
+    svgClass: 'w-[85%] h-auto max-h-[60vh] mx-auto my-auto object-contain',
+    zoomSvgClass: 'w-[90%] h-auto max-h-[85vh] mx-auto my-auto object-contain',
+
   },
   {
     title: 'Franchise',
@@ -42,9 +45,11 @@ const slideData = [
       'Preis1', 
       'Linie2', 
       'Preis2'
-    ]
-  }
-  ,
+    ],
+    svgClass: 'w-[80%] h-auto max-h-[55vh] mx-auto my-auto object-contain',
+    zoomSvgClass: 'w-[80%] h-auto max-h-[80vh] mx-auto my-auto object-contain',
+
+  },
   {
     title: 'Zusatzversicherungen',
     SVG: Slide3SVG,
@@ -53,7 +58,9 @@ const slideData = [
       ['klick1'], ['klick2'], ['klick3'], ['klick4'],
       ['klick5'], ['klick6'], ['klick7'], ['klick8']
     ],
-    allIDs: ['klick1', 'klick2', 'klick3', 'klick4', 'klick5', 'klick6', 'klick7', 'klick8']
+    allIDs: ['klick1', 'klick2', 'klick3', 'klick4', 'klick5', 'klick6', 'klick7', 'klick8'],
+    svgClass: 'w-[80%] h-auto max-h-[55vh] mx-auto my-auto object-contain',
+    zoomSvgClass: 'w-[85%] h-auto max-h-[80vh] mx-auto my-auto object-contain',
   },
   {
     title: 'Spitalabteilung',
@@ -62,7 +69,9 @@ const slideData = [
     steps: [
       ['Gruppe1'], ['Gruppe2'], ['Gruppe3'], ['Gruppe4'], ['Gruppe5']
     ],
-    allIDs: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5']
+    allIDs: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5'],
+    svgClass: 'w-[80%] h-auto max-h-[55vh] mx-auto my-auto object-contain',
+    zoomSvgClass: 'w-[85%] h-auto max-h-[80vh] mx-auto my-auto object-contain',
   }
 ];
 
@@ -72,7 +81,8 @@ const Krankenkassenslides = () => {
   const [isZoomed, setIsZoomed] = useState(false);
   const navigate = useNavigate();
   const currentSlide = slideData[slideIndex];
-  const { SVG, title, containerText } = currentSlide;
+  const { SVG, title, containerText, svgClass, zoomSvgClass } = currentSlide;
+
 
   const nextStep = useCallback(() => {
     if (slideIndex === slideData.length - 1 && step >= currentSlide.steps.length - 1) {
@@ -177,7 +187,12 @@ const Krankenkassenslides = () => {
       </div>
 
       <main className="flex flex-col justify-start items-center px-4">
-        <div className={`transition-all duration-500 ${isZoomed ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' : 'relative w-full max-w-7xl min-h-[65vh] mt-6 rounded-[2rem] bg-white/60'} backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-visible`}>
+      <div className={`transition-all duration-500 flex flex-col items-center justify-center 
+  ${isZoomed 
+    ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' 
+    : 'relative w-full max-w-7xl h-[680px] sm:h-[600px] md:h-[680px] lg:h-[720px] mt-6 rounded-[2rem] bg-white/60'} 
+  backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-hidden`}>
+
         <div className="relative overflow-hidden rounded-[2rem] z-10">
 
             <motion.div
@@ -187,7 +202,8 @@ const Krankenkassenslides = () => {
               className="flex items-center justify-center w-full h-full"
             >
               <div className="max-w-[90%] max-h-[90%] flex items-center justify-center">
-              <SVG className="w-full max-h-[65vh] h-auto object-contain" />
+              <SVG className={`${isZoomed ? zoomSvgClass : svgClass} transition-all duration-300 ease-in-out`} />
+
               </div>
             </motion.div>
           </div>

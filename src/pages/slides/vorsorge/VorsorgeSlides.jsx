@@ -23,7 +23,10 @@ const slideData = [
       'Bild1', 'Bild2', 'Text1', 'Text1.1', 'Text1.2', 'Text1.3', 'Text1.4', 'Text1.5',
       'Bild3', 'Text2', 'Text2.2', 'Text2.3', 'Text2.4', 'Text2.5',
       'Bild4', 'Text3', 'Text3.1', 'Text3.2', 'Text3.3', 'Text3.4'
-    ]
+    ],
+    svgClass: 'w-[85%] h-auto max-h-[60vh] mx-auto my-auto object-contain',
+    zoomSvgClass: 'w-[90%] h-auto max-h-[90vh] mx-auto my-auto object-contain',
+    
   },
   {
     title: 'Einkommenslücke im Alter',
@@ -32,7 +35,10 @@ const slideData = [
     steps: [
       ['Klick1'], ['Klick2'], ['Klick3'], ['Klick4'], ['Klick5'], ['Klick6']
     ],
-    allIDs: ['Klick1', 'Klick2', 'Klick3', 'Klick4', 'Klick5', 'Klick6']
+    allIDs: ['Klick1', 'Klick2', 'Klick3', 'Klick4', 'Klick5', 'Klick6'],
+    svgClass: 'w-[80%] h-auto max-h-[60vh] mx-auto my-auto object-contain',
+    zoomSvgClass: 'w-[85%] h-auto max-h-[85vh] mx-auto my-auto object-contain',
+    
   },
   {
     title: 'Einkommenslücke im Alter',
@@ -46,7 +52,10 @@ const slideData = [
     allIDs: [
       'Bild1', 'Text1.1', 'Text1.2', 'Bild2', 'Text2.2', 'Text2.1', 'Bild2.1',
       'Bild3', 'Bild3.1', 'Text3.1', 'Text3.2'
-    ]
+    ],
+    svgClass: 'w-[80%] h-auto max-h-[55vh] mx-auto my-auto object-contain',
+zoomSvgClass: 'w-[85%] h-auto max-h-[80vh] mx-auto my-auto object-contain',
+
   },
   {
     title: 'Einkommenslücke bei Invalidität',
@@ -56,7 +65,10 @@ const slideData = [
       ['Klick1'], ['Klick2'], ['Klick3'], ['Klick1', 'Klick2', 'Klick5'],
       ['Klick6'], ['Klick7'], ['Klick8'], ['Klick9'], ['Klick10'], ['Klick11'], ['Klick12']
     ],
-    allIDs: ['Klick1', 'Klick2', 'Klick3', 'Klick5', 'Klick6', 'Klick7', 'Klick8', 'Klick9', 'Klick10', 'Klick11', 'Klick12']
+    allIDs: ['Klick1', 'Klick2', 'Klick3', 'Klick5', 'Klick6', 'Klick7', 'Klick8', 'Klick9', 'Klick10', 'Klick11', 'Klick12'],
+    svgClass: 'w-[85%] h-auto max-h-[55vh] mx-auto my-auto object-contain',
+    zoomSvgClass: 'w-[90%] h-auto max-h-[80vh] mx-auto my-auto object-contain',
+    
   },
   {
     title: 'Vorsorge\nKombination der Risiken',
@@ -72,7 +84,10 @@ const slideData = [
       'Gruppe1', 'Gruppe1.1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5', 'Gruppe6',
       'Gruppe7', 'Gruppe8', 'Gruppe9', 'Gruppe10', 'Gruppe11', 'Gruppe12', 'Gruppe13',
       'Gruppe14', 'Gruppe15', 'Gruppe16', 'Gruppe17', 'Gruppe18', 'Gruppe19', 'Gruppe20'
-    ]
+    ],
+    svgClass: 'w-[65%] h-auto max-h-[45vh] mx-auto my-auto object-contain',
+zoomSvgClass: 'w-[75%] h-auto max-h-[70vh] mx-auto my-auto object-contain',
+
   },
   {
     title: 'Versicherung oder Bank?',
@@ -86,9 +101,13 @@ const slideData = [
       'Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5',
       'Gruppe6', 'Gruppe7', 'Gruppe8', 'Gruppe9', 'Gruppe10'
     ],
-    alwaysVisible: ['Gruppe1']
+    alwaysVisible: ['Gruppe1'],
+    svgClass: 'w-[90%] h-auto max-h-[60vh] mx-auto my-auto object-contain',
+    zoomSvgClass: 'w-[90%] h-auto max-h-[90vh] mx-auto my-auto object-contain',
+    
   }
 ];
+
 
 const VorsorgeSlides = () => {
   const [slideIndex, setSlideIndex] = useState(0);
@@ -96,7 +115,8 @@ const VorsorgeSlides = () => {
   const [isZoomed, setIsZoomed] = useState(false);
   const navigate = useNavigate();
   const currentSlide = slideData[slideIndex];
-  const { SVG, title, containerText } = currentSlide;
+  const { SVG, title, containerText, svgClass, zoomSvgClass } = currentSlide;
+
   
 
 
@@ -211,7 +231,8 @@ const VorsorgeSlides = () => {
         </div>
 
         {containerText && (
-  <div className="relative z-20 px-6 pt-10 sm:pt-16 md:pt-20 max-w-4xl mx-auto">
+ <div className="relative z-20 px-6 pt-4 sm:pt-6 md:pt-8 pb-2 max-w-4xl mx-auto">
+
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -227,7 +248,12 @@ const VorsorgeSlides = () => {
 
    
       <main className="flex flex-col justify-start items-center px-4">
-        <div className={`transition-all duration-500 ${isZoomed ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' : 'relative w-full max-w-7xl min-h-[65vh] mt-6 rounded-[2rem] bg-white/60'} backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-visible`}>
+      <div className={`transition-all duration-500 flex flex-col items-center justify-center 
+  ${isZoomed 
+    ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' 
+    : 'relative w-full max-w-7xl h-[680px] sm:h-[600px] md:h-[680px] lg:h-[720px] mt-6 rounded-[2rem] bg-white/60'} 
+  backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-hidden`}>
+
 
         <div className="relative overflow-hidden rounded-[2rem] z-10">
             <motion.div
@@ -237,7 +263,7 @@ const VorsorgeSlides = () => {
               className="flex items-center justify-center w-full h-full"
             >
               <div className="max-w-[90%] max-h-[90%] flex items-center justify-center">
-              <SVG className="w-full max-h-[65vh] h-auto object-contain" />
+              <SVG className={`${isZoomed ? zoomSvgClass : svgClass} transition-all duration-300 ease-in-out`} />
               </div>
             </motion.div>
           </div>
