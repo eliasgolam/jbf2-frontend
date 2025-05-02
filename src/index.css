@@ -12,3 +12,25 @@
   transition: all 0.3s ease;
   pointer-events: none;
 }
+
+:root {
+  --base-width: 1720;
+  --base-height: 1440;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto; /* WICHTIG: erlaubt Scrollen */
+  background-color: #ffffff;
+}
+
+#app-wrapper {
+  width: var(--base-width)px;
+  height: var(--base-height)px;
+  transform-origin: top left;
+  margin: 0 auto;
+  position: relative;
+}

@@ -17,3 +17,24 @@ root.render(
   </GoogleOAuthProvider>
 );
 
+function scaleApp() {
+  const baseWidth = 1720;
+  const baseHeight = 1440;
+
+  const scaleX = window.innerWidth / baseWidth;
+  const scaleY = window.innerHeight / baseHeight;
+
+  const scale = Math.min(scaleX, scaleY);
+
+  const wrapper = document.getElementById('app-wrapper');
+  if (wrapper) {
+    wrapper.style.transform = `scale(${scale})`;
+  }
+}
+
+// Initial anwenden
+window.addEventListener('load', scaleApp);
+window.addEventListener('resize', () => {
+  // Seite reloaden bei Auflösungswechsel (verhindert falsche Skalierung nach Sleep / Screenwechsel)
+  window.location.reload();
+});

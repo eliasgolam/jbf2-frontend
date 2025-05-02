@@ -190,7 +190,7 @@ function BeraterDashboard() {
           {/* ZURÜCK-Link */}
           <div className="mt-8">
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/berater-auswahl')}
               className="
                 text-sm
                 text-[#4B2E2B]
