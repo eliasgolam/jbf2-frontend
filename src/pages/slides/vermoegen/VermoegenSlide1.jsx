@@ -124,8 +124,8 @@ const VermoegenSlide1 = () => {
               transition={{ duration: 0.8, ease: 'easeOut' }}
               className="flex items-center justify-center w-full h-full"
             >
-<div className="w-full max-h-[65vh] flex items-center justify-center p-6">
-  <SVG className="w-full h-auto object-contain" />
+<div className="w-full h-full px-4 max-w-6xl flex flex-col items-center justify-center">
+  <SVG className={`${isZoomed ? 'w-[85%] max-h-[80vh]' : 'w-[80%] max-h-[55vh]'} h-auto mx-auto my-auto object-contain transition-all duration-300 ease-in-out`} />
 </div>
 
 

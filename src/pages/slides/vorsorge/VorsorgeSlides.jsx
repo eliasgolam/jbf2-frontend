@@ -221,18 +221,19 @@ const VorsorgeSlides = () => {
         </header>
       )}
 
-      <div className="absolute top-[92px] left-1/2 transform -translate-x-1/2 z-[120] w-full px-4 pointer-events-none">
-        <div className="max-w-7xl mx-auto flex justify-center">
-          <div className="bg-[#8C3B4A]/95 px-10 py-2 rounded-xl shadow-lg backdrop-blur-md border border-white/20 pointer-events-auto">
-            <h1 className="text-white text-[22px] sm:text-[24px] font-semibold tracking-widest uppercase text-center">
-              {title}
-            </h1>
-          </div>
-        </div>
+<div className="absolute top-[92px] left-1/2 transform -translate-x-1/2 z-[120] w-full px-4 pointer-events-none">
+  <div className="max-w-7xl mx-auto flex justify-center">
+    <div className="bg-[#8C3B4A]/95 px-10 py-2 rounded-xl shadow-lg backdrop-blur-md border border-white/20 pointer-events-auto">
+      <h1 className="text-white text-[22px] sm:text-[24px] font-semibold tracking-widest uppercase text-center">
+        {title}
+      </h1>
+    </div>
+  </div>
+</div>
 
-        {containerText && (
- <div className="relative z-20 px-6 pt-4 sm:pt-6 md:pt-8 pb-2 max-w-4xl mx-auto">
 
+{containerText && (
+  <div className="relative z-20 px-6 pt-4 sm:pt-6 md:pt-8 pb-2 max-w-4xl mx-auto">
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -243,8 +244,6 @@ const VorsorgeSlides = () => {
     </motion.div>
   </div>
 )}
-
-      </div>
 
    
       <main className="flex flex-col justify-start items-center px-4">
@@ -262,7 +261,7 @@ const VorsorgeSlides = () => {
               transition={{ duration: 0.8, ease: 'easeOut' }}
               className="flex items-center justify-center w-full h-full"
             >
-              <div className="max-w-[90%] max-h-[90%] flex items-center justify-center">
+              <div className="w-full h-full px-4 max-w-6xl flex flex-col items-center justify-center">
               <SVG className={`${isZoomed ? zoomSvgClass : svgClass} transition-all duration-300 ease-in-out`} />
               </div>
             </motion.div>

@@ -201,10 +201,10 @@ const Krankenkassenslides = () => {
               transition={{ duration: 0.8, ease: 'easeOut' }}
               className="flex items-center justify-center w-full h-full"
             >
-              <div className="max-w-[90%] max-h-[90%] flex items-center justify-center">
-              <SVG className={`${isZoomed ? zoomSvgClass : svgClass} transition-all duration-300 ease-in-out`} />
+             <div className="w-full h-full px-4 max-w-6xl flex flex-col items-center justify-center">
+  <SVG className={`${isZoomed ? zoomSvgClass : svgClass} transition-all duration-300 ease-in-out`} />
+</div>
 
-              </div>
             </motion.div>
           </div>
 
