@@ -176,9 +176,10 @@ const Krankenkassenslides = () => {
         )}
       </div>
 
-      <main className="flex justify-center items-center px-4">
+      <main className="flex flex-col justify-start items-center px-4">
         <div className={`transition-all duration-500 ${isZoomed ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' : 'relative w-full max-w-7xl min-h-[65vh] mt-6 rounded-[2rem] bg-white/60'} backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-visible`}>
-          <div className="absolute inset-0 overflow-hidden rounded-[2rem]">
+        <div className="relative overflow-hidden rounded-[2rem] z-10">
+
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -186,7 +187,7 @@ const Krankenkassenslides = () => {
               className="flex items-center justify-center w-full h-full"
             >
               <div className="max-w-[90%] max-h-[90%] flex items-center justify-center">
-                <SVG className="w-full h-auto object-contain" />
+              <SVG className="w-full max-h-[65vh] h-auto object-contain" />
               </div>
             </motion.div>
           </div>

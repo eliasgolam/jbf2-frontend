@@ -99,7 +99,7 @@ const VorsorgeSlides = () => {
   const navigate = useNavigate();
   const currentSlide = slideData[slideIndex];
   const { SVG, title, containerText } = currentSlide;
-  const [zoomFactor, setZoomFactor] = useState(1);
+  
 
 
   const nextStep = useCallback(() => {
@@ -184,23 +184,7 @@ const VorsorgeSlides = () => {
     document.body.style.overflow = isZoomed ? 'hidden' : '';
   }, [isZoomed]);
 
-  useEffect(() => {
-    const baseWidth = 1718;   // deine Referenzbreite
-    const baseHeight = 1304;  // deine Referenzhöhe
-  
-    const updateZoom = () => {
-      const scaleX = window.innerWidth / baseWidth;
-      const scaleY = window.innerHeight / baseHeight;
-      const scale = Math.min(scaleX, scaleY);
-      document.body.style.zoom = scale;
-      setZoomFactor(scale);
-    };
-  
-    updateZoom();
-    window.addEventListener('resize', updateZoom);
-    return () => window.removeEventListener('resize', updateZoom);
-  }, []);
-  
+
 
   return (
     <div className="flex flex-col min-h-screen justify-between bg-cover bg-center text-[#4B2E2B]" style={{ backgroundImage: "url('/wave-bg.jpg')" }}>
@@ -229,23 +213,25 @@ const VorsorgeSlides = () => {
         </div>
 
         {containerText && (
-  <motion.div
-    initial={{ opacity: 0, y: -10 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
-    className="text-center text-base text-[#4B2E2B] font-medium pt-[240px] px-6 max-w-[90%] mx-auto"
-  >
-    {containerText}
-  </motion.div>
+  <div className="relative z-20 px-6 pt-10 sm:pt-16 md:pt-20 max-w-4xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+      className="text-center text-base text-[#4B2E2B] font-medium"
+    >
+      {containerText}
+    </motion.div>
+  </div>
 )}
 
       </div>
 
    
-      <main className="flex justify-center items-center px-4">
+      <main className="flex flex-col justify-start items-center px-4">
         <div className={`transition-all duration-500 ${isZoomed ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' : 'relative w-full max-w-7xl min-h-[65vh] mt-6 rounded-[2rem] bg-white/60'} backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-visible`}>
 
-          <div className="absolute inset-0 overflow-hidden rounded-[2rem]">
+        <div className="relative overflow-hidden rounded-[2rem] z-10">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -253,7 +239,7 @@ const VorsorgeSlides = () => {
               className="flex items-center justify-center w-full h-full"
             >
               <div className="max-w-[90%] max-h-[90%] flex items-center justify-center">
-                <SVG className="w-full h-auto object-contain" />
+              <SVG className="w-full max-h-[65vh] h-auto object-contain" />
               </div>
             </motion.div>
           </div>

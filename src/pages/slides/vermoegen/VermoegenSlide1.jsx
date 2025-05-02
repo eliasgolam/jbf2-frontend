@@ -25,7 +25,7 @@ const VermoegenSlide1 = () => {
   const navigate = useNavigate();
   const currentSlide = slideData[0];
   const { SVG, title, containerText } = currentSlide;
-  const [zoomFactor, setZoomFactor] = useState(1);
+  
 
  
 
@@ -77,23 +77,7 @@ const VermoegenSlide1 = () => {
     document.body.style.overflow = isZoomed ? 'hidden' : '';
   }, [isZoomed]);
 
-  useEffect(() => {
-    const baseWidth = 1718;
-    const baseHeight = 1304;
-  
-    const updateZoom = () => {
-      const scaleX = window.innerWidth / baseWidth;
-      const scaleY = window.innerHeight / baseHeight;
-      const scale = Math.min(scaleX, scaleY);
-      document.body.style.zoom = scale;
-      setZoomFactor(scale); // speichere Zoom-Faktor
-    };
-  
-    updateZoom();
-    window.addEventListener('resize', updateZoom);
-    return () => window.removeEventListener('resize', updateZoom);
-  }, []);
-  
+
 
   return (
     <div className="flex flex-col min-h-screen justify-between bg-cover bg-center text-[#4B2E2B]" style={{ backgroundImage: "url('/wave-bg.jpg')" }}>
@@ -140,16 +124,10 @@ const VermoegenSlide1 = () => {
               transition={{ duration: 0.8, ease: 'easeOut' }}
               className="flex items-center justify-center w-full h-full"
             >
-<div
-  className="w-full h-full flex items-center justify-center p-6"
-  style={{
-    transform: isZoomed
-      ? `translateX(${340 * zoomFactor}px)`
-      : `translateX(${245 * zoomFactor}px)`
-  }}
->
-  <SVG className="w-[100%] h-[100%] object-contain" />
+<div className="w-full max-h-[65vh] flex items-center justify-center p-6">
+  <SVG className="w-full h-auto object-contain" />
 </div>
+
 
 
             </motion.div>
