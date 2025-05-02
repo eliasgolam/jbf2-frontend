@@ -88,8 +88,6 @@ const slideData = [
     ],
     alwaysVisible: ['Gruppe1']
   }
-  
-  
 ];
 
 const VorsorgeSlides = () => {
