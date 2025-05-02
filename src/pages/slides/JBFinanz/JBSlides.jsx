@@ -13,6 +13,9 @@ const slideData = [
     startStep: 1,
     groups: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5', 'Gruppe6', 'Gruppe7'],
     intro: null,
+    svgClass: 'w-full h-full object-contain',
+    zoomSvgClass: 'w-full h-full object-contain mx-auto my-auto'
+
   },
   {
     title: 'Der Schweizer Finanzmarkt',
@@ -21,6 +24,9 @@ const slideData = [
     startStep: 0,
     groups: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5'],
     intro: 'Ein Auszug aus dem Schweizer Finanzmarkt – über 1400 Finanzdienstleister im Überblick.',
+    svgClass: 'w-full h-auto max-h-[65vh] object-contain',
+    zoomSvgClass: 'w-[85%] h-auto max-h-[90vh] object-contain mx-auto my-auto'
+
   },
   {
     title: 'Unsere Philosophie',
@@ -29,15 +35,21 @@ const slideData = [
     startStep: -1,
     groups: ['Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4', 'Gruppe5'],
     intro: 'Unsere Beratung basiert auf einem strukturierten, klaren und persönlichen Prozess – abgestimmt auf deine Lebenssituation und Ziele.',
-  },
+    svgClass: 'w-[66%] h-auto max-h-[50vh] mx-auto object-contain',
+    zoomSvgClass: 'w-[80%] h-auto max-h-[90vh] mx-auto my-auto object-contain'
+
+  }
 ];
+
 
 const JBSlides = () => {
   const [slideIndex, setSlideIndex] = useState(0);
   const [step, setStep] = useState(slideData[0].startStep);
   const [isZoomed, setIsZoomed] = useState(false);
   const navigate = useNavigate();
-  const { title, SVG, maxSteps, groups, intro } = slideData[slideIndex];
+  const { title, SVG, maxSteps, groups, intro, svgClass, zoomSvgClass } = slideData[slideIndex];
+
+
 
   const nextStep = useCallback(() => {
     if (step < maxSteps - 1) {
@@ -143,7 +155,12 @@ const JBSlides = () => {
       )}
 
       <main className="flex justify-center items-center px-4">
-      <div className={`transition-all duration-500 flex flex-col items-center ${isZoomed ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' : 'relative w-full max-w-7xl min-h-[65vh] mt-6 rounded-[2rem] bg-white/60'} backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-visible`}>
+      <div className={`transition-all duration-500 flex flex-col items-center justify-center 
+  ${isZoomed 
+    ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' 
+    : 'relative w-full max-w-7xl h-[680px] sm:h-[600px] md:h-[680px] lg:h-[720px] mt-6 rounded-[2rem] bg-white/60'} 
+  backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-hidden`}>
+
 
           {isZoomed && (
             <div className="absolute top-10 left-1/2 transform -translate-x-1/2 z-[80]">
@@ -156,8 +173,9 @@ const JBSlides = () => {
           )}
 
       {/* MOVE DIESEN BLOCK AUSSERHALB des SVG-Bereichs */}
-<div className="relative z-20 px-6 pt-10 sm:pt-16 md:pt-20">
-  {intro && (
+
+{intro && (
+  <div className="relative z-20 px-6 pt-4 sm:pt-6 md:pt-8 pb-2">
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -166,8 +184,9 @@ const JBSlides = () => {
     >
       {intro}
     </motion.div>
-  )}
-</div>
+  </div>
+)}
+
 
 
 <div className="relative overflow-hidden rounded-[2rem] z-10">
@@ -179,7 +198,7 @@ const JBSlides = () => {
               className="w-full h-full flex justify-center items-center"
             >
               <div className="w-full px-4 max-w-6xl">
-              <SVG className="w-full max-h-[65vh] object-contain transition-all duration-300 ease-in-out" />
+              <SVG className={`${isZoomed ? zoomSvgClass : svgClass} transition-all duration-300 ease-in-out`} />
               </div>
             </motion.div>
           </div>
