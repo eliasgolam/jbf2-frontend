@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as Slide1SVG } from './Krankenkassenslide1.svg';
 import { ReactComponent as Slide2SVG } from './Krankenkassenslide2.svg';
 import { ReactComponent as Slide3SVG } from './Krankenkassenslide3.svg';
@@ -80,6 +80,7 @@ const Krankenkassenslides = () => {
   const [step, setStep] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const navigate = useNavigate();
+  const { bereich } = useParams();
   const currentSlide = slideData[slideIndex];
   const { SVG, title, containerText, svgClass, zoomSvgClass } = currentSlide;
 
@@ -106,7 +107,7 @@ const Krankenkassenslides = () => {
       setStep(prevSlide.steps.length - 1);
     } else {
       // Wenn keine Steps und keine Slides mehr zurückgehen: Zurück zur Krankenkasse-Tools-Seite
-      navigate('/tools/krankenkasse/krankenkasse');
+      navigate(`/tools/${bereich}/krankenkasse`);
     }
   }, [step, slideIndex, navigate]);
 

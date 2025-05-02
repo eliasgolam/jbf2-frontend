@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as Slide1SVG } from './Vorsorgeslide1.svg';
 import { ReactComponent as Slide2SVG } from './Vorsorgeslide2.svg';
 import { ReactComponent as Slide3SVG } from './Vorsorgeslide3.svg';
@@ -114,6 +114,7 @@ const LebenstandardSlides = () => {
   const [step, setStep] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const navigate = useNavigate();
+  const { bereich } = useParams();
   const currentSlide = slideData[slideIndex];
   const { SVG, title, containerText, svgClass, zoomSvgClass } = currentSlide;
 
@@ -151,7 +152,7 @@ const LebenstandardSlides = () => {
       setSlideIndex(prev => prev + 1);
       setStep(0);
     } else {
-      navigate('/beratung-starten');
+      navigate(`/tools/${bereich}/lebenstandard`);
     }
   };
 
@@ -232,61 +233,71 @@ const LebenstandardSlides = () => {
 </div>
 
 
-{containerText && (
-  <div className="relative z-20 px-6 pt-4 sm:pt-6 md:pt-8 pb-2 max-w-4xl mx-auto">
-    <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
-      className="text-center text-base text-[#4B2E2B] font-medium"
-    >
-      {containerText}
-    </motion.div>
-  </div>
-)}
-
-   
-      <main className="flex flex-col justify-start items-center px-4">
-      <div className={`transition-all duration-500 flex flex-col items-center justify-center 
-  ${isZoomed 
-    ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' 
-    : 'relative w-full max-w-7xl h-[680px] sm:h-[600px] md:h-[680px] lg:h-[720px] mt-6 rounded-[2rem] bg-white/60'} 
-  backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-hidden`}>
 
 
-        <div className="relative overflow-hidden rounded-[2rem] z-10">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="flex items-center justify-center w-full h-full"
-            >
-              <div className="w-full h-full px-4 max-w-6xl flex flex-col items-center justify-center">
-              <SVG className={`${isZoomed ? zoomSvgClass : svgClass} transition-all duration-300 ease-in-out`} />
-              </div>
-            </motion.div>
-          </div>
+<main className="flex flex-col justify-start items-center px-4">
+  <div className={`transition-all duration-500 flex flex-col items-center justify-center 
+    ${isZoomed 
+      ? 'fixed inset-0 z-[100] bg-white rounded-none max-w-none h-full mt-0' 
+      : 'relative w-full max-w-7xl h-[680px] sm:h-[600px] md:h-[680px] lg:h-[720px] mt-6 rounded-[2rem] bg-white/60'} 
+    backdrop-blur-md shadow-xl border-2 border-[#4B2E2B] overflow-hidden`}>
 
-          <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-4 z-10">
-            <button onClick={prevStep} className="px-6 py-2 bg-white/80 text-[#4B2E2B] rounded-full hover:bg-white shadow-md transition">
-              Zurück
-            </button>
-            <button onClick={skipSlide} className="px-6 py-2 bg-white/80 text-[#4B2E2B] rounded-full hover:bg-white shadow-md transition">
-              Überspringen
-            </button>
-            <button onClick={nextStep} className={`px-6 py-2 rounded-full transition shadow-md ${slideIndex === slideData.length - 1 && step >= currentSlide.steps.length - 1 ? 'bg-[#4B2E2B] text-white hover:bg-[#3a2321]' : 'bg-[#8C3B4A] text-white hover:bg-[#722f3a]'}`}>
-              {slideIndex === slideData.length - 1 && step >= currentSlide.steps.length - 1 ? 'Zurück zur Beratung' : 'Weiter'}
-            </button>
-            <button
-              onClick={() => setIsZoomed(z => !z)}
-              title={isZoomed ? 'Zurücksetzen' : 'Vergrößern'}
-              className="px-4 py-2 bg-white text-[#4B2E2B] rounded-full hover:bg-gray-100 shadow-lg transition relative z-50"
-            >
-              {isZoomed ? '🗕' : '⛶'}
-            </button>
-          </div>
+    {/* ✅ Intro-Text innerhalb des Containers */}
+    {containerText && (
+      <div className="relative z-20 px-6 pt-4 sm:pt-6 md:pt-8 pb-2 max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
+          className="text-center text-base text-[#4B2E2B] font-medium"
+        >
+          {containerText}
+        </motion.div>
+      </div>
+    )}
+
+    {/* ✅ SVG gerendert */}
+    <div className="relative overflow-hidden rounded-[2rem] z-10">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="flex items-center justify-center w-full h-full"
+      >
+        <div className="w-full h-full px-4 max-w-6xl flex flex-col items-center justify-center">
+          <SVG className={`${isZoomed ? zoomSvgClass : svgClass} transition-all duration-300 ease-in-out`} />
         </div>
-      </main>
+      </motion.div>
+    </div>
+
+    {/* ✅ Bottom Controls */}
+    <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-4 z-10">
+      <button onClick={prevStep} className="px-6 py-2 bg-white/80 text-[#4B2E2B] rounded-full hover:bg-white shadow-md transition">
+        Zurück
+      </button>
+      <button onClick={skipSlide} className="px-6 py-2 bg-white/80 text-[#4B2E2B] rounded-full hover:bg-white shadow-md transition">
+        Überspringen
+      </button>
+      <button onClick={nextStep} className={`px-6 py-2 rounded-full transition shadow-md ${
+        slideIndex === slideData.length - 1 && step >= currentSlide.steps.length - 1
+          ? 'bg-[#4B2E2B] text-white hover:bg-[#3a2321]'
+          : 'bg-[#8C3B4A] text-white hover:bg-[#722f3a]'
+      }`}>
+        {slideIndex === slideData.length - 1 && step >= currentSlide.steps.length - 1
+          ? 'Zurück zur Beratung'
+          : 'Weiter'}
+      </button>
+      <button
+        onClick={() => setIsZoomed(z => !z)}
+        title={isZoomed ? 'Zurücksetzen' : 'Vergrößern'}
+        className="px-4 py-2 bg-white text-[#4B2E2B] rounded-full hover:bg-gray-100 shadow-lg transition relative z-50"
+      >
+        {isZoomed ? '🗕' : '⛶'}
+      </button>
+    </div>
+  </div>
+</main>
+
 
       {!isZoomed && (
         <footer className="py-6 text-center text-xs text-[#4B2E2B] bg-transparent">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ReactComponent as VermoegenSVG } from './vermoegen.svg';
 import { motion } from 'framer-motion';
 
@@ -23,6 +23,7 @@ const VermoegenSlide1 = () => {
   const [step, setStep] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const navigate = useNavigate();
+  const { bereich } = useParams();
   const currentSlide = slideData[0];
   const { SVG, title, containerText } = currentSlide;
   
@@ -40,7 +41,7 @@ const VermoegenSlide1 = () => {
 
   const prevStep = () => {
     if (step === 0) {
-      navigate('/tools/vermoegen/vermoegen'); 
+      navigate(`/tools/${bereich}/vermoegen`);
    
     } else {
       setStep(prev => prev - 1);
