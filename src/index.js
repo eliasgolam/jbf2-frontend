@@ -23,18 +23,16 @@ function scaleApp() {
 
   const scaleX = window.innerWidth / baseWidth;
   const scaleY = window.innerHeight / baseHeight;
-
-  const scale = Math.min(scaleX, scaleY);
+  const scale = Math.min(scaleX, scaleY); // proportional
 
   const wrapper = document.getElementById('app-wrapper');
   if (wrapper) {
     wrapper.style.transform = `scale(${scale})`;
+    wrapper.style.position = 'absolute';
+    wrapper.style.left = `${(window.innerWidth - baseWidth * scale) / 2}px`;
+    wrapper.style.top = `${(window.innerHeight - baseHeight * scale) / 2}px`;
   }
 }
 
-// Initial anwenden
 window.addEventListener('load', scaleApp);
-window.addEventListener('resize', () => {
-  // Seite reloaden bei Auflösungswechsel (verhindert falsche Skalierung nach Sleep / Screenwechsel)
-  window.location.reload();
-});
+window.addEventListener('resize', scaleApp);
