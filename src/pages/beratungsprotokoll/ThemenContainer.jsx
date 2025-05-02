@@ -1,6 +1,8 @@
 // FINAL: ThemenContainer.jsx – Jetzt vollständig mit Vertragsabschluss, perfektem Design & PDF-kompatibler Logik
 
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const fragen = {
   allgemein: [
@@ -42,6 +44,8 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
   const [gespraechsarten, setGespraechsarten] = useState([]);
   const [vertraege, setVertraege] = useState([{ gesellschaft: '', sparte: '' }, { gesellschaft: '', sparte: '' }, { gesellschaft: '', sparte: '' }]);
   const [vertragsabschluss, setVertragsabschluss] = useState(false);
+  const navigate = useNavigate();
+
 
   const saveAntwortenBackend = async (neueAntworten) => {
     try {
@@ -68,7 +72,7 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
   
         const kunde = await res.json();
   
-        setForm({
+        const kundendaten = {
           anrede: kunde.anrede || '',
           vorname: kunde.vorname || '',
           nachname: kunde.nachname || '',
@@ -79,7 +83,15 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
           plzOrt: `${kunde.plz || ''} ${kunde.ort || ''}`.trim(),
           telefon: kunde.telefonnummer || '',
           email: kunde.email || ''
-        });
+        };
+  
+        // Formular lokal vorausfüllen
+        setForm(kundendaten);
+  
+        // Antworten zentral speichern (für PDF, Backend, etc.)
+        const updated = { ...antworten, kundendaten };
+        setAntworten(updated);
+        localStorage.setItem('antworten', JSON.stringify(updated)); // optional
       } catch (err) {
         console.error('❌ Fehler beim Laden des Kunden:', err);
       }
@@ -87,7 +99,7 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
   
     fetchKundendaten();
   }, []);
-
+  
   const handleSkip = () => {
     setStep(3);
   };
@@ -95,8 +107,11 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
   const handleBack = () => {
     if (step > 0) {
       setStep(prev => prev - 1);
+    } else {
+      navigate('/beratung/start');
     }
   };
+  
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -140,8 +155,11 @@ saveAntwortenBackend(updated);
     if (step < 3) {
       setStep(prev => prev + 1);
     } else {
-      onNext();
+      setTimeout(() => {
+        onNext();
+      }, 100); // kleine Verzögerung, um sicherzustellen, dass State + Speicher fertig sind
     }
+    
   };
   
 
@@ -291,7 +309,9 @@ saveAntwortenBackend(updated);
         <div className="space-y-6">
           {renderFragenBlock('Allgemeine Fragen', fragen.allgemein)}
           {themen.includes('Gesundheitsvorsorge') && renderFragenBlock('Gesundheitsvorsorge', fragen.gesundheit, 'motiv1')}
-          {themen.includes('Vermögensanlagen') && renderFragenBlock('Vermögensanlagen', fragen.vermoegen, 'motiv2')}
+          {(themen.includes('Vermögensanlagen') || themen.includes('Vorsorge')) &&
+  renderFragenBlock('Vermögensanlagen', fragen.vermoegen, 'motiv2')}
+
           {themen.includes('Sach – und Vermögensversicherungen') && renderFragenBlock('Sachversicherung', fragen.sach, 'motiv3')}
           <div className="bg-white p-6 rounded-xl shadow space-y-2">
             <h3 className="text-lg font-bold text-[#4B2E2B]">Kündigung bestehender Verträge</h3>

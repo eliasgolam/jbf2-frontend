@@ -50,8 +50,14 @@ const RenderBeratungsprotokoll = ({
   }, [pageSizes]); // oder: [showViewer] wenn du das aus BrowserUnterzeichnen steuerst
   
   useEffect(() => {
-    setViewerWidth(1000); // Feste Breite, sorgt für gleiche Skalierung überall
+    const screenWidth = window.innerWidth;
+    const maxViewerWidth = 1000;
+    const minViewerWidth = 320; // untere Grenze fürs Handy
+  
+    const idealWidth = Math.min(screenWidth * 0.95, maxViewerWidth);
+    setViewerWidth(Math.max(idealWidth, minViewerWidth));
   }, []);
+  
   
 
 
@@ -275,15 +281,17 @@ const pdfBytes = await pdfDoc.save();
 const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 const url = URL.createObjectURL(blob);
 
-// 🔁 PDF-URL speichern
 if (onPDFGenerated) onPDFGenerated(url);
 
-// 🔁 antworten sichern
 fetch(`/api/antworten/${JSON.parse(localStorage.getItem('loggedInUser'))?.email}`, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(antworten)
 }).catch(err => console.error('❌ Fehler beim Speichern der Antworten:', err));
+
+// Weiterleitung nach erfolgreichem PDF-Speichern
+navigate('/browserunterzeichnen');
+
 
 
 // 🔁 Viewer schließen, nicht weiterleiten!
