@@ -111,10 +111,12 @@ const JBSlides = () => {
   }, [isZoomed]);
 
   return (
-    <div className="flex flex-col min-h-screen justify-between bg-cover bg-center text-[#4B2E2B]" style={{ backgroundImage: "url('/wave-bg.jpg')" }}>
+    <div className="w-screen h-screen flex items-center justify-center bg-white">
+      <div className="max-w-[1720px] w-full h-full overflow-auto flex flex-col justify-between bg-cover bg-center text-[#4B2E2B]" style={{ backgroundImage: "url('/wave-bg.jpg')" }}>
+  
       {!isZoomed && (
         <header className="relative z-10 bg-gradient-to-b from-white via-white/90 to-transparent">
-          <div className="h-[160px] flex items-center justify-end" style={{ transform: 'translateY(30%)' }}>
+          <div className="h-32 sm:h-40 flex items-center justify-end transform translate-y-[30%]">
             <div className="w-full max-w-7xl mx-auto px-6 flex justify-end">
               <div className="flex items-center gap-4">
                 <button onClick={() => navigate('/beratung-starten')} className="hover:opacity-80">
@@ -123,6 +125,7 @@ const JBSlides = () => {
                 <img src="/logotools.png" alt="Logo" className="h-[250px] object-contain max-w-[240px] mt-[35px]" />
               </div>
             </div>
+            
           </div>
         </header>
       )}
@@ -157,7 +160,7 @@ const JBSlides = () => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
-              className="text-center text-base text-[#4B2E2B] font-medium pt-[120px] px-6 max-w-[90%] mx-auto"
+              className="text-center text-base text-[#4B2E2B] font-medium pt-16 sm:pt-28 md:pt-32 px-6 max-w-[90%] mx-auto"
             >
               {intro}
             </motion.div>
@@ -170,7 +173,7 @@ const JBSlides = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="w-full h-full flex justify-center items-center"
             >
-              <div className="w-[90%] max-w-6xl">
+              <div className="w-full px-4 max-w-6xl">
                 <SVG className="w-full h-auto object-contain transition-all duration-300 ease-in-out" />
               </div>
             </motion.div>
@@ -203,6 +206,8 @@ const JBSlides = () => {
         </footer>
       )}
     </div>
+    </div>
+
   );
 };
 
