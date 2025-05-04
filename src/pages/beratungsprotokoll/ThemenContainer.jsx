@@ -60,7 +60,6 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
       console.error('❌ Fehler beim Speichern der Antworten:', error);
     }
   };
-  
   useEffect(() => {
     const fetchKundendaten = async () => {
       try {
@@ -85,20 +84,19 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
           email: kunde.email || ''
         };
   
-        // Formular lokal vorausfüllen
-        setForm(kundendaten);
-  
-        // Antworten zentral speichern (für PDF, Backend, etc.)
+        setForm(kundendaten); // füllt die UI-Felder
         const updated = { ...antworten, kundendaten };
-        setAntworten(updated);
-        localStorage.setItem('antworten', JSON.stringify(updated)); // optional
+        setAntworten(updated); // zentral speichern
+        localStorage.setItem('antworten', JSON.stringify(updated)); // optional sichern
+  
       } catch (err) {
-        console.error('❌ Fehler beim Laden des Kunden:', err);
+        console.error('❌ Fehler beim Laden der Kundendaten:', err);
       }
     };
   
     fetchKundendaten();
   }, []);
+  
   
   const handleSkip = () => {
     setStep(3);
@@ -120,11 +118,18 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
 
   const handleNext = () => {
     if (step === 0) {
-      const updated = { ...antworten, kundendaten: form };
-setAntworten(updated);
-saveAntwortenBackend(updated);
-
+      const istFormLeer = Object.values(form).every(v => !v || v.trim() === '');
+    
+      if (!istFormLeer) {
+        const updated = { ...antworten, kundendaten: form };
+        setAntworten(updated);
+        localStorage.setItem('antworten', JSON.stringify(updated));
+        saveAntwortenBackend(updated);
+      } else {
+        console.warn('⚠️ Kundendaten-Formular ist leer – keine Speicherung');
+      }
     }
+    
   
     if (step === 1) {
       const updated = {
