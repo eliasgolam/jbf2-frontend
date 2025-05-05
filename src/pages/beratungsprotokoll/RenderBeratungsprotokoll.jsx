@@ -57,6 +57,8 @@ const RenderBeratungsprotokoll = ({
     const idealWidth = Math.min(screenWidth * 0.95, maxViewerWidth);
     setViewerWidth(Math.max(idealWidth, minViewerWidth));
   }, []);
+
+  
   
   
 
