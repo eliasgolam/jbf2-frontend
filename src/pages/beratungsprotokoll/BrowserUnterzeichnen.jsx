@@ -8,7 +8,7 @@ const BrowserUnterzeichnen = () => {
   const gespeicherteAntworten = JSON.parse(localStorage.getItem('antworten')) || {};
   const [antworten, setAntworten] = useState(gespeicherteAntworten);
   const [ortDatum, setOrtDatum] = useState(gespeicherteAntworten?.ortDatum || '');
-  const [pdfUrl, setPdfUrl] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState(() => localStorage.getItem('lastGeneratedPDFUrl'));
   const [showViewer, setShowViewer] = useState(false);
 
   const handleZuruecksetzen = () => {
