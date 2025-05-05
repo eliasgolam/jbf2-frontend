@@ -63,10 +63,10 @@ import AnalyseAbschliessen from './pages/AnalyseAbschliessen';
 
 
 
-function App() { 
-  
+function App() {
   return (
-    <div id="app-wrapper">
+    <div className="w-screen h-screen flex items-center justify-center bg-white">
+      <div className="max-w-[1720px] w-full h-full overflow-auto">
     <Routes>
       <Route path="/berater-auswahl" element={<BeraterAuswahl />} />
       <Route path="/BeraterDashboard" element={<BeraterDashboard />} />
@@ -181,6 +181,9 @@ function App() {
 
     </Routes>
     </div>
+    </div>
+    
+    
   );
 }
 
