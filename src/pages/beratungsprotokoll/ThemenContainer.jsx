@@ -75,10 +75,11 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
         nachname: gespeicherterKunde.nachname || '',
         geburtsdatum: gespeicherterKunde.geburtsdatum || '',
         adresse: gespeicherterKunde.adresse || '',
-        plzOrt: gespeicherterKunde.plzOrt || '',
-        telefon: gespeicherterKunde.telefon || '',
+        plzOrt: gespeicherterKunde.plzOrt || '',       // ✅ wichtig
+        telefon: gespeicherterKunde.telefon || '',     // ✅ wichtig
         email: gespeicherterKunde.email || ''
       });
+      
     }
   }, []);
   
@@ -102,10 +103,11 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
             ? new Date(kunde.geburtsdatum).toLocaleDateString('de-CH')
             : '',
           adresse: kunde.adresse || '',
-          plzOrt: `${kunde.plz || ''} ${kunde.ort || ''}`.trim(),
-          telefon: kunde.telefonnummer || '',
+          plzOrt: (kunde.plz && kunde.ort) ? `${kunde.plz} ${kunde.ort}` : '', // ✅ korrekt zusammengesetzt
+          telefon: kunde.telefon || kunde.telefonnummer || '', // ✅ beide Varianten abgesichert
           email: kunde.email || ''
         };
+        
   
         setForm(kundendaten); // füllt die UI-Felder
         const updated = { ...antworten, kundendaten };
@@ -268,33 +270,36 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
           <h3 className="text-lg font-bold text-[#4B2E2B]">Kundendaten</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {Object.entries(form).map(([key, value]) => {
-  if (key === 'geburtsdatum') {
-    return (
-      <input
-        key={key}
-        name={key}
-        value={value}
-        onChange={e => {
-          const newValue = e.target.value;
-          const dateRegex = /^\d{2}\.\d{2}\.\d{4}$/;
-          if (dateRegex.test(newValue)) {
-            setForm(prev => ({ ...prev, [key]: newValue }));
-          } else {
-            setForm(prev => ({ ...prev, [key]: newValue })); // erlaubt Tippen trotz falschem Format
-          }
-        }}
-        placeholder="TT.MM.JJJJ"
-        className="border p-2 rounded"
-      />
-    );
-  } else {
+ if (key === 'geburtsdatum') {
+  return (
+    <input
+      type="text" // ✅ DAS ist die entscheidende Änderung
+      key={key}
+      name={key}
+      value={value}
+      onChange={e => {
+        const newValue = e.target.value;
+        const dateRegex = /^\d{2}\.\d{2}\.\d{4}$/;
+        if (dateRegex.test(newValue)) {
+          setForm(prev => ({ ...prev, [key]: newValue }));
+        } else {
+          setForm(prev => ({ ...prev, [key]: newValue })); // erlaubt Tippen trotz falschem Format
+        }
+      }}
+      placeholder="TT.MM.JJJJ"
+      className="border p-2 rounded"
+    />
+  );
+}
+
+ else {
     return (
       <input
         key={key}
         name={key}
         value={value}
         onChange={handleChange}
-        placeholder={key}
+        placeholder={key === 'plzOrt' ? 'PLZ / Ort' : key}
         className="border p-2 rounded"
       />
     );
