@@ -954,5 +954,3 @@ if (onClose) onClose();
 };
 
 export default RenderBeratungsprotokoll;
-
-
