@@ -747,14 +747,14 @@ navigate('/browserunterzeichnen');
         if (f.key === 'UnterschriftKunde') {
           const fullWidth = mmToPx(113.6227, pageSizes[page].width);
           const fullHeight = mmToPx(10.16, pageSizes[page].height);
-          const isSigned = !!antworten.signatureData?.UnterschriftKunde;
-
-
+          const sigData = antworten?.signatureData?.UnterschriftKunde;
+          const isSigned = typeof sigData === 'string' && sigData.startsWith('data:image/');
+      
           if (isSigned) {
             return (
               <img
                 key={f.key}
-                src={antworten.signatureData?.UnterschriftKunde}
+                src={sigData}
                 alt="Unterschrift Kunde"
                 style={{
                   position: 'absolute',
@@ -768,7 +768,7 @@ navigate('/browserunterzeichnen');
               />
             );
           }
-
+      
           return (
             <div
               key={f.key}
@@ -795,17 +795,18 @@ navigate('/browserunterzeichnen');
             </div>
           );
         }
-
+      
         if (f.key === 'UnterschriftBerater') {
           const fullWidth = mmToPx(50, pageSizes[page].width);
           const fullHeight = mmToPx(10.16, pageSizes[page].height);
-          const isSigned = !!antworten.signatureData?.UnterschriftBerater;
-
+          const sigData = antworten?.signatureData?.UnterschriftBerater;
+          const isSigned = typeof sigData === 'string' && sigData.startsWith('data:image/');
+      
           if (isSigned) {
             return (
               <img
                 key={f.key}
-                src={antworten.signatureData?.UnterschriftBerater}
+                src={sigData}
                 alt="Unterschrift Berater"
                 style={{
                   position: 'absolute',
@@ -819,7 +820,7 @@ navigate('/browserunterzeichnen');
               />
             );
           }
-
+      
           return (
             <div
               key={f.key}
@@ -840,13 +841,20 @@ navigate('/browserunterzeichnen');
                 justifyContent: 'center'
               }}
             >
-              <span style={{ color: '#000', fontWeight: 'bold', fontSize: '12px', whiteSpace: 'nowrap' }}>
+              <span
+                style={{
+                  color: '#000',
+                  fontWeight: 'bold',
+                  fontSize: '12px',
+                  whiteSpace: 'nowrap'
+                }}
+              >
                 Unterschrift Berater
               </span>
             </div>
           );
         }
-      }
+      }      
     })}
 
 

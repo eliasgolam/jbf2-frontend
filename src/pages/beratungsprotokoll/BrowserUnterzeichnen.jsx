@@ -5,9 +5,22 @@ import RenderBeratungsprotokoll from './RenderBeratungsprotokoll';
 const BrowserUnterzeichnen = () => {
   const navigate = useNavigate();
 
-  const gespeicherteAntworten = JSON.parse(localStorage.getItem('antworten')) || {};
-  const [antworten, setAntworten] = useState(gespeicherteAntworten);
-  const [ortDatum, setOrtDatum] = useState(gespeicherteAntworten?.ortDatum || '');
+  const [antworten, setAntworten] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('antworten')) || {};
+    } catch (e) {
+      return {};
+    }
+  });
+  
+  const [ortDatum, setOrtDatum] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('antworten'))?.ortDatum || '';
+    } catch (e) {
+      return '';
+    }
+  });
+  
   const [pdfUrl, setPdfUrl] = useState(() => localStorage.getItem('lastGeneratedPDFUrl'));
   const [showViewer, setShowViewer] = useState(false);
   const renderRef = useRef();
@@ -90,17 +103,32 @@ const BrowserUnterzeichnen = () => {
 
         {showViewer && (
           <div className="relative bg-white rounded-xl shadow-xl p-4 mt-6">
-       <RenderBeratungsprotokoll
+     <RenderBeratungsprotokoll
   pdfDatei={pdfUrl || "/JBFBP.pdf"}
 
   antworten={antworten}
   setAntworten={(data) => {
-    const updated = { ...antworten, ...data };
-    setAntworten(updated);
-    localStorage.setItem('antworten', JSON.stringify(updated));
+    setAntworten((prev) => {
+      const updated = {
+        ...prev,
+        ...data,
+        signatureData: {
+          ...prev.signatureData,
+          ...(data.signatureData || {})
+        },
+        personen: data.personen ?? prev.personen
+      };
+      localStorage.setItem('antworten', JSON.stringify(updated));
+      return updated;
+    });
   }}
+
   onClose={() => setShowViewer(false)}
-  onPDFGenerated={(url) => setPdfUrl(url)}
+
+  onPDFGenerated={(url) => {
+    setPdfUrl(url);
+    localStorage.setItem('lastGeneratedPDFUrl', url);
+  }}
 />
 
           </div>
