@@ -8,7 +8,7 @@ const BrowserUnterzeichnen = () => {
   const gespeicherteAntworten = JSON.parse(localStorage.getItem('antworten')) || {};
   const [antworten, setAntworten] = useState(gespeicherteAntworten);
   const [ortDatum, setOrtDatum] = useState(gespeicherteAntworten?.ortDatum || '');
-  const [pdfUrl, setPdfUrl] = useState(() => localStorage.getItem('lastGeneratedPDFUrl'));
+  const [pdfUrl, setPdfUrl] = useState(() => localStorage.getItem('lastGeneratedPDFBase64'));
   const [showViewer, setShowViewer] = useState(false);
 
   const handleZuruecksetzen = () => {
@@ -18,15 +18,12 @@ const BrowserUnterzeichnen = () => {
 
   const handleDownload = () => {
     if (!pdfUrl) return;
-  
-    const { vorname = '', nachname = '' } = antworten?.kundendaten || {};
-    const name = `${nachname}_${vorname}`.replace(/\s+/g, '_') || 'Kunde';
-  
-    const a = document.createElement('a');
-    a.href = pdfUrl;
-    a.download = `Beratungsprotokoll_${name}.pdf`;
-    a.click();
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = `Beratungsprotokoll_${antworten?.kundendaten?.vorname || 'Kunde'}.pdf`;
+    link.click();
   };
+  
   
   const handleWeiter = () => {
     navigate('/beratung-abschliessen');

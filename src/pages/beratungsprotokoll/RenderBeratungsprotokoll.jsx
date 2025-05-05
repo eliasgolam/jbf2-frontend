@@ -74,7 +74,7 @@ const RenderBeratungsprotokoll = ({
         [activeSigField]: dataUrl
 
 
-        
+
       }
     };
   
@@ -286,21 +286,33 @@ const pdfBytes = await pdfDoc.save();
 const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 const url = URL.createObjectURL(blob);
 
-if (onPDFGenerated) onPDFGenerated(url);
+const reader = new FileReader();
 
-fetch(`/api/antworten/${JSON.parse(localStorage.getItem('loggedInUser'))?.email}`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(antworten)
-}).catch(err => console.error('❌ Fehler beim Speichern der Antworten:', err));
+reader.onloadend = () => {
+  const base64 = reader.result;
 
-// Weiterleitung nach erfolgreichem PDF-Speichern
-navigate('/browserunterzeichnen');
+  // ✅ übergebe PDF-URL an Parent-Komponente
+  if (onPDFGenerated) onPDFGenerated(base64);
 
+  // ✅ Speichere dauerhaft im localStorage
+  localStorage.setItem('lastGeneratedPDFBase64', base64);
 
+  // ✅ Backend-Speicherung
+  fetch(`/api/antworten/${JSON.parse(localStorage.getItem('loggedInUser'))?.email}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(antworten)
+  }).catch(err => console.error('❌ Fehler beim Speichern der Antworten:', err));
 
-// 🔁 Viewer schließen, nicht weiterleiten!
-if (onClose) onClose();
+  // ✅ Weiterleitung zur Unterschrift
+  navigate('/browserunterzeichnen');
+
+  // ✅ Optional: Viewer schließen
+  if (onClose) onClose();
+};
+
+reader.readAsDataURL(blob);
+
 
 
   };
