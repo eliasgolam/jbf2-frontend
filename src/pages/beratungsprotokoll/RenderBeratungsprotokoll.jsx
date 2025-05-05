@@ -12,6 +12,7 @@ const A4_WIDTH_MM = 210;
 const A4_HEIGHT_MM = 297;
 const mmToPt = mm => mm * 2.83465;
 const mmToPx = (mm, scale) => mm * (scale / A4_WIDTH_MM);
+const mmToPxExact = (mm, pixelSize) => mm * (pixelSize / A4_HEIGHT_MM);
 
 
 
@@ -54,8 +55,11 @@ const RenderBeratungsprotokoll = ({
     const maxViewerWidth = 1000;
     const minViewerWidth = 320; // untere Grenze fürs Handy
   
-    const idealWidth = Math.min(screenWidth * 0.95, maxViewerWidth);
-    setViewerWidth(Math.max(idealWidth, minViewerWidth));
+    const isMobile = screenWidth < 768;
+
+const idealWidth = isMobile ? screenWidth - 24 : Math.min(screenWidth * 0.95, maxViewerWidth);
+setViewerWidth(Math.max(idealWidth, minViewerWidth));
+
   }, []);
   
   
@@ -594,46 +598,49 @@ if (onClose) onClose();
 
 
       if (kundenfelder.includes(f.key)) {
-        adjustedTop += mmToPx(3.2, pageSizes[page].height);
-        adjustedLeft += mmToPx(1.5, pageSizes[page].width);
+        adjustedTop += mmToPxExact(3.2, pageSizes[page].height);
+adjustedLeft += mmToPxExact(1.5, pageSizes[page].width);
       }
 
       
       if (gespraechsartenFelder.includes(f.key)) {
-        adjustedTop += mmToPx(4, pageSizes[page].height); // z. B. 1 mm nach unten
-        adjustedLeft += mmToPx(0.8, pageSizes[page].width); // z. B. 1 mm nach rechts
+        adjustedTop += mmToPxExact(4, pageSizes[page].height); // z. B. 1 mm nach unten
+adjustedLeft += mmToPxExact(0.8, pageSizes[page].width); // z. B. 1 mm nach rechts
       }
 
 
       if (themenFelder.includes(f.key)) {
-        adjustedTop -= mmToPx(0.2, pageSizes[page].height); // leicht nach unten
-        adjustedLeft += mmToPx(0.5, pageSizes[page].width);   // deutlicher nach rechts
+        adjustedTop -= mmToPxExact(0.2, pageSizes[page].height); // leicht nach unten
+adjustedLeft += mmToPxExact(0.5, pageSizes[page].width); // deutlicher nach rechts
+
       }
 
       if (jaNeinFelder.includes(f.key)) {
-        adjustedTop += mmToPx(-0.2, pageSizes[page].height);
-        adjustedLeft += mmToPx(0.5, pageSizes[page].width);
+        adjustedTop += mmToPxExact(-0.2, pageSizes[page].height);
+        adjustedLeft += mmToPxExact(0.5, pageSizes[page].width);
+        
       }
 
       if (vertragsfelder.includes(f.key)) {
-        adjustedTop += mmToPx(3, pageSizes[page].height);    // z. B. leicht nach unten
-        adjustedLeft += mmToPx(1.2, pageSizes[page].width); 
-        fieldFontSize = '13px';   // z. B. leicht nach rechts
+        adjustedTop += mmToPxExact(3, pageSizes[page].height);    // z. B. leicht nach unten
+        adjustedLeft += mmToPxExact(1.2, pageSizes[page].width);  // z. B. leicht nach rechts
+        fieldFontSize = '13px';
+        
       }
       
       if (motivFelder.includes(f.key)) {
-        adjustedTop += mmToPx(4, pageSizes[page].height);     // leicht nach unten
-        adjustedLeft += mmToPx(1.0, pageSizes[page].width);     // leicht nach rechts
-        fieldFontSize = '13px';                                 // größerer Text falls gewünscht
+        adjustedTop += mmToPxExact(4, pageSizes[page].height);     // leicht nach unten
+        adjustedLeft += mmToPxExact(1.0, pageSizes[page].width);   // leicht nach rechts
+        fieldFontSize = '13px';                                  // größerer Text falls gewünscht
       }
 
       if (checkboxFelder.includes(f.key)) {
-        adjustedTop -= mmToPx(0.4, pageSizes[page].height);  // leicht nach unten
-        adjustedLeft -= mmToPx(-1.2, pageSizes[page].width);  // leicht nach rechts
+        adjustedTop -= mmToPxExact(0.4, pageSizes[page].height);  // leicht nach unten
+        adjustedLeft -= mmToPxExact(-1.2, pageSizes[page].width); // leicht nach rechts
+        
       }
       
       
-
       if (f.type === 'check' && !!value) {
         return (
           <div
@@ -645,28 +652,33 @@ if (onClose) onClose();
               fontSize: checkboxFelder.includes(f.key) ? '26px' : '14px',
               fontWeight: 'bold',
               color: 'black',
-              zIndex: 10
+              lineHeight: '1',
+              zIndex: 10,
+              pointerEvents: 'none' // verhindert versehentliche Touch-Interaktion
             }}
           >
             X
           </div>
         );
       }
+      
 
       if (f.type === 'text') {
         if (f.key === 'ort_datum') {
+          adjustedTop += mmToPxExact(2.3, pageSizes[page].height);
+      
           return (
             <div
               key={f.key}
               onClick={() => setOrtDatumModalOpen(true)}
               style={{
                 position: 'absolute',
-                top:  adjustedTop += mmToPx(2.3, pageSizes[page].height),
+                top: adjustedTop,
                 left: adjustedLeft,
-                fontSize: '16x',
+                fontSize: '14px',
                 backgroundColor: '#fff',
                 border: '1px dashed #8C3B4A',
-                padding: '2px 4px',
+                padding: '4px 6px',
                 borderRadius: '4px',
                 cursor: 'pointer',
                 zIndex: 10
@@ -676,7 +688,6 @@ if (onClose) onClose();
             </div>
           );
         }
-
         if (f.key === 'NameBerater') {
           return (
             <div
@@ -684,10 +695,10 @@ if (onClose) onClose();
               onClick={() => setNameBeraterModalOpen(true)}
               style={{
                 position: 'absolute',
-                top: adjustedTop - mmToPx(1.5, pageSizes[page].height),
-                left: adjustedLeft + mmToPx(2, pageSizes[page].width),
-                width: mmToPx(30.2875, pageSizes[page].width),
-                height: mmToPx(5.3751, pageSizes[page].height),
+                top: adjustedTop - mmToPxExact(1.5, pageSizes[page].height),
+                left: adjustedLeft + mmToPxExact(2, pageSizes[page].width),
+                width: mmToPxExact(30.2875, pageSizes[page].width),
+                height: mmToPxExact(5.3751, pageSizes[page].height),
                 backgroundColor: '#fff',
                 border: '1px dashed #8C3B4A',
                 borderRadius: '4px',
@@ -715,19 +726,22 @@ if (onClose) onClose();
               position: 'absolute',
               top: adjustedTop,
               left: adjustedLeft,
-              fontSize: '14px',
-              zIndex: 10
+              fontSize: fieldFontSize, // falls vorher angepasst
+              lineHeight: '1.2',
+              zIndex: 10,
+              pointerEvents: 'none' // verhindert unbeabsichtigte Touch-Interaktion
             }}
           >
             {value}
           </div>
         );
+        
       }
 
       if (f.type === 'signature') {
         if (f.key === 'UnterschriftKunde') {
-          const fullWidth = mmToPx(113.6227, pageSizes[page].width);
-          const fullHeight = mmToPx(10.16, pageSizes[page].height);
+          const fullWidth = mmToPxExact(113.6227, pageSizes[page].width);
+          const fullHeight = mmToPxExact(10.16, pageSizes[page].height);
           const isSigned = !!antworten.signatureData?.UnterschriftKunde;
 
 
@@ -742,7 +756,7 @@ if (onClose) onClose();
                   top: adjustedTop,
                   left: adjustedLeft,
                   width: fullWidth,
-                  height: fullHeight,
+                  height: Math.max(fullHeight, 60), // ✅ Mindesthöhe für Finger auf Handy
                   objectFit: 'contain',
                   zIndex: 10
                 }}
@@ -756,10 +770,10 @@ if (onClose) onClose();
               onClick={() => setActiveSigField('UnterschriftKunde')}
               style={{
                 position: 'absolute',
-                top: adjustedTop - mmToPx(-1.8, pageSizes[page].height),
+                top: adjustedTop - mmToPxExact(-1.8, pageSizes[page].height),
                 left: adjustedLeft + fullWidth / 4,
                 width: fullWidth / 2,
-                height: fullHeight / 2,
+                height: Math.max(fullHeight / 2, 60), // ✅ mobil fingerfreundlich
                 backgroundColor: 'rgba(140, 59, 74, 0.5)',
                 border: '1px dashed #4B2E2B',
                 borderRadius: '4px',
@@ -775,13 +789,14 @@ if (onClose) onClose();
               </span>
             </div>
           );
+          
         }
 
         if (f.key === 'UnterschriftBerater') {
-          const fullWidth = mmToPx(50, pageSizes[page].width);
-          const fullHeight = mmToPx(10.16, pageSizes[page].height);
+          const fullWidth = mmToPxExact(50, pageSizes[page].width);
+          const fullHeight = mmToPxExact(10.16, pageSizes[page].height);
           const isSigned = !!antworten.signatureData?.UnterschriftBerater;
-
+        
           if (isSigned) {
             return (
               <img
@@ -793,7 +808,7 @@ if (onClose) onClose();
                   top: adjustedTop,
                   left: adjustedLeft,
                   width: fullWidth,
-                  height: fullHeight,
+                  height: Math.max(fullHeight, 60), // mobilfreundlich
                   objectFit: 'contain',
                   zIndex: 10
                 }}
@@ -807,10 +822,10 @@ if (onClose) onClose();
               onClick={() => setActiveSigField('UnterschriftBerater')}
               style={{
                 position: 'absolute',
-                top: adjustedTop + mmToPx(1, pageSizes[page].height),
-                left: adjustedLeft - mmToPx(8, pageSizes[page].width),
+                top: adjustedTop + mmToPxExact(1, pageSizes[page].height),
+                left: adjustedLeft - mmToPxExact(8, pageSizes[page].width),
                 width: fullWidth,
-                height: fullHeight * 0.6,
+                height: Math.max(fullHeight * 0.6, 60), // mobil-freundliche Mindesthöhe
                 backgroundColor: 'rgba(140, 59, 74, 0.5)',
                 border: '1px dashed #4B2E2B',
                 borderRadius: '4px',
@@ -931,7 +946,11 @@ if (onClose) onClose();
         {activeSigField && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
             <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-[840px]">
-              <h2 className="text-lg font-semibold mb-4">Unterschrift: {activeSigField}</h2>
+            <h2 className="text-lg font-semibold mb-4">
+  {activeSigField === 'UnterschriftKunde' && 'Unterschrift Kunde'}
+  {activeSigField === 'UnterschriftBerater' && 'Unterschrift Berater'}
+</h2>
+
               <div className="w-[800px] h-[200px] border rounded bg-white mb-4 shadow-inner">
                 <SignaturePad
                   ref={sigRef}

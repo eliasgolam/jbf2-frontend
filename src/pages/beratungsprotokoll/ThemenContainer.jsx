@@ -43,6 +43,13 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
     anrede: '', vorname: '', nachname: '', geburtsdatum: '', adresse: '', plzOrt: '', telefon: '', email: ''
   });
   
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  };
   
   const [themen, setThemen] = useState([]);
   const [gespraechsarten, setGespraechsarten] = useState([]);
@@ -101,8 +108,8 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
           vorname: kunde.vorname || '',
           nachname: kunde.nachname || '',
           geburtsdatum: kunde.geburtsdatum
-            ? new Date(kunde.geburtsdatum).toLocaleDateString('de-CH')
-            : '',
+          ? formatDate(kunde.geburtsdatum)
+          : '',        
           adresse: kunde.adresse || '',
           plzOrt: (kunde.plz && kunde.ort) ? `${kunde.plz} ${kunde.ort}` : '', // ✅ korrekt zusammengesetzt
           telefon: kunde.telefon || kunde.telefonnummer || '', // ✅ beide Varianten abgesichert
