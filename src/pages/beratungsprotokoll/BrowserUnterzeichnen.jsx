@@ -53,19 +53,13 @@ const BrowserUnterzeichnen = () => {
 
   {/* Vorschau öffnen */}
   <button
-  onClick={() => {
-    if (!pdfUrl) {
-      alert('Bitte zuerst das PDF speichern.');
-      return;
-    }
-    setShowViewer(true);
-  }}
+  onClick={() => setShowViewer(true)}
+  className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-[#8C3B4A] text-[#8C3B4A] rounded-xl shadow hover:bg-[#fef1f3]"
+>
+  <img src="/vollbild.png" alt="Vorschau öffnen" className="h-5 w-5" />
+  Vorschau öffnen
+</button>
 
-    className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-[#8C3B4A] text-[#8C3B4A] rounded-xl shadow hover:bg-[#fef1f3]"
-  >
-    <img src="/vollbild.png" alt="Vorschau öffnen" className="h-5 w-5" />
-    Vorschau öffnen
-  </button>
 
   {/* Download Button */}
   <button
