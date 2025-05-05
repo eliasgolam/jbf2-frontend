@@ -58,7 +58,7 @@ const RenderBeratungsprotokoll = ({
     setViewerWidth(Math.max(idealWidth, minViewerWidth));
   }, []);
 
-  
+
   
   
 
@@ -72,6 +72,9 @@ const RenderBeratungsprotokoll = ({
       signatureData: {
         ...antworten.signatureData,
         [activeSigField]: dataUrl
+
+
+        
       }
     };
   
