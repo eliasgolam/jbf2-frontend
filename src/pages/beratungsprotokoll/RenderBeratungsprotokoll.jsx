@@ -312,7 +312,9 @@ if (user?.email) {
 // ❌ Kein automatisches Navigieren
 // ❌ Kein automatisches Schließen des Viewers
 
-setSaving(false); // Button wieder aktivierbar machen
+setSaving(false);
+navigate('/browserunterzeichnen');
+
 
 
  };
@@ -521,7 +523,7 @@ setSaving(false); // Button wieder aktivierbar machen
       >
         {/* X-Button */}
         <button
-          onClick={onClose}
+          onClick={() => navigate('/browserunterzeichnen')}
           className="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold z-50"
         >
           ×
