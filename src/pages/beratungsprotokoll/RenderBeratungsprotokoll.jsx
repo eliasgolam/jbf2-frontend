@@ -41,7 +41,6 @@ const RenderBeratungsprotokoll = ({
   const [nameBeraterModalOpen, setNameBeraterModalOpen] = useState(false);
   const [nameBeraterWert, setNameBeraterWert] = useState('');
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (wrapperRef.current) {
@@ -52,15 +51,12 @@ const RenderBeratungsprotokoll = ({
   
   useEffect(() => {
     const screenWidth = window.innerWidth;
-    setIsMobile(screenWidth < 768); // ✅ Mobilgeräte unter 768px erkennen
-  
     const maxViewerWidth = 1000;
-    const minViewerWidth = 320;
+    const minViewerWidth = 320; // untere Grenze fürs Handy
   
     const idealWidth = Math.min(screenWidth * 0.95, maxViewerWidth);
     setViewerWidth(Math.max(idealWidth, minViewerWidth));
   }, []);
-  
   
   
 
@@ -524,15 +520,9 @@ if (onClose) onClose();
         
         <div
   ref={wrapperRef}
-  className="w-full overflow-auto"
-  style={{
-    maxWidth: '100%',
-    maxHeight: '100%',
-    transform: isMobile ? 'scale(0.48)' : 'scale(1)',
-    transformOrigin: 'top left'
-  }}
+  className="w-full overflow-x-auto overflow-y-auto"
+  style={{ maxWidth: '100%', maxHeight: '100%' }}
 >
-
 
       
           <Document file={pdfDatei}>
