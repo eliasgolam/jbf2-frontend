@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const gespeicherterKunde = JSON.parse(localStorage.getItem('ausgewaehlterKunde')) || {};
+
 
 const fragen = {
   allgemein: [
@@ -40,11 +42,14 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
   const [form, setForm] = useState({
     anrede: '', vorname: '', nachname: '', geburtsdatum: '', adresse: '', plzOrt: '', telefon: '', email: ''
   });
+  
+  
   const [themen, setThemen] = useState([]);
   const [gespraechsarten, setGespraechsarten] = useState([]);
   const [vertraege, setVertraege] = useState([{ gesellschaft: '', sparte: '' }, { gesellschaft: '', sparte: '' }, { gesellschaft: '', sparte: '' }]);
   const [vertragsabschluss, setVertragsabschluss] = useState(false);
   const navigate = useNavigate();
+  
 
 
   const saveAntwortenBackend = async (neueAntworten) => {
@@ -60,6 +65,24 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
       console.error('❌ Fehler beim Speichern der Antworten:', error);
     }
   };
+
+  useEffect(() => {
+    const gespeicherterKunde = JSON.parse(localStorage.getItem('ausgewaehlterKunde'));
+    if (gespeicherterKunde) {
+      setForm({
+        anrede: gespeicherterKunde.anrede || '',
+        vorname: gespeicherterKunde.vorname || '',
+        nachname: gespeicherterKunde.nachname || '',
+        geburtsdatum: gespeicherterKunde.geburtsdatum || '',
+        adresse: gespeicherterKunde.adresse || '',
+        plzOrt: gespeicherterKunde.plzOrt || '',
+        telefon: gespeicherterKunde.telefon || '',
+        email: gespeicherterKunde.email || ''
+      });
+    }
+  }, []);
+  
+
   useEffect(() => {
     const fetchKundendaten = async () => {
       try {
@@ -88,6 +111,8 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
         const updated = { ...antworten, kundendaten };
         setAntworten(updated); // zentral speichern
         localStorage.setItem('antworten', JSON.stringify(updated)); // optional sichern
+        localStorage.setItem('ausgewaehlterKunde', JSON.stringify(kundendaten));
+
   
       } catch (err) {
         console.error('❌ Fehler beim Laden der Kundendaten:', err);
@@ -124,6 +149,7 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
         const updated = { ...antworten, kundendaten: form };
         setAntworten(updated);
         localStorage.setItem('antworten', JSON.stringify(updated));
+        localStorage.setItem('ausgewaehlterKunde', JSON.stringify(form));
         saveAntwortenBackend(updated);
       } else {
         console.warn('⚠️ Kundendaten-Formular ist leer – keine Speicherung');
