@@ -1,5 +1,12 @@
 // RenderBeratungsprotokoll.jsx – FINAL 100% funktionierend mit Platzhaltern für fields[] & pdfFieldMap
-import React, { useRef, useState, useEffect } from 'react';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle
+} from 'react';
+
 import { Document, Page, pdfjs } from 'react-pdf';
 import { useNavigate } from 'react-router-dom';
 import SignaturePad from 'react-signature-canvas';
@@ -286,36 +293,29 @@ const pdfBytes = await pdfDoc.save();
 const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 const url = URL.createObjectURL(blob);
 
-const reader = new FileReader();
+// ✅ Übergabe der PDF-URL an die Parent-Komponente (Viewer)
+if (onPDFGenerated) onPDFGenerated(url);
 
-reader.onloadend = () => {
-  const base64 = reader.result;
+// ✅ Lokale Speicherung der PDF-URL für späteren Zugriff
+localStorage.setItem('lastGeneratedPDFUrl', url);
 
-  // ✅ übergebe PDF-URL an Parent-Komponente
-  if (onPDFGenerated) onPDFGenerated(base64);
-
-  // ✅ Speichere dauerhaft im localStorage
-  localStorage.setItem('lastGeneratedPDFBase64', base64);
-
-  // ✅ Backend-Speicherung
-  fetch(`/api/antworten/${JSON.parse(localStorage.getItem('loggedInUser'))?.email}`, {
+// ✅ Backend-Speicherung
+const user = JSON.parse(localStorage.getItem('loggedInUser'));
+if (user?.email) {
+  fetch(`/api/antworten/${user.email}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(antworten)
   }).catch(err => console.error('❌ Fehler beim Speichern der Antworten:', err));
+}
 
-  // ✅ Weiterleitung zur Unterschrift
-  navigate('/browserunterzeichnen');
+// ❌ Kein automatisches Navigieren
+// ❌ Kein automatisches Schließen des Viewers
 
-  // ✅ Optional: Viewer schließen
-  if (onClose) onClose();
-};
-
-reader.readAsDataURL(blob);
+setSaving(false); // Button wieder aktivierbar machen
 
 
-
-  };
+ };
 
   const fields = [
     // Seite 1
