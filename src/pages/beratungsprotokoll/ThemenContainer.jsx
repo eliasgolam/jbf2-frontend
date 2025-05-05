@@ -70,16 +70,17 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
     const gespeicherterKunde = JSON.parse(localStorage.getItem('ausgewaehlterKunde'));
     if (gespeicherterKunde) {
       setForm({
-        anrede: gespeicherterKunde.anrede || '',
+        anrede: gespeicherterKunde.anrede || gespeicherterKunde.raucher || '',
         vorname: gespeicherterKunde.vorname || '',
         nachname: gespeicherterKunde.nachname || '',
-        geburtsdatum: gespeicherterKunde.geburtsdatum || '',
+        geburtsdatum: gespeicherterKunde.geburtsdatum
+          ? new Date(gespeicherterKunde.geburtsdatum).toLocaleDateString('de-CH')
+          : '',
         adresse: gespeicherterKunde.adresse || '',
-        plzOrt: gespeicherterKunde.plzOrt || '',       // ✅ wichtig
-        telefon: gespeicherterKunde.telefon || '',     // ✅ wichtig
+        plzOrt: gespeicherterKunde.plzOrt || `${gespeicherterKunde.plz || ''} ${gespeicherterKunde.ort || ''}`.trim(),
+        telefon: gespeicherterKunde.telefon || gespeicherterKunde.telefonnummer || '',
         email: gespeicherterKunde.email || ''
       });
-      
     }
   }, []);
   
@@ -96,7 +97,7 @@ const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) =>
         const kunde = await res.json();
   
         const kundendaten = {
-          anrede: kunde.anrede || '',
+          anrede: kunde.raucher || '', // 🟢 das ist in Wirklichkeit deine Anrede!
           vorname: kunde.vorname || '',
           nachname: kunde.nachname || '',
           geburtsdatum: kunde.geburtsdatum
