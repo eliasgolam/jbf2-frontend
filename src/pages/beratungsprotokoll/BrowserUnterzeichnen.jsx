@@ -122,9 +122,7 @@ const BrowserUnterzeichnen = () => {
       return updated;
     });
   }}
-
   onClose={() => setShowViewer(false)}
-
   onPDFGenerated={(url) => {
     setPdfUrl(url);
     localStorage.setItem('lastGeneratedPDFUrl', url);
