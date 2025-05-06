@@ -106,12 +106,24 @@ const BrowserUnterzeichnen = () => {
 
         {showViewer && (
           <div className="relative bg-white rounded-xl shadow-xl p-4 mt-6">
-        <RenderBeratungsprotokoll
+ <RenderBeratungsprotokoll
   pdfDatei="/JBFBP.pdf"
   antworten={antworten}
   setAntworten={(data) => {
     const updated = { ...antworten, ...data };
     setAntworten(updated);
+
+    // 🧠 In Backend speichern
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (user?.email) {
+      fetch(`/api/antworten/${user.email}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated),
+      }).catch(err => console.error('❌ Fehler beim Speichern:', err));
+    }
+
+    // 💾 Optional auch in localStorage
     localStorage.setItem('antworten', JSON.stringify(updated));
   }}
   onClose={() => setShowViewer(false)}
