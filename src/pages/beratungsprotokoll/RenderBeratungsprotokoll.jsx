@@ -51,18 +51,15 @@ const RenderBeratungsprotokoll = ({
   
   useEffect(() => {
     const handleResize = () => {
-      const screenWidth = window.innerWidth;
-  
-      if (screenWidth >= 1440) setViewerWidth(1000);     // große Bildschirme
-      else if (screenWidth >= 1024) setViewerWidth(900); // normale Laptops
-      else if (screenWidth >= 768) setViewerWidth(750);  // Tablets
-      else setViewerWidth(600);                          // Smartphones
+      setViewerWidth(900); // ✅ Einheitlich auf allen Geräten, perfekt positioniert
     };
   
-    handleResize(); // beim Start direkt ausführen
+    handleResize(); // Beim Laden direkt setzen
     window.addEventListener('resize', handleResize);
+  
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+  
 
 
 
@@ -469,16 +466,15 @@ if (onClose) onClose();
 
   return (
     <div
-      className={`z-50 fixed inset-0 ${
-        isFullscreen ? 'bg-black' : 'bg-black/40'
-      } flex justify-center items-center`}
+      className={`z-50 fixed inset-0 flex justify-center items-center bg-cover bg-center`}
+      style={{ backgroundImage: 'url(/wave-bg.jpg)' }}
     >
       <div
         className={`${
           isFullscreen
             ? 'w-full h-screen px-0 py-0'
             : 'w-[90vw] max-w-[900px] h-[85vh]'
-        } bg-white rounded-xl shadow-2xl overflow-y-auto relative`}
+        } bg-white/90 backdrop-blur-md rounded-xl shadow-2xl overflow-y-auto relative`}
       >
         {/* X-Button */}
         <button
@@ -495,12 +491,11 @@ if (onClose) onClose();
         >
           <img src="/vollbild.png" alt="Vollbild" className="h-6 w-6" />
         </button>
-        
+  
         <div
-  ref={wrapperRef}
-  className="w-full overflow-x-auto overflow-y-auto"
->
-      
+          ref={wrapperRef}
+          className="w-full overflow-x-auto overflow-y-auto"
+        >  
           <Document file={pdfDatei}>
             {[1, 2, 3, 4].map(page => (
               <div
@@ -814,10 +809,16 @@ if (onClose) onClose();
 </div>
 
 
-        <div className="flex justify-end mt-4">
-          <button onClick={savePDF} disabled={saving} className="px-6 py-2 bg-[#4B2E2B] text-white rounded-xl shadow hover:bg-[#3a221f]"
-          >{saving ? 'Speichern...' : 'PDF speichern'}</button>
-        </div>
+<div className="absolute top-1 right-20 z-50">
+  <button
+    onClick={savePDF}
+    disabled={saving}
+    className="px-5 py-2 bg-white/80 text-[#4B2E2B] border border-[#4B2E2B] rounded-xl shadow-sm backdrop-blur-md hover:bg-white hover:shadow-md transition-all duration-200"
+  >
+    {saving ? 'Speichern...' : 'PDF speichern'}
+  </button>
+</div>
+
 
         {ortDatumModalOpen && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
@@ -885,14 +886,26 @@ if (onClose) onClose();
         {activeSigField && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
             <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-[840px]">
-              <h2 className="text-lg font-semibold mb-4">Unterschrift: {activeSigField}</h2>
+            <h2 className="text-lg font-semibold mb-4">
+  Unterschrift: {activeSigField === 'UnterschriftKunde' ? 'Unterschrift Kunde' : activeSigField === 'UnterschriftBerater' ? 'Unterschrift Berater' : activeSigField}
+</h2>
+
               <div className="w-[800px] h-[200px] border rounded bg-white mb-4 shadow-inner">
-                <SignaturePad
-                  ref={sigRef}
-                  minWidth={1.5}
-                  maxWidth={2.5}
-                  canvasProps={{ width: 800, height: 200, style: { width: '800px', height: '200px', backgroundColor: '#fff' } }}
-                />
+              <SignaturePad
+  ref={sigRef}
+  minWidth={0.5}               // Dünnere Linien (scharf und hochwertig)
+  maxWidth={1.0}               // Dünnere Linien (scharf und hochwertig)
+  canvasProps={{
+    width: 1600,               // doppelte Breite für hohe Auflösung
+    height: 400,               // doppelte Höhe für hohe Auflösung
+    style: {                   // CSS bleibt gleich, Canvas wird visuell nicht größer dargestellt
+      width: '800px', 
+      height: '200px', 
+      backgroundColor: '#fff' 
+    }
+  }}
+/>
+
               </div>
               <div className="flex justify-end gap-3">
                 <button onClick={() => sigRef.current.clear()} className="text-sm px-4 py-1 border rounded">Löschen</button>
