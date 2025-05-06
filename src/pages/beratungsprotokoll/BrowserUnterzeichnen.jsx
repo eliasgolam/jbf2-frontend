@@ -33,7 +33,7 @@ const BrowserUnterzeichnen = () => {
         const user = JSON.parse(localStorage.getItem('loggedInUser'));
         if (!user) return;
   
-        const res = await fetch(`/api/antworten/${user.email}`);
+        const res = await fetch(`/api/antworten/${encodeURIComponent(user.email)}`);
         if (!res.ok) throw new Error('Fehler beim Laden der Antworten.');
   
         const gespeicherteAntworten = await res.json();
