@@ -33,7 +33,7 @@ const BrowserUnterzeichnen = () => {
         const user = JSON.parse(localStorage.getItem('loggedInUser'));
         if (!user) return;
   
-        const res = await fetch(`/api/antworten/${encodeURIComponent(user.email)}`);
+        const res = await fetch(`https://jbf2-backend.onrender.com/api/antworten/${encodeURIComponent(user.email)}`);
         if (!res.ok) throw new Error('Fehler beim Laden der Antworten.');
   
         const gespeicherteAntworten = await res.json();
@@ -113,15 +113,19 @@ const BrowserUnterzeichnen = () => {
     const updated = { ...antworten, ...data };
     setAntworten(updated);
 
-    // 🧠 In Backend speichern
-    const user = JSON.parse(localStorage.getItem('loggedInUser'));
-    if (user?.email) {
-      fetch(`/api/antworten/${user.email}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updated),
-      }).catch(err => console.error('❌ Fehler beim Speichern:', err));
-    }
+  
+// 🧠 In Backend speichern
+const user = JSON.parse(localStorage.getItem('loggedInUser'));
+const email = encodeURIComponent(user?.email || '');
+
+if (email) {
+  fetch(`https://jbf2-backend.onrender.com/api/antworten/${email}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updated),
+  }).catch(err => console.error('❌ Fehler beim Speichern:', err));
+}
+
 
     // 💾 Optional auch in localStorage
     localStorage.setItem('antworten', JSON.stringify(updated));
