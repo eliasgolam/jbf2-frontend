@@ -1,29 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RenderBeratungsprotokoll from './RenderBeratungsprotokoll';
 
 const BrowserUnterzeichnen = () => {
   const navigate = useNavigate();
 
-  const [antworten, setAntworten] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('antworten')) || {};
-    } catch (e) {
-      return {};
-    }
-  });
-  
-  const [ortDatum, setOrtDatum] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('antworten'))?.ortDatum || '';
-    } catch (e) {
-      return '';
-    }
-  });
-  
-  const [pdfUrl, setPdfUrl] = useState(() => localStorage.getItem('lastGeneratedPDFUrl'));
+  const [antworten, setAntworten] = useState({});
+  const [ortDatum, setOrtDatum] = useState(gespeicherteAntworten?.ortDatum || '');
+  const [pdfUrl, setPdfUrl] = useState(null);
   const [showViewer, setShowViewer] = useState(false);
-  const renderRef = useRef();
 
   const handleZuruecksetzen = () => {
     localStorage.removeItem('antworten');
@@ -32,16 +17,35 @@ const BrowserUnterzeichnen = () => {
 
   const handleDownload = () => {
     if (!pdfUrl) return;
-    const link = document.createElement('a');
-    link.href = pdfUrl;
-    link.download = `Beratungsprotokoll_${antworten?.kundendaten?.vorname || 'Kunde'}.pdf`;
-    link.click();
+    const a = document.createElement('a');
+    a.href = pdfUrl;
+    a.download = `Beratungsprotokoll_${antworten?.kundendaten?.vorname || 'Kunde'}.pdf`;
+    a.click();
   };
-  
-  
+
   const handleWeiter = () => {
     navigate('/beratung-abschliessen');
   };
+
+  useEffect(() => {
+    const fetchAntworten = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!user) return;
+  
+        const res = await fetch(`/api/antworten/${user.email}`);
+        if (!res.ok) throw new Error('Fehler beim Laden der Antworten.');
+  
+        const gespeicherteAntworten = await res.json();
+        setAntworten(gespeicherteAntworten);
+      } catch (error) {
+        console.error('❌ Fehler beim Abrufen der Antworten:', error);
+      }
+    };
+  
+    fetchAntworten();
+  }, []);
+  
 
   return (
     <div
@@ -64,13 +68,12 @@ const BrowserUnterzeichnen = () => {
 
   {/* Vorschau öffnen */}
   <button
-  onClick={() => setShowViewer(true)}
-  className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-[#8C3B4A] text-[#8C3B4A] rounded-xl shadow hover:bg-[#fef1f3]"
->
-  <img src="/vollbild.png" alt="Vorschau öffnen" className="h-5 w-5" />
-  Vorschau öffnen
-</button>
-
+    onClick={() => setShowViewer(true)}
+    className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-[#8C3B4A] text-[#8C3B4A] rounded-xl shadow hover:bg-[#fef1f3]"
+  >
+    <img src="/vollbild.png" alt="Vorschau öffnen" className="h-5 w-5" />
+    Vorschau öffnen
+  </button>
 
   {/* Download Button */}
   <button
@@ -103,30 +106,16 @@ const BrowserUnterzeichnen = () => {
 
         {showViewer && (
           <div className="relative bg-white rounded-xl shadow-xl p-4 mt-6">
-     <RenderBeratungsprotokoll
-  pdfDatei={pdfUrl || "/JBFBP.pdf"}
-
+        <RenderBeratungsprotokoll
+  pdfDatei="/JBFBP.pdf"
   antworten={antworten}
   setAntworten={(data) => {
-    setAntworten((prev) => {
-      const updated = {
-        ...prev,
-        ...data,
-        signatureData: {
-          ...prev.signatureData,
-          ...(data.signatureData || {})
-        },
-        personen: data.personen ?? prev.personen
-      };
-      localStorage.setItem('antworten', JSON.stringify(updated));
-      return updated;
-    });
+    const updated = { ...antworten, ...data };
+    setAntworten(updated);
+    localStorage.setItem('antworten', JSON.stringify(updated));
   }}
   onClose={() => setShowViewer(false)}
-  onPDFGenerated={(url) => {
-    setPdfUrl(url);
-    localStorage.setItem('lastGeneratedPDFUrl', url);
-  }}
+  onPDFGenerated={(url) => setPdfUrl(url)}
 />
 
           </div>

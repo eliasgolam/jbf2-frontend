@@ -1,12 +1,5 @@
 // RenderBeratungsprotokoll.jsx – FINAL 100% funktionierend mit Platzhaltern für fields[] & pdfFieldMap
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle
-} from 'react';
-
+import React, { useRef, useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { useNavigate } from 'react-router-dom';
 import SignaturePad from 'react-signature-canvas';
@@ -57,17 +50,20 @@ const RenderBeratungsprotokoll = ({
   }, [pageSizes]); // oder: [showViewer] wenn du das aus BrowserUnterzeichnen steuerst
   
   useEffect(() => {
-    const screenWidth = window.innerWidth;
-    const maxViewerWidth = 1000;
-    const minViewerWidth = 320; // untere Grenze fürs Handy
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
   
-    const idealWidth = Math.min(screenWidth * 0.95, maxViewerWidth);
-    setViewerWidth(Math.max(idealWidth, minViewerWidth));
+      if (screenWidth >= 1440) setViewerWidth(1000);     // große Bildschirme
+      else if (screenWidth >= 1024) setViewerWidth(900); // normale Laptops
+      else if (screenWidth >= 768) setViewerWidth(750);  // Tablets
+      else setViewerWidth(600);                          // Smartphones
+    };
+  
+    handleResize(); // beim Start direkt ausführen
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-
-  
-  
 
 
   const handleSigSave = () => {
@@ -79,9 +75,6 @@ const RenderBeratungsprotokoll = ({
       signatureData: {
         ...antworten.signatureData,
         [activeSigField]: dataUrl
-
-
-
       }
     };
   
@@ -293,30 +286,22 @@ const pdfBytes = await pdfDoc.save();
 const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 const url = URL.createObjectURL(blob);
 
-// ✅ Gib PDF-URL an Parent zurück (Viewer)
+// 🔁 PDF-URL speichern
 if (onPDFGenerated) onPDFGenerated(url);
 
-// ✅ Speichere für späteren Zugriff (BrowserUnterzeichnen)
-localStorage.setItem('lastGeneratedPDFUrl', url);
-
-// ✅ Speichere im Backend (optional)
-const user = JSON.parse(localStorage.getItem('loggedInUser'));
-if (user?.email) {
-  fetch(`/api/antworten/${user.email}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(antworten)
-  }).catch(err => console.error('❌ Fehler beim Speichern der Antworten:', err));
-}
-
-// ✅ Viewer schließen & weiterleiten – exakt wie bei Kuendigung
-setSaving(false);
-navigate('/browserunterzeichnen');
+// 🔁 antworten sichern
+fetch(`/api/antworten/${JSON.parse(localStorage.getItem('loggedInUser'))?.email}`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(antworten)
+}).catch(err => console.error('❌ Fehler beim Speichern der Antworten:', err));
 
 
+// 🔁 Viewer schließen, nicht weiterleiten!
+if (onClose) onClose();
 
 
- };
+  };
 
   const fields = [
     // Seite 1
@@ -522,12 +507,11 @@ navigate('/browserunterzeichnen');
       >
         {/* X-Button */}
         <button
-  onClick={() => navigate('/browserunterzeichnen')}
-  className="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold z-50"
->
-  ×
-</button>
-
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold z-50"
+        >
+          ×
+        </button>
   
         {/* Vollbild-Icon */}
         <button
@@ -540,9 +524,7 @@ navigate('/browserunterzeichnen');
         <div
   ref={wrapperRef}
   className="w-full overflow-x-auto overflow-y-auto"
-  style={{ maxWidth: '100%', maxHeight: '100%' }}
 >
-
       
           <Document file={pdfDatei}>
             {[1, 2, 3, 4].map(page => (
@@ -671,73 +653,182 @@ navigate('/browserunterzeichnen');
           </div>
         );
       }
-      if (f.type === 'signature') {
-        const sigData = antworten?.signatureData?.[f.key];
-        const isSigned = typeof sigData === 'string' && sigData.startsWith('data:image/');
-      
-        const isBerater = f.key === 'UnterschriftBerater';
-        const widthMm = isBerater ? 50 : 113.6227;
-        const heightMm = 10.16;
-        const fullWidth = mmToPx(widthMm, pageSizes[page].width);
-        const fullHeight = mmToPx(heightMm, pageSizes[page].height);
-      
-        if (isSigned) {
+
+      if (f.type === 'text') {
+        if (f.key === 'ort_datum') {
           return (
-            <img
+            <div
               key={f.key}
-              src={sigData}
-              alt={`Unterschrift ${f.key}`}
+              onClick={() => setOrtDatumModalOpen(true)}
               style={{
                 position: 'absolute',
-                top: adjustedTop,
+                top:  adjustedTop += mmToPx(2.3, pageSizes[page].height),
                 left: adjustedLeft,
-                width: fullWidth,
-                height: fullHeight,
-                objectFit: 'contain',
+                fontSize: '16x',
+                backgroundColor: '#fff',
+                border: '1px dashed #8C3B4A',
+                padding: '2px 4px',
+                borderRadius: '4px',
+                cursor: 'pointer',
                 zIndex: 10
               }}
-            />
+            >
+              {value || 'Ort, Datum klicken'}
+            </div>
           );
         }
-      
+
+        if (f.key === 'NameBerater') {
+          return (
+            <div
+              key={f.key}
+              onClick={() => setNameBeraterModalOpen(true)}
+              style={{
+                position: 'absolute',
+                top: adjustedTop - mmToPx(1.5, pageSizes[page].height),
+                left: adjustedLeft + mmToPx(2, pageSizes[page].width),
+                width: mmToPx(30.2875, pageSizes[page].width),
+                height: mmToPx(5.3751, pageSizes[page].height),
+                backgroundColor: '#fff',
+                border: '1px dashed #8C3B4A',
+                borderRadius: '4px',
+                fontSize: '11px',
+                lineHeight: '12px',
+                boxSizing: 'border-box',
+                padding: '0 4px',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                zIndex: 10,
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer'
+              }}
+            >
+              {beraterName || 'Name Berater'}
+            </div>
+          );
+        }
+
         return (
           <div
             key={f.key}
-            onClick={() => setActiveSigField(f.key)}
             style={{
               position: 'absolute',
-              top: isBerater
-                ? adjustedTop + mmToPx(1, pageSizes[page].height)
-                : adjustedTop - mmToPx(-1.8, pageSizes[page].height),
-              left: isBerater
-                ? adjustedLeft - mmToPx(8, pageSizes[page].width)
-                : adjustedLeft + fullWidth / 4,
-              width: isBerater ? fullWidth : fullWidth / 2,
-              height: isBerater ? fullHeight * 0.6 : fullHeight / 2,
-              backgroundColor: 'rgba(140, 59, 74, 0.5)',
-              border: '1px dashed #4B2E2B',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              zIndex: 10,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
+              top: adjustedTop,
+              left: adjustedLeft,
+              fontSize: '14px',
+              zIndex: 10
             }}
           >
-            <span
-              style={{
-                color: '#000',
-                fontWeight: 'bold',
-                fontSize: '12px',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              {isBerater ? 'Unterschrift Berater' : 'Unterschrift Kunde'}
-            </span>
+            {value}
           </div>
         );
       }
-       
+
+      if (f.type === 'signature') {
+        if (f.key === 'UnterschriftKunde') {
+          const fullWidth = mmToPx(113.6227, pageSizes[page].width);
+          const fullHeight = mmToPx(10.16, pageSizes[page].height);
+          const isSigned = !!antworten.signatureData?.UnterschriftKunde;
+
+
+          if (isSigned) {
+            return (
+              <img
+                key={f.key}
+                src={antworten.signatureData?.UnterschriftKunde}
+                alt="Unterschrift Kunde"
+                style={{
+                  position: 'absolute',
+                  top: adjustedTop,
+                  left: adjustedLeft,
+                  width: fullWidth,
+                  height: fullHeight,
+                  objectFit: 'contain',
+                  zIndex: 10
+                }}
+              />
+            );
+          }
+
+          return (
+            <div
+              key={f.key}
+              onClick={() => setActiveSigField('UnterschriftKunde')}
+              style={{
+                position: 'absolute',
+                top: adjustedTop - mmToPx(-1.8, pageSizes[page].height),
+                left: adjustedLeft + fullWidth / 4,
+                width: fullWidth / 2,
+                height: fullHeight / 2,
+                backgroundColor: 'rgba(140, 59, 74, 0.5)',
+                border: '1px dashed #4B2E2B',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                zIndex: 10,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <span style={{ color: '#000', fontWeight: 'bold', fontSize: '12px' }}>
+                Unterschrift Kunde
+              </span>
+            </div>
+          );
+        }
+
+        if (f.key === 'UnterschriftBerater') {
+          const fullWidth = mmToPx(50, pageSizes[page].width);
+          const fullHeight = mmToPx(10.16, pageSizes[page].height);
+          const isSigned = !!antworten.signatureData?.UnterschriftBerater;
+
+          if (isSigned) {
+            return (
+              <img
+                key={f.key}
+                src={antworten.signatureData?.UnterschriftBerater}
+                alt="Unterschrift Berater"
+                style={{
+                  position: 'absolute',
+                  top: adjustedTop,
+                  left: adjustedLeft,
+                  width: fullWidth,
+                  height: fullHeight,
+                  objectFit: 'contain',
+                  zIndex: 10
+                }}
+              />
+            );
+          }
+
+          return (
+            <div
+              key={f.key}
+              onClick={() => setActiveSigField('UnterschriftBerater')}
+              style={{
+                position: 'absolute',
+                top: adjustedTop + mmToPx(1, pageSizes[page].height),
+                left: adjustedLeft - mmToPx(8, pageSizes[page].width),
+                width: fullWidth,
+                height: fullHeight * 0.6,
+                backgroundColor: 'rgba(140, 59, 74, 0.5)',
+                border: '1px dashed #4B2E2B',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                zIndex: 10,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <span style={{ color: '#000', fontWeight: 'bold', fontSize: '12px', whiteSpace: 'nowrap' }}>
+                Unterschrift Berater
+              </span>
+            </div>
+          );
+        }
+      }
     })}
 
 
@@ -745,18 +836,13 @@ navigate('/browserunterzeichnen');
     </div>
   ))}
 </Document>
-<div className="absolute top-1 right-20 z-50">
-  <button
-    onClick={savePDF}
-    disabled={saving}
-    className="px-5 py-2 bg-white/80 text-[#4B2E2B] border border-[#4B2E2B] rounded-xl shadow-sm backdrop-blur-md hover:bg-white hover:shadow-md transition-all duration-200"
-  >
-    {saving ? 'Speichern...' : 'PDF speichern'}
-  </button>
-</div>
 </div>
 
 
+        <div className="flex justify-end mt-4">
+          <button onClick={savePDF} disabled={saving} className="px-6 py-2 bg-[#4B2E2B] text-white rounded-xl shadow hover:bg-[#3a221f]"
+          >{saving ? 'Speichern...' : 'PDF speichern'}</button>
+        </div>
 
         {ortDatumModalOpen && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
