@@ -6,7 +6,7 @@ const BrowserUnterzeichnen = () => {
   const navigate = useNavigate();
 
   const [antworten, setAntworten] = useState({});
-  const [ortDatum, setOrtDatum] = useState(gespeicherteAntworten?.ortDatum || '');
+  const [ortDatum, setOrtDatum] = useState('');
   const [pdfUrl, setPdfUrl] = useState(null);
   const [showViewer, setShowViewer] = useState(false);
 
