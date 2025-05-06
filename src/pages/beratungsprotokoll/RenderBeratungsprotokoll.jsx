@@ -79,26 +79,10 @@ const RenderBeratungsprotokoll = ({
     };
   
     setAntworten(updated);
-
-const saveAntworten = async () => {
-  try {
-    const user = JSON.parse(localStorage.getItem('loggedInUser'));
-    if (!user?.email) return; // Schutz falls user fehlt
-    await fetch(`/api/antworten/${user.email}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updated),
-    });
-  } catch (error) {
-    console.error('❌ Fehler beim Speichern der Antworten:', error);
-  }
-};
-
-saveAntworten();
-
-setActiveSigField(null);
-
+    localStorage.setItem('antworten', JSON.stringify(updated)); // ✅ wie bei Funktion A
+    setActiveSigField(null);
   };
+  
   
   
 
@@ -286,22 +270,13 @@ const pdfBytes = await pdfDoc.save();
 const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 const url = URL.createObjectURL(blob);
 
-// 🔁 PDF-URL speichern
-if (onPDFGenerated) onPDFGenerated(url);
+// ✅ Nur localStorage verwenden wie bei Funktion A
+localStorage.setItem('antworten', JSON.stringify(antworten));
 
-// 🔁 antworten sichern
-fetch(`/api/antworten/${JSON.parse(localStorage.getItem('loggedInUser'))?.email}`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(antworten)
-}).catch(err => console.error('❌ Fehler beim Speichern der Antworten:', err));
-
-
-// 🔁 Viewer schließen, nicht weiterleiten!
+// Viewer schließen
 if (onClose) onClose();
+};
 
-
-  };
 
   const fields = [
     // Seite 1
@@ -861,18 +836,9 @@ if (onClose) onClose();
                 };
                 
                 setAntworten(updated);
-
-                // NEU: Speichern ins Backend
-                const user = JSON.parse(localStorage.getItem('loggedInUser'));
-                if (user?.email) {
-                  fetch(`/api/antworten/${user.email}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(updated),
-                  }).catch(err => console.error('❌ Fehler beim Speichern der Antworten:', err));
-                }
-                
+                localStorage.setItem('antworten', JSON.stringify(updated)); // ✅ wie bei Funktion A
                 setOrtDatumModalOpen(false);
+                
                                  
                 }}>Übernehmen</button>
               </div>
@@ -901,19 +867,11 @@ if (onClose) onClose();
       ...antworten,
       beraterName: nameBeraterWert,
     };
-    setAntworten(updated);
-
-    // NEU: Statt localStorage jetzt ins Backend speichern
-    const user = JSON.parse(localStorage.getItem('loggedInUser'));
-    if (user?.email) {
-      fetch(`/api/antworten/${user.email}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updated),
-      }).catch(err => console.error('❌ Fehler beim Speichern des Beraternamens:', err));
-    }
     
+    setAntworten(updated);
+    localStorage.setItem('antworten', JSON.stringify(updated)); // ✅ wie bei Funktion A
     setNameBeraterModalOpen(false);
+    
   }}
 >
   Übernehmen

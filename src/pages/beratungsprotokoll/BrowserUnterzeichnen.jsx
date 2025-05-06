@@ -5,7 +5,7 @@ import RenderBeratungsprotokoll from './RenderBeratungsprotokoll';
 const BrowserUnterzeichnen = () => {
   const navigate = useNavigate();
 
-  const [antworten, setAntworten] = useState({});
+  
   const [ortDatum, setOrtDatum] = useState('');
   const [pdfUrl, setPdfUrl] = useState(null);
   const [showViewer, setShowViewer] = useState(false);
@@ -27,24 +27,8 @@ const BrowserUnterzeichnen = () => {
     navigate('/beratung-abschliessen');
   };
 
-  useEffect(() => {
-    const fetchAntworten = async () => {
-      try {
-        const user = JSON.parse(localStorage.getItem('loggedInUser'));
-        if (!user) return;
-  
-        const res = await fetch(`https://jbf2-backend.onrender.com/api/antworten/${encodeURIComponent(user.email)}`);
-        if (!res.ok) throw new Error('Fehler beim Laden der Antworten.');
-  
-        const gespeicherteAntworten = await res.json();
-        setAntworten(gespeicherteAntworten);
-      } catch (error) {
-        console.error('❌ Fehler beim Abrufen der Antworten:', error);
-      }
-    };
-  
-    fetchAntworten();
-  }, []);
+  const gespeicherteAntworten = JSON.parse(localStorage.getItem('antworten')) || {};
+  const [antworten, setAntworten] = useState(gespeicherteAntworten);
   
 
   return (
@@ -106,29 +90,13 @@ const BrowserUnterzeichnen = () => {
 
         {showViewer && (
           <div className="relative bg-white rounded-xl shadow-xl p-4 mt-6">
- <RenderBeratungsprotokoll
+<RenderBeratungsprotokoll
   pdfDatei="/JBFBP.pdf"
   antworten={antworten}
   setAntworten={(data) => {
     const updated = { ...antworten, ...data };
     setAntworten(updated);
-
-  
-// 🧠 In Backend speichern
-const user = JSON.parse(localStorage.getItem('loggedInUser'));
-const email = encodeURIComponent(user?.email || '');
-
-if (email) {
-  fetch(`https://jbf2-backend.onrender.com/api/antworten/${email}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(updated),
-  }).catch(err => console.error('❌ Fehler beim Speichern:', err));
-}
-
-
-    // 💾 Optional auch in localStorage
-    localStorage.setItem('antworten', JSON.stringify(updated));
+    localStorage.setItem('antworten', JSON.stringify(updated)); // ✅ identisch zu Funktion A
   }}
   onClose={() => setShowViewer(false)}
   onPDFGenerated={(url) => setPdfUrl(url)}
