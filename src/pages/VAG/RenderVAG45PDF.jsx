@@ -33,16 +33,14 @@ const RenderVAG45PDF = ({ antworten, setAntworten, onClose, onPDFGenerated }) =>
 
   useEffect(() => {
     const handleResize = () => {
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 1440) setViewerWidth(1000);
-      else if (screenWidth >= 1024) setViewerWidth(900);
-      else if (screenWidth >= 768) setViewerWidth(750);
-      else setViewerWidth(600);
+      setViewerWidth(900);  // ✅ Fixe Breite auf 900px gesetzt
     };
+  
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+  
 
   useEffect(() => {
     if (wrapperRef.current) {

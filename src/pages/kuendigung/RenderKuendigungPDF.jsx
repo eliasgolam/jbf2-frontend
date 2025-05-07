@@ -31,16 +31,14 @@ const RenderKuendigungPDF = ({ pdfDatei, antworten, setAntworten, onClose, onPDF
 
   useEffect(() => {
     const handleResize = () => {
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 1440) setViewerWidth(1000);
-      else if (screenWidth >= 1024) setViewerWidth(900);
-      else if (screenWidth >= 768) setViewerWidth(750);
-      else setViewerWidth(600);
+      setViewerWidth(900);  // ✅ Exakt 900px für alle Geräte
     };
+  
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+  
   const handleSigSave = () => {
     const canvas = sigRef.current.getTrimmedCanvas();
     const dataUrl = canvas.toDataURL('image/png');
