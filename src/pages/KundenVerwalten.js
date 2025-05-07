@@ -20,7 +20,7 @@ const [showModal, setShowModal] = useState(false);
           return;
         }
   
-        const res = await fetch(`${API_BASE}/api/kunden/${user.email}`);
+        const res = await fetch(`${API_BASE}/api/kunden/besitzer/${user.email}`);
         if (!res.ok) throw new Error('Fehler beim Laden der Kunden.');
   
         const kundenVomBackend = await res.json();

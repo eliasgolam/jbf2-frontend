@@ -99,6 +99,11 @@ onClick={async () => {
     }
 
     console.log('✅ Zustand gespeichert. Weiterleitung erfolgt ...');
+    
+    // ✅ PDF-Viewer schließen, falls offen
+    setShowViewer(false);
+
+    // ✅ Route wechseln
     navigate('/vag/start');
 
   } catch (err) {
@@ -106,6 +111,7 @@ onClick={async () => {
     alert('Netzwerkfehler beim Speichern.');
   }
 }}
+
 
 
   className="px-6 py-3 bg-[#4B2E2B] text-white rounded-xl shadow hover:bg-[#3a221f]"
