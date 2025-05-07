@@ -462,13 +462,13 @@ if (onClose) onClose();
   
     return '';
   };
-  // Position für Popups mittig auf Seite 3
-const page3Position = pageSizes[3]
-? {
-    top: (pageSizes[1]?.height || 0) + (pageSizes[2]?.height || 0) + (pageSizes[3].height / 2),
-    left: pageSizes[3].width / 2
-  }
-: { top: '50%', left: '50%' };
+  const page4Position = pageSizes[4]
+  ? {
+      top: (pageSizes[1]?.height || 0) + (pageSizes[2]?.height || 0) + (pageSizes[3]?.height || 0) + (pageSizes[4].height / 2),
+      left: pageSizes[4].width / 2
+    }
+  : { top: '50%', left: '50%' };
+
 
 
   return (
@@ -829,11 +829,12 @@ const page3Position = pageSizes[3]
   <div
     className="absolute z-50 bg-black/50 flex justify-center items-center"
     style={{
-      top: page3Position.top,
-      left: page3Position.left,
+      top: page4Position.top,
+      left: page4Position.left,
       transform: 'translate(-50%, -50%)'
     }}
   >
+
 
             <div className="bg-white p-6 rounded shadow-xl w-[400px]">
               <h2 className="text-lg font-bold mb-4">Ort & Datum eingeben</h2>
@@ -864,8 +865,8 @@ const page3Position = pageSizes[3]
   <div
     className="absolute z-50 bg-black/50 flex justify-center items-center"
     style={{
-      top: page3Position.top,
-      left: page3Position.left,
+      top: page4Position.top,
+      left: page4Position.left,
       transform: 'translate(-50%, -50%)'
     }}
   >
@@ -908,11 +909,12 @@ const page3Position = pageSizes[3]
   <div
     className="absolute z-50 bg-black/50 flex justify-center items-center"
     style={{
-      top: page3Position.top,
-      left: page3Position.left,
+      top: page4Position.top,
+      left: page4Position.left,
       transform: 'translate(-50%, -50%)'
     }}
   >
+
 
     <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-[840px]">
       <h2 className="text-lg font-semibold mb-4">
