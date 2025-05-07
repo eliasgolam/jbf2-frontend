@@ -462,7 +462,14 @@ if (onClose) onClose();
   
     return '';
   };
-  
+  // Position für Popups mittig auf Seite 3
+const page3Position = pageSizes[3]
+? {
+    top: (pageSizes[1]?.height || 0) + (pageSizes[2]?.height || 0) + (pageSizes[3].height / 2),
+    left: pageSizes[3].width / 2
+  }
+: { top: '50%', left: '50%' };
+
 
   return (
     <div
@@ -492,10 +499,8 @@ if (onClose) onClose();
           <img src="/vollbild.png" alt="Vollbild" className="h-6 w-6" />
         </button>
   
-        <div
-          ref={wrapperRef}
-          className="w-full overflow-x-auto overflow-y-auto"
-        >  
+        <div ref={wrapperRef} className="w-full overflow-x-auto overflow-y-auto relative">
+
           <Document file={pdfDatei}>
             {[1, 2, 3, 4].map(page => (
               <div
@@ -587,7 +592,7 @@ if (onClose) onClose();
       }
 
       if (vertragsfelder.includes(f.key)) {
-        adjustedTop += mmToPx(3, pageSizes[page].height);    // z. B. leicht nach unten
+        adjustedTop += mmToPx(2.7, pageSizes[page].height);    // z. B. leicht nach unten
         adjustedLeft += mmToPx(1.2, pageSizes[page].width); 
         fieldFontSize = '13px';   // z. B. leicht nach rechts
       }
@@ -820,8 +825,16 @@ if (onClose) onClose();
 </div>
 
 
-        {ortDatumModalOpen && (
-          <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+{ortDatumModalOpen && (
+  <div
+    className="absolute z-50 bg-black/50 flex justify-center items-center"
+    style={{
+      top: page3Position.top,
+      left: page3Position.left,
+      transform: 'translate(-50%, -50%)'
+    }}
+  >
+
             <div className="bg-white p-6 rounded shadow-xl w-[400px]">
               <h2 className="text-lg font-bold mb-4">Ort & Datum eingeben</h2>
               <input type="text" placeholder="Ort" value={ortDatumWerte.ort} onChange={(e) => setOrtDatumWerte(prev => ({ ...prev, ort: e.target.value }))} className="w-full border rounded p-2 mb-3" />
@@ -848,7 +861,15 @@ if (onClose) onClose();
         )}
 
 {nameBeraterModalOpen && (
-  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+  <div
+    className="absolute z-50 bg-black/50 flex justify-center items-center"
+    style={{
+      top: page3Position.top,
+      left: page3Position.left,
+      transform: 'translate(-50%, -50%)'
+    }}
+  >
+
     <div className="bg-white p-6 rounded shadow-xl w-[400px]">
       <h2 className="text-lg font-bold mb-4">Name des Beraters</h2>
       <input
@@ -884,7 +905,15 @@ if (onClose) onClose();
 )}
 
 {activeSigField && (
-  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+  <div
+    className="absolute z-50 bg-black/50 flex justify-center items-center"
+    style={{
+      top: page3Position.top,
+      left: page3Position.left,
+      transform: 'translate(-50%, -50%)'
+    }}
+  >
+
     <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-[840px]">
       <h2 className="text-lg font-semibold mb-4">
         Unterschrift: {activeSigField === 'UnterschriftKunde' ? 'Unterschrift Kunde' : activeSigField === 'UnterschriftBerater' ? 'Unterschrift Berater' : activeSigField}
