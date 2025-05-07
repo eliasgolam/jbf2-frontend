@@ -35,8 +35,10 @@ const ProtokollAuswahl = () => {
     } else if (id === 'kk-kuendigung') {
       navigate('/kuendigung-start');
     } else if (id === 'vag45') {
+      localStorage.setItem('autoRedirect', 'true'); 
       navigate('/vag/start');
-    } else {
+    }
+     else {
       navigate(`/protokoll/${id}`);
     }
   };

@@ -7,14 +7,14 @@ const VAGStart = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // ❌ Falls wir gerade erst von „Weiter & abschließen“ kamen → nichts tun
-    if (sessionStorage.getItem('justSaved')) {
-      sessionStorage.removeItem('justSaved');
-      return;
-    }
-  
     const kundenId = localStorage.getItem('aktiveKundenId');
-    if (!kundenId) return;
+    const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
+    const auto = localStorage.getItem('autoRedirect');
+  
+    if (!kundenId || !status.vag45 || auto !== 'true') return;
+  
+    // 🧹 Nur einmal weiterleiten – direkt danach löschen
+    localStorage.removeItem('autoRedirect');
   
     fetch(`https://jbf2-backend.onrender.com/api/kunden/${kundenId}/vag45`)
       .then(res => res.ok ? res.json() : null)
