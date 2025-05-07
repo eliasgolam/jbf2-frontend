@@ -179,12 +179,12 @@ const exportCoords = {
                   let adjustedLeft = left;
 
                   if (f.type === 'signature') {
-                    adjustedTop -= mmToPx(2, pageSizes[page].height); // Verschiebe 2 mm nach oben
+                    adjustedTop -= mmToPx(1, pageSizes[page].height); // Verschiebe 2 mm nach oben
                   }
                   
 
                   if (f.key === 'KundenBerater') {
-                    adjustedTop -= mmToPx(423, pageSizes[page].height);
+                    adjustedTop -= mmToPx(420, pageSizes[page].height);
                     adjustedLeft += mmToPx(5, pageSizes[page].width);
                   }
 

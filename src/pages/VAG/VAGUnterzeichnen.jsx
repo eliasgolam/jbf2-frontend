@@ -104,8 +104,9 @@ onClick={async () => {
     // ✅ PDF-Viewer schließen, falls offen
     setShowViewer(false);
 
-    // ✅ Route wechseln
+    sessionStorage.setItem('justSaved', 'true');
     navigate('/vag/start', { replace: true });
+    
 
 
   } catch (err) {

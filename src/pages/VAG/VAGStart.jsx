@@ -7,6 +7,12 @@ const VAGStart = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // ❌ Falls wir gerade erst von „Weiter & abschließen“ kamen → nichts tun
+    if (sessionStorage.getItem('justSaved')) {
+      sessionStorage.removeItem('justSaved');
+      return;
+    }
+  
     const kundenId = localStorage.getItem('aktiveKundenId');
     if (!kundenId) return;
   
@@ -14,16 +20,7 @@ const VAGStart = () => {
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data) {
-          // Ergänze Kundendaten-ID, falls nicht im Backend gespeichert
-          const antwortenMitId = {
-            ...data,
-            kundendaten: {
-              ...(data.kundendaten || {}),
-              kundenId
-            }
-          };
-  
-          localStorage.setItem('antworten', JSON.stringify(antwortenMitId));
+          localStorage.setItem('antworten', JSON.stringify(data));
           navigate('/vag/unterzeichnen');
         }
       })
