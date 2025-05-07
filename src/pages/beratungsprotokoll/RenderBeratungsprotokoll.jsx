@@ -883,38 +883,74 @@ if (onClose) onClose();
   </div>
 )}
 
-        {activeSigField && (
-          <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-[840px]">
-            <h2 className="text-lg font-semibold mb-4">
-  Unterschrift: {activeSigField === 'UnterschriftKunde' ? 'Unterschrift Kunde' : activeSigField === 'UnterschriftBerater' ? 'Unterschrift Berater' : activeSigField}
-</h2>
+{activeSigField && (
+  <div
+    className="absolute bg-black/50 flex justify-center items-center z-50"
+    style={{
+      top: fields.find(f => f.key === activeSigField)?.page && pageSizes[fields.find(f => f.key === activeSigField).page]
+        ? `${((A4_HEIGHT_MM - fields.find(f => f.key === activeSigField).y) *
+          (pageSizes[fields.find(f => f.key === activeSigField).page].height /
+            A4_HEIGHT_MM)) - 100}px`
+        : '50%',
+      left: fields.find(f => f.key === activeSigField)?.page && pageSizes[fields.find(f => f.key === activeSigField).page]
+        ? `${fields.find(f => f.key === activeSigField).x *
+          (pageSizes[fields.find(f => f.key === activeSigField).page].width /
+            A4_WIDTH_MM)}px`
+        : '50%',
+      transform: 'translate(-50%, 0)',
+    }}
+  >
+    <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-[840px]">
+      <h2 className="text-lg font-semibold mb-4">
+        Unterschrift:{' '}
+        {activeSigField === 'UnterschriftKunde'
+          ? 'Unterschrift Kunde'
+          : activeSigField === 'UnterschriftBerater'
+          ? 'Unterschrift Berater'
+          : activeSigField}
+      </h2>
 
-              <div className="w-[800px] h-[200px] border rounded bg-white mb-4 shadow-inner">
-              <SignaturePad
-  ref={sigRef}
-  minWidth={0.5}               // Dünnere Linien (scharf und hochwertig)
-  maxWidth={1.0}               // Dünnere Linien (scharf und hochwertig)
-  canvasProps={{
-    width: 1600,               // doppelte Breite für hohe Auflösung
-    height: 400,               // doppelte Höhe für hohe Auflösung
-    style: {                   // CSS bleibt gleich, Canvas wird visuell nicht größer dargestellt
-      width: '800px', 
-      height: '200px', 
-      backgroundColor: '#fff' 
-    }
-  }}
-/>
+      <div className="w-[800px] h-[200px] border rounded bg-white mb-4 shadow-inner">
+        <SignaturePad
+          ref={sigRef}
+          minWidth={1.5}
+          maxWidth={2.5}
+          canvasProps={{
+            width: 800,
+            height: 200,
+            style: {
+              width: '800px',
+              height: '200px',
+              backgroundColor: '#fff',
+            },
+          }}
+        />
+      </div>
 
-              </div>
-              <div className="flex justify-end gap-3">
-                <button onClick={() => sigRef.current.clear()} className="text-sm px-4 py-1 border rounded">Löschen</button>
-                <button onClick={() => setActiveSigField(null)} className="text-sm px-4 py-1 border rounded">Abbrechen</button>
-                <button onClick={handleSigSave} className="text-sm px-4 py-1 bg-green-600 text-white rounded">Speichern</button>
-              </div>
-            </div>
-          </div>
-        )}
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={() => sigRef.current.clear()}
+          className="text-sm px-4 py-1 border rounded"
+        >
+          Löschen
+        </button>
+        <button
+          onClick={() => setActiveSigField(null)}
+          className="text-sm px-4 py-1 border rounded"
+        >
+          Abbrechen
+        </button>
+        <button
+          onClick={handleSigSave}
+          className="text-sm px-4 py-1 bg-green-600 text-white rounded"
+        >
+          Speichern
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );
