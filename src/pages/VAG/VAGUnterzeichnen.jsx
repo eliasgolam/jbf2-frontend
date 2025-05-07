@@ -68,11 +68,14 @@ const VAGUnterzeichnen = () => {
 
           <button
 onClick={async () => {
+  console.log('👣 Button gedrückt: Weiter & abschließen');
+
   const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
   status.vag45 = true;
   localStorage.setItem('protokollStatus', JSON.stringify(status));
 
   const kundenId = antworten?.kundendaten?.kundenId;
+  console.log('🆔 Kunden-ID:', kundenId);
 
   if (!kundenId) {
     alert('❌ Keine Kunden-ID gefunden. Bitte Kunde erfassen.');
@@ -89,20 +92,21 @@ onClick={async () => {
     });
 
     if (!res.ok) {
-      const errorText = await res.text();
-      console.error('❌ Backend-Fehler:', errorText);
-      alert('Fehler beim Speichern des Formulars.');
+      const text = await res.text();
+      console.error('❌ Fehler vom Server:', text);
+      alert('Fehler beim Speichern. Status: ' + res.status);
       return;
     }
 
-    // ✅ Alles ok → weiter
+    console.log('✅ Zustand gespeichert. Weiterleitung erfolgt ...');
     navigate('/vag/start');
 
   } catch (err) {
     console.error('❌ Netzwerkfehler:', err);
-    alert('Netzwerkfehler. Bitte erneut versuchen.');
+    alert('Netzwerkfehler beim Speichern.');
   }
 }}
+
 
   className="px-6 py-3 bg-[#4B2E2B] text-white rounded-xl shadow hover:bg-[#3a221f]"
 >
