@@ -105,7 +105,8 @@ onClick={async () => {
     setShowViewer(false);
 
     // ✅ Route wechseln
-    navigate('/vag/start');
+    navigate('/vag/start', { replace: true });
+
 
   } catch (err) {
     console.error('❌ Netzwerkfehler:', err);

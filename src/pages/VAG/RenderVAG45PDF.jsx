@@ -178,8 +178,13 @@ const exportCoords = {
                   let adjustedTop = top;
                   let adjustedLeft = left;
 
+                  if (f.type === 'signature') {
+                    adjustedTop -= mmToPx(2, pageSizes[page].height); // Verschiebe 2 mm nach oben
+                  }
+                  
+
                   if (f.key === 'KundenBerater') {
-                    adjustedTop -= mmToPx(419, pageSizes[page].height);
+                    adjustedTop -= mmToPx(423, pageSizes[page].height);
                     adjustedLeft += mmToPx(5, pageSizes[page].width);
                   }
 
@@ -198,7 +203,7 @@ const exportCoords = {
                         }}
                         style={{ position: 'absolute', top: adjustedTop, left: adjustedLeft, fontSize: '14px', color: value ? 'black' : '#aaa', zIndex: 10, backgroundColor: '#fff', border: '1px dashed #999', padding: '2px 4px', borderRadius: '4px', cursor: 'pointer' }}
                       >
-                        {value || f.key}
+                        {value || (f.key === 'Ort_Datum' ? 'Ort Datum' : f.key)}
                       </div>
                     );
                   }
@@ -248,32 +253,74 @@ const exportCoords = {
           </div>
         )}
 
-        {activeTextField && (
-          <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-[500px]">
-              <h2 className="text-lg font-semibold mb-4">Eingabe: {activeTextField}</h2>
-              <input
-                className="w-full p-2 border rounded mb-4"
-                value={tempTextValue}
-                onChange={e => setTempTextValue(e.target.value)}
-              />
-              <div className="flex justify-end gap-3">
-                <button onClick={() => setActiveTextField(null)} className="text-sm px-4 py-1 border rounded">Abbrechen</button>
-                <button
-                  onClick={() => {
-                    const updated = { ...antworten, [activeTextField]: tempTextValue };
-                    setAntworten(updated);
-                    localStorage.setItem('antworten', JSON.stringify(updated));
-                    setActiveTextField(null);
-                  }}
-                  className="text-sm px-4 py-1 bg-green-600 text-white rounded"
-                >
-                  Speichern
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+{activeTextField === 'Ort_Datum' ? (
+  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded shadow-xl w-[400px]">
+      <h2 className="text-lg font-bold mb-4">Ort & Datum eingeben</h2>
+      <input
+        type="text"
+        placeholder="Ort"
+        value={tempTextValue.split(',')[0] || ''}
+        onChange={(e) =>
+          setTempTextValue(`${e.target.value}, ${tempTextValue.split(',')[1] || ''}`)
+        }
+        className="w-full border rounded p-2 mb-3"
+      />
+      <input
+        type="text"
+        placeholder="Datum"
+        value={tempTextValue.split(',')[1] || ''}
+        onChange={(e) =>
+          setTempTextValue(`${tempTextValue.split(',')[0] || ''}, ${e.target.value}`)
+        }
+        className="w-full border rounded p-2 mb-4"
+      />
+      <div className="flex justify-end gap-3">
+        <button onClick={() => setActiveTextField(null)}>Abbrechen</button>
+        <button
+          className="bg-green-600 text-white px-4 py-1 rounded"
+          onClick={() => {
+            const updated = { ...antworten, Ort_Datum: tempTextValue };
+            setAntworten(updated);
+            localStorage.setItem('antworten', JSON.stringify(updated));
+            setActiveTextField(null);
+          }}
+        >
+          Übernehmen
+        </button>
+      </div>
+    </div>
+  </div>
+) : activeTextField && (
+  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-[500px]">
+      <h2 className="text-lg font-semibold mb-4">
+        {activeTextField === 'KundenBerater' && 'Kunden Berater'}
+        {!['KundenBerater', 'Ort_Datum'].includes(activeTextField) && activeTextField}
+      </h2>
+      <input
+        className="w-full p-2 border rounded mb-4"
+        value={tempTextValue}
+        onChange={(e) => setTempTextValue(e.target.value)}
+      />
+      <div className="flex justify-end gap-3">
+        <button onClick={() => setActiveTextField(null)} className="text-sm px-4 py-1 border rounded">Abbrechen</button>
+        <button
+          onClick={() => {
+            const updated = { ...antworten, [activeTextField]: tempTextValue };
+            setAntworten(updated);
+            localStorage.setItem('antworten', JSON.stringify(updated));
+            setActiveTextField(null);
+          }}
+          className="text-sm px-4 py-1 bg-green-600 text-white rounded"
+        >
+          Speichern
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );
