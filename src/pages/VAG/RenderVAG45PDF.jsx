@@ -132,7 +132,10 @@ const exportCoords = {
     const url = URL.createObjectURL(blob);
     if (onPDFGenerated) onPDFGenerated(url);
     localStorage.setItem('antworten', JSON.stringify(antworten));
-    navigate('/vag/unterzeichnen');
+
+    if (onClose) onClose(); // ✅ Viewer schließen
+    navigate('/vag/unterzeichnen'); // ✅ Route wechseln
+    
   };
 
   const totalPages = 3;
@@ -142,12 +145,14 @@ const exportCoords = {
       <div className={`${isFullscreen ? 'w-full h-screen px-0 py-0' : 'w-[90vw] max-w-[900px] h-[85vh]'} bg-white rounded-xl shadow-xl overflow-y-auto relative`}>
       <button
   onClick={() => {
-    navigate('/vag/unterzeichnen');
+    if (onClose) onClose(); // ✅ Viewer schließen
+    navigate('/vag/unterzeichnen'); // ✅ Sicherheitshalber route wechseln
   }}
   className="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold z-50"
 >
   ×
 </button>
+
 
         <button onClick={() => setIsFullscreen(prev => !prev)} className="absolute top-4 right-12 z-50">
           <img src="/vollbild.png" alt="Vollbild" className="h-6 w-6" />

@@ -67,30 +67,43 @@ const VAGUnterzeichnen = () => {
           </button>
 
           <button
-  onClick={async () => {
-    const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
-    status.vag45 = true;
-    localStorage.setItem('protokollStatus', JSON.stringify(status));
+onClick={async () => {
+  const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
+  status.vag45 = true;
+  localStorage.setItem('protokollStatus', JSON.stringify(status));
 
-    const kundenId = antworten?.kundendaten?.kundenId;
+  const kundenId = antworten?.kundendaten?.kundenId;
 
-    if (kundenId) {
-      try {
-        await fetch(`https://jbf2-backend.onrender.com/api/kunden/${kundenId}/vag45`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(antworten)
-        });
-        
-      } catch (err) {
-        console.error('❌ Fehler beim Speichern im Backend:', err);
-      }
+  if (!kundenId) {
+    alert('❌ Keine Kunden-ID gefunden. Bitte Kunde erfassen.');
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://jbf2-backend.onrender.com/api/kunden/${kundenId}/vag45`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(antworten)
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error('❌ Backend-Fehler:', errorText);
+      alert('Fehler beim Speichern des Formulars.');
+      return;
     }
 
+    // ✅ Alles ok → weiter
     navigate('/vag/start');
-  }}
+
+  } catch (err) {
+    console.error('❌ Netzwerkfehler:', err);
+    alert('Netzwerkfehler. Bitte erneut versuchen.');
+  }
+}}
+
   className="px-6 py-3 bg-[#4B2E2B] text-white rounded-xl shadow hover:bg-[#3a221f]"
 >
   Weiter & abschließen
