@@ -67,6 +67,7 @@ const VAGUnterzeichnen = () => {
           </button>
 
           <button
+          type="button"
 onClick={async () => {
   console.log('👣 Button gedrückt: Weiter & abschließen');
 
