@@ -35,13 +35,14 @@ const ProtokollAuswahl = () => {
     } else if (id === 'kk-kuendigung') {
       navigate('/kuendigung-start');
     } else if (id === 'vag45') {
+      // Bei Auswahl von VAG 45 immer zu VAG Start weiterleiten
       localStorage.setItem('autoRedirect', 'true'); 
       navigate('/vag/start');
-    }
-     else {
+    } else {
       navigate(`/protokoll/${id}`);
     }
   };
+  
 
   const handleZurueck = () => {
     navigate('/beratungs-menue');

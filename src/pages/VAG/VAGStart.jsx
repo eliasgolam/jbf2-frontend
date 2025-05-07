@@ -8,30 +8,17 @@ const VAGStart = () => {
   const token = useMemo(() => crypto.randomUUID(), []);
   const shareLink = `${window.location.origin}/vag/start?token=${token}`;
 
-  useEffect(() => {
-    const kundenId = localStorage.getItem('aktiveKundenId');
-    const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
-    const auto = localStorage.getItem('autoRedirect');
 
-    if (!kundenId || !status.vag45 || auto !== 'true') return;
-
-    localStorage.removeItem('autoRedirect');
-
-    fetch(`https://jbf2-backend.onrender.com/api/kunden/${kundenId}/vag45`)
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (data) {
-          localStorage.setItem('antworten', JSON.stringify(data));
-          navigate('/vag/unterzeichnen');
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   const handleBrowser = () => {
-    localStorage.setItem('autoRedirect', 'true');
-    navigate('/vag/flow');
+    const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
+    if (status.vag45 === true) {
+      navigate('/vag/unterzeichnen');
+    } else {
+      navigate('/vag/flow');
+    }
   };
+  
 
   return (
     <div
@@ -56,13 +43,29 @@ const VAGStart = () => {
               Direkt hier im Browser ausfüllen
             </button>
             <button
-              onClick={() => setMode('qr')}
+             onClick={() => {
+              const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
+              if (status.vag45 === true) {
+                navigate('/vag/unterzeichnen');
+              } else {
+                setMode('qr');
+              }
+            }}
+            
               className="w-full py-3 bg-white border border-[#8C3B4A] text-[#8C3B4A] rounded-xl text-lg shadow hover:bg-[#fef1f3]"
             >
               Per QR-Code senden
             </button>
             <button
-              onClick={() => setMode('link')}
+             onClick={() => {
+              const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
+              if (status.vag45 === true) {
+                navigate('/vag/unterzeichnen');
+              } else {
+                setMode('link');
+              }
+            }}
+            
               className="w-full py-3 bg-gray-100 text-[#4B2E2B] rounded-xl text-lg shadow hover:bg-gray-200"
             >
               Link generieren
