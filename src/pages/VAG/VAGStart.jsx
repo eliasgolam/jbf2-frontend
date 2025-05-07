@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { FileText, Pencil, PenTool } from 'lucide-react';
 
 const VAGStart = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const kundenId = localStorage.getItem('aktiveKundenId');
+    if (!kundenId) return;
+  
+    fetch(`https://jbf2-backend.onrender.com/api/kunden/${kundenId}/vag45`)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data) {
+          localStorage.setItem('antworten', JSON.stringify(data));
+          navigate('/vag/unterzeichnen');
+        }
+      })
+      .catch(() => {});
+  }, []);
+  
 
   const handleStart = () => {
     navigate('/vag/flow');

@@ -91,6 +91,7 @@ const [pendingKunde, setPendingKunde] = useState(null);
       const gespeicherterKunde = await res.json();
       console.log('✅ Kunde erfolgreich gespeichert:', gespeicherterKunde);
       localStorage.setItem('ausgewaehlterKunde', JSON.stringify(gespeicherterKunde));
+      localStorage.setItem('aktiveKundenId', gespeicherterKunde._id); 
       navigate('/beratung-starten');
     } catch (error) {
       console.error('❌ Fehler beim Speichern des Kunden:', error);
