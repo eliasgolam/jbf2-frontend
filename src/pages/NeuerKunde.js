@@ -60,7 +60,8 @@ const [pendingKunde, setPendingKunde] = useState(null);
     };
   
     try {
-      const res = await fetch(`${API_BASE}/api/kunden/${user.email}`);
+      const res = await fetch(`${API_BASE}/api/kunden/besitzer/${user.email}`);
+
       const kunden = await res.json();
   
       const bereitsVorhanden = kunden.find(k => k.email === kunde.email);
