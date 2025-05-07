@@ -91,8 +91,21 @@ const [pendingKunde, setPendingKunde] = useState(null);
       const gespeicherterKunde = await res.json();
       console.log('✅ Kunde erfolgreich gespeichert:', gespeicherterKunde);
       localStorage.setItem('ausgewaehlterKunde', JSON.stringify(gespeicherterKunde));
-      localStorage.setItem('aktiveKundenId', gespeicherterKunde._id); 
+      localStorage.setItem('aktiveKundenId', gespeicherterKunde._id);
+      
+      // 🧹 Vorherige Daten explizit löschen
+      localStorage.removeItem('antworten');
+      localStorage.removeItem('protokollStatus');
+      
+      // 🆕 Leerer Antwortzustand mit verknüpfter Kunden-ID
+      localStorage.setItem('antworten', JSON.stringify({
+        kundendaten: {
+          kundenId: gespeicherterKunde._id
+        }
+      }));
+      
       navigate('/beratung-starten');
+      
     } catch (error) {
       console.error('❌ Fehler beim Speichern des Kunden:', error);
       alert('Fehler beim Speichern des Kunden.');

@@ -48,6 +48,19 @@ const RenderVAG45PDF = ({ antworten, setAntworten, onClose, onPDFGenerated }) =>
         (wrapperRef.current.scrollWidth - wrapperRef.current.clientWidth) / 2;
     }
   }, [pageSizes]);
+
+  useEffect(() => {
+    const aktuelleId = localStorage.getItem('aktiveKundenId');
+    const antwortenKunde = antworten?.kundendaten?.kundenId;
+  
+    if (aktuelleId && antwortenKunde && aktuelleId !== antwortenKunde) {
+      // 🚫 Daten passen nicht zusammen → reset
+      const leer = { kundendaten: { kundenId: aktuelleId } };
+      setAntworten(leer);
+      localStorage.setItem('antworten', JSON.stringify(leer));
+    }
+  }, []);
+  
   
   const handleSigSave = () => {
     const canvas = sigRef.current.getTrimmedCanvas();
@@ -127,7 +140,15 @@ const exportCoords = {
   return (
     <div className={`z-50 fixed inset-0 ${isFullscreen ? 'bg-black' : 'bg-black/40'} flex justify-center items-center`}>
       <div className={`${isFullscreen ? 'w-full h-screen px-0 py-0' : 'w-[90vw] max-w-[900px] h-[85vh]'} bg-white rounded-xl shadow-xl overflow-y-auto relative`}>
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold z-50">×</button>
+      <button
+  onClick={() => {
+    navigate('/vag/unterzeichnen');
+  }}
+  className="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold z-50"
+>
+  ×
+</button>
+
         <button onClick={() => setIsFullscreen(prev => !prev)} className="absolute top-4 right-12 z-50">
           <img src="/vollbild.png" alt="Vollbild" className="h-6 w-6" />
         </button>

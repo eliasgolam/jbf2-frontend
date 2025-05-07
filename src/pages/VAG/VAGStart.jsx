@@ -14,12 +14,22 @@ const VAGStart = () => {
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data) {
-          localStorage.setItem('antworten', JSON.stringify(data));
+          // Ergänze Kundendaten-ID, falls nicht im Backend gespeichert
+          const antwortenMitId = {
+            ...data,
+            kundendaten: {
+              ...(data.kundendaten || {}),
+              kundenId
+            }
+          };
+  
+          localStorage.setItem('antworten', JSON.stringify(antwortenMitId));
           navigate('/vag/unterzeichnen');
         }
       })
       .catch(() => {});
   }, []);
+  
   
 
   const handleStart = () => {

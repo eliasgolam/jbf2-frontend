@@ -10,11 +10,17 @@ const VAGUnterzeichnen = () => {
   const [showViewer, setShowViewer] = useState(false);
 
   const handleZuruecksetzen = () => {
-    localStorage.removeItem('antworten');
-    setAntworten({});
+    const kundenId = antworten?.kundendaten?.kundenId;
+    
+    // Nur wenn der Kunde gesetzt ist → neuen leeren Zustand setzen
+    const leer = kundenId ? { kundendaten: { kundenId } } : {};
+  
+    localStorage.setItem('antworten', JSON.stringify(leer));
+    setAntworten(leer);
     setPdfUrl(null);
-    setShowViewer(true); // PDF-Viewer sofort wieder öffnen
+    setShowViewer(true);
   };
+  
   
 
   const handleDownload = () => {
