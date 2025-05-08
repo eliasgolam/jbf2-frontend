@@ -716,7 +716,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
                 alt="Unterschrift Kunde"
                 style={{
                   position: 'absolute',
-                  top: adjustedTop + 30,
+                  top: adjustedTop - mmToPx(5.8, pageSizes[page].height),
+
 
                   left: adjustedLeft,
                   width: `${width}px`,
@@ -734,7 +735,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               onClick={() => setActiveSigField('UnterschriftKunde')}
               style={{
                 position: 'absolute',
-                top: adjustedTop + 30,
+                top: adjustedTop - mmToPx(5.8, pageSizes[page].height),
+
 
                 left: adjustedLeft,
                 width: `${width}px`,
@@ -768,7 +770,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
                 alt="Unterschrift Berater"
                 style={{
                   position: 'absolute',
-                  top: adjustedTop + 30,
+                  top: adjustedTop - mmToPx(5.8, pageSizes[page].height),
+
 
 
                   left: adjustedLeft,
@@ -787,7 +790,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               onClick={() => setActiveSigField('UnterschriftBerater')}
               style={{
                 position: 'absolute',
-                top: adjustedTop + 30,
+                top: adjustedTop - mmToPx(5.8, pageSizes[page].height),
+
 
 
 
@@ -827,8 +831,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
       setSaving(false);
       navigate('/browserunterzeichnen');
     }}
-    disabled={saving}
     className="px-5 py-2 bg-white/80 text-[#4B2E2B] border border-[#4B2E2B] rounded-xl shadow-sm backdrop-blur-md hover:bg-white hover:shadow-md transition-all duration-200"
+    disabled={saving}
   >
     {saving ? 'Speichern...' : 'Beratungsprotokoll speichern'}
   </button>
