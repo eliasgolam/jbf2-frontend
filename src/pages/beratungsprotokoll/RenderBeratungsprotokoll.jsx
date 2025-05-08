@@ -716,7 +716,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
                 alt="Unterschrift Kunde"
                 style={{
                   position: 'absolute',
-                  top: adjustedTop - mmToPx(1.5, pageSizes[page].height),
+                  top: adjustedTop + 30,
 
                   left: adjustedLeft,
                   width: `${width}px`,
@@ -734,7 +734,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               onClick={() => setActiveSigField('UnterschriftKunde')}
               style={{
                 position: 'absolute',
-                top: adjustedTop - mmToPx(1.5, pageSizes[page].height),
+                top: adjustedTop + 30,
 
                 left: adjustedLeft,
                 width: `${width}px`,
@@ -768,7 +768,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
                 alt="Unterschrift Berater"
                 style={{
                   position: 'absolute',
-                  top: adjustedTop - mmToPx(1.5, pageSizes[page].height),
+                  top: adjustedTop + 30,
 
 
                   left: adjustedLeft,
@@ -787,7 +787,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               onClick={() => setActiveSigField('UnterschriftBerater')}
               style={{
                 position: 'absolute',
-                top: adjustedTop - mmToPx(1.5, pageSizes[page].height),
+                top: adjustedTop + 30,
 
 
 
@@ -821,19 +821,19 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
 
 
 <div className="absolute top-1 right-20 z-50">
-<button
-  onClick={async () => {
-    await savePDF();       // PDF erzeugen
-    setSaving(false);      // ✅ Wieder aktiv machen
-    navigate('/browserunterzeichnen'); // ✅ Sicher weiterleiten
-  }}
-  disabled={saving}
->
-  {saving ? 'Speichern...' : 'PDF speichern'}
-</button>
-
-
+  <button
+    onClick={async () => {
+      await savePDF();
+      setSaving(false);
+      navigate('/browserunterzeichnen');
+    }}
+    disabled={saving}
+    className="px-5 py-2 bg-white/80 text-[#4B2E2B] border border-[#4B2E2B] rounded-xl shadow-sm backdrop-blur-md hover:bg-white hover:shadow-md transition-all duration-200"
+  >
+    {saving ? 'Speichern...' : 'Beratungsprotokoll speichern'}
+  </button>
 </div>
+
 
 
 {ortDatumModalOpen && (
