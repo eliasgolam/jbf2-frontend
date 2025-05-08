@@ -270,8 +270,7 @@ const url = URL.createObjectURL(blob);
 // ✅ Nur localStorage verwenden wie bei Funktion A
 localStorage.setItem('antworten', JSON.stringify(antworten));
 
-// Viewer schließen
-if (onClose) onClose();
+
 };
 
 
@@ -702,10 +701,10 @@ if (onClose) onClose();
 
       if (f.type === 'signature') {
         if (f.key === 'UnterschriftKunde') {
-        
           const isSigned = !!antworten.signatureData?.UnterschriftKunde;
-
-
+          const width = 100;
+          const height = 30;
+        
           if (isSigned) {
             return (
               <img
@@ -716,46 +715,46 @@ if (onClose) onClose();
                   position: 'absolute',
                   top: adjustedTop,
                   left: adjustedLeft,
-                  width: '100px',
-                  height: '30px',
+                  width: `${width}px`,
+                  height: `${height}px`,
                   objectFit: 'contain',
                   zIndex: 10
                 }}
-                
               />
             );
           }
-
+        
           return (
             <div
               key={f.key}
               onClick={() => setActiveSigField('UnterschriftKunde')}
               style={{
                 position: 'absolute',
-                top: adjustedTop - mmToPx(-1.8, pageSizes[page].height),
-                left: adjustedLeft + fullWidth / 4,
-                width: fullWidth / 2,
-                height: fullHeight / 2,
-                backgroundColor: 'rgba(140, 59, 74, 0.5)',
+                top: adjustedTop,
+                left: adjustedLeft,
+                width: `${width}px`,
+                height: `${height}px`,
+                backgroundColor: 'rgba(140,59,74,0.3)',
                 border: '1px dashed #4B2E2B',
                 borderRadius: '4px',
-                cursor: 'pointer',
-                zIndex: 10,
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                cursor: 'pointer',
+                zIndex: 10
               }}
             >
-              <span style={{ color: '#000', fontWeight: 'bold', fontSize: '12px' }}>
-                Unterschrift Kunde
-              </span>
+              <span style={{ fontSize: '12px', fontWeight: 'bold' }}>Unterschrift</span>
             </div>
           );
         }
+        
 
         if (f.key === 'UnterschriftBerater') {
           const isSigned = !!antworten.signatureData?.UnterschriftBerater;
-
+          const width = 100;
+          const height = 30;
+        
           if (isSigned) {
             return (
               <img
@@ -766,42 +765,40 @@ if (onClose) onClose();
                   position: 'absolute',
                   top: adjustedTop,
                   left: adjustedLeft,
-                  width: '100px',
-                  height: '30px',
+                  width: `${width}px`,
+                  height: `${height}px`,
                   objectFit: 'contain',
                   zIndex: 10
                 }}
-                
               />
             );
           }
-
+        
           return (
             <div
               key={f.key}
               onClick={() => setActiveSigField('UnterschriftBerater')}
               style={{
                 position: 'absolute',
-                top: adjustedTop + mmToPx(1, pageSizes[page].height),
-                left: adjustedLeft - mmToPx(8, pageSizes[page].width),
-                width: fullWidth,
-                height: fullHeight * 0.6,
-                backgroundColor: 'rgba(140, 59, 74, 0.5)',
+                top: adjustedTop,
+                left: adjustedLeft,
+                width: `${width}px`,
+                height: `${height}px`,
+                backgroundColor: 'rgba(140,59,74,0.3)',
                 border: '1px dashed #4B2E2B',
                 borderRadius: '4px',
-                cursor: 'pointer',
-                zIndex: 10,
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                cursor: 'pointer',
+                zIndex: 10
               }}
             >
-              <span style={{ color: '#000', fontWeight: 'bold', fontSize: '12px', whiteSpace: 'nowrap' }}>
-                Unterschrift Berater
-              </span>
+              <span style={{ fontSize: '12px', fontWeight: 'bold' }}>Unterschrift</span>
             </div>
           );
         }
+        
       }
     })}
 
@@ -814,13 +811,17 @@ if (onClose) onClose();
 
 
 <div className="absolute top-1 right-20 z-50">
-  <button
-    onClick={savePDF}
-    disabled={saving}
-    className="px-5 py-2 bg-white/80 text-[#4B2E2B] border border-[#4B2E2B] rounded-xl shadow-sm backdrop-blur-md hover:bg-white hover:shadow-md transition-all duration-200"
-  >
-    {saving ? 'Speichern...' : 'PDF speichern'}
-  </button>
+<button
+  onClick={async () => {
+    await savePDF();          // ✅ PDF wird erzeugt
+    if (onClose) onClose();   // ✅ Danach weiterleiten
+  }}
+  disabled={saving}
+  className="px-5 py-2 bg-white/80 text-[#4B2E2B] border border-[#4B2E2B] rounded-xl shadow-sm backdrop-blur-md hover:bg-white hover:shadow-md transition-all duration-200"
+>
+  {saving ? 'Speichern...' : 'PDF speichern'}
+</button>
+
 </div>
 
 
