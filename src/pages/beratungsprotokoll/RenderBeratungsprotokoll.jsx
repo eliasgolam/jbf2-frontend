@@ -14,8 +14,8 @@ const mmToPt = mm => mm * 2.83465;
 const mmToPx = (mm, scale) => mm * (scale / A4_WIDTH_MM);
 
 
-
-const SIGNATURE_OFFSET_KUNDE_MM = -1.8;  // nach unten verschieben
+const SIGNATURE_OFFSET_KUNDE_MM = 10.00;
+ // nach unten verschieben
 const SIGNATURE_OFFSET_BERATER_MM = 1.0; // nach unten verschieben
 
 

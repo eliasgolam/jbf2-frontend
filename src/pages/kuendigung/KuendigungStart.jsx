@@ -13,20 +13,26 @@ const KuendigungStart = () => {
     const autoRedirect = localStorage.getItem('autoRedirect') === 'true';
     const justSaved = sessionStorage.getItem('justSaved') === 'true';
     const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
-  
-    if (status['kk-kuendigung'] === true && autoRedirect && !justSaved) {
+    const kunde = JSON.parse(localStorage.getItem('ausgewaehlterKunde'));
+    const kundeId = kunde?.email || 'default';
+
+    const abgeschlossen = localStorage.getItem(`kuendigungAbgeschlossen_${kundeId}`) === 'true';
+
+    if (abgeschlossen && autoRedirect && !justSaved) {
       navigate('/kuendigung-unterzeichnen');
     }
   }, []);
-  
-  // 🔁 Flags zurücksetzen
+
   useEffect(() => {
     localStorage.removeItem('autoRedirect');
     sessionStorage.removeItem('justSaved');
   }, []);
 
   const handleNext = () => {
-    const abgeschlossen = localStorage.getItem('kuendigungAbgeschlossen') === 'true';
+    const kunde = JSON.parse(localStorage.getItem('ausgewaehlterKunde'));
+    const kundeId = kunde?.email || 'default';
+    const abgeschlossen = localStorage.getItem(`kuendigungAbgeschlossen_${kundeId}`) === 'true';
+
     if (abgeschlossen) {
       navigate('/kuendigung-unterzeichnen');
     } else {
@@ -51,20 +57,20 @@ const KuendigungStart = () => {
         {/* Auswahlbereich */}
         {!mode && (
           <div className="flex flex-col gap-4">
-   <button
-              onClick={handleNext} // Auf Klick wird zur ThemenContainer-Seite weitergeleitet
+            <button
+              onClick={handleNext}
               className="w-full py-3 bg-[#4B2E2B] text-white rounded-xl text-lg shadow hover:bg-[#3a221f]"
             >
               Direkt hier im Browser ausfüllen
             </button>
             <button
-              onClick={() => setMode('qr')}
+              onClick={handleNext}
               className="w-full py-3 bg-white border border-[#8C3B4A] text-[#8C3B4A] rounded-xl text-lg shadow hover:bg-[#fef1f3]"
             >
               Per QR-Code senden
             </button>
             <button
-              onClick={() => setMode('link')}
+              onClick={handleNext}
               className="w-full py-3 bg-gray-100 text-[#4B2E2B] rounded-xl text-lg shadow hover:bg-gray-200"
             >
               Link generieren
@@ -109,15 +115,14 @@ const KuendigungStart = () => {
           </div>
         )}
 
-<div className="flex justify-center mt-6">
-  <button
-    onClick={() => navigate('/beratung-abschliessen')}
-    className="px-6 py-2 text-sm rounded-full bg-white border border-[#8C3B4A] text-[#8C3B4A] hover:bg-[#fdf1f3] shadow"
-  >
-    ← Zurück zur Protokoll-Auswahl
-  </button>
-</div>
-
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => navigate('/beratung-abschliessen')}
+            className="px-6 py-2 text-sm rounded-full bg-white border border-[#8C3B4A] text-[#8C3B4A] hover:bg-[#fdf1f3] shadow"
+          >
+            ← Zurück zur Protokoll-Auswahl
+          </button>
+        </div>
       </div>
 
       <footer className="absolute bottom-4 text-center text-xs text-white z-10">
