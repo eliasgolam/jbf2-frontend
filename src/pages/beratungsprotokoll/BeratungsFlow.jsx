@@ -46,7 +46,7 @@ const BeratungsFlow = () => {
           pdfDatei="/JBFBP.pdf"
           antworten={antworten}
           setAntworten={setAntworten}
-          onClose={() => navigate('/browserunterzeichnen')}
+          onClose={() => setShowPDF(false)}
           onPDFGenerated={(url) => console.log('PDF generiert:', url)}
           isFullscreen={isFullscreen}
         />
