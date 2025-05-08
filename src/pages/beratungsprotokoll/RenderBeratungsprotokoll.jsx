@@ -85,7 +85,7 @@ const RenderBeratungsprotokoll = ({
   
 
   const savePDF = async () => {
-    setSaving(true);
+    
     const existingPdfBytes = await fetch(pdfDatei).then(res => res.arrayBuffer());
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -716,7 +716,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
                 alt="Unterschrift Kunde"
                 style={{
                   position: 'absolute',
-                  top: adjustedTop - mmToPx(5.8, pageSizes[page].height),
+                  top: adjustedTop - mmToPx(1.7, pageSizes[page].height),
+
 
 
                   left: adjustedLeft,
@@ -735,7 +736,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               onClick={() => setActiveSigField('UnterschriftKunde')}
               style={{
                 position: 'absolute',
-                top: adjustedTop - mmToPx(5.8, pageSizes[page].height),
+                top: adjustedTop - mmToPx(1.7, pageSizes[page].height),
 
 
                 left: adjustedLeft,
@@ -770,7 +771,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
                 alt="Unterschrift Berater"
                 style={{
                   position: 'absolute',
-                  top: adjustedTop - mmToPx(5.8, pageSizes[page].height),
+                  top: adjustedTop - mmToPx(1.7, pageSizes[page].height),
 
 
 
@@ -790,7 +791,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               onClick={() => setActiveSigField('UnterschriftBerater')}
               style={{
                 position: 'absolute',
-                top: adjustedTop - mmToPx(5.8, pageSizes[page].height),
+                top: adjustedTop - mmToPx(1.7, pageSizes[page].height),
 
 
 
@@ -825,17 +826,19 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
 
 
 <div className="absolute top-1 right-20 z-50">
-  <button
-    onClick={async () => {
-      await savePDF();
-      setSaving(false);
-      navigate('/browserunterzeichnen');
-    }}
-    className="px-5 py-2 bg-white/80 text-[#4B2E2B] border border-[#4B2E2B] rounded-xl shadow-sm backdrop-blur-md hover:bg-white hover:shadow-md transition-all duration-200"
-    disabled={saving}
-  >
-    {saving ? 'Speichern...' : 'Beratungsprotokoll speichern'}
-  </button>
+<button
+  onClick={async () => {
+    setSaving(true);
+    await savePDF();
+    setSaving(false); // 🔧 Wichtig: wieder zurücksetzen
+    navigate('/browserunterzeichnen');
+  }}
+  disabled={saving}
+  className="px-5 py-2 bg-white/80 text-[#4B2E2B] border border-[#4B2E2B] rounded-xl shadow-sm backdrop-blur-md hover:bg-white hover:shadow-md transition-all duration-200"
+>
+  {saving ? 'Speichern...' : 'Beratungsprotokoll speichern'}
+</button>
+
 </div>
 
 
