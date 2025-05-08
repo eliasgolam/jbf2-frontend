@@ -713,7 +713,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
                 alt="Unterschrift Kunde"
                 style={{
                   position: 'absolute',
-                  top: adjustedTop,
+                  top: adjustedTop + 2,
                   left: adjustedLeft,
                   width: `${width}px`,
                   height: `${height}px`,
@@ -730,7 +730,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               onClick={() => setActiveSigField('UnterschriftKunde')}
               style={{
                 position: 'absolute',
-                top: adjustedTop,
+                top: adjustedTop + 2,
                 left: adjustedLeft,
                 width: `${width}px`,
                 height: `${height}px`,
@@ -763,7 +763,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
                 alt="Unterschrift Berater"
                 style={{
                   position: 'absolute',
-                  top: adjustedTop,
+                  top: adjustedTop + 2,
+
                   left: adjustedLeft,
                   width: `${width}px`,
                   height: `${height}px`,
@@ -780,7 +781,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               onClick={() => setActiveSigField('UnterschriftBerater')}
               style={{
                 position: 'absolute',
-                top: adjustedTop,
+                top: adjustedTop + 2,
+
                 left: adjustedLeft,
                 width: `${width}px`,
                 height: `${height}px`,
