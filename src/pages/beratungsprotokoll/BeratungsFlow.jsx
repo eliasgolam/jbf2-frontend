@@ -15,6 +15,12 @@ const BeratungsFlow = () => {
   const navigate = useNavigate();
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  useEffect(() => {
+    localStorage.removeItem('autoRedirect');
+    sessionStorage.removeItem('justSaved');
+  }, []);
+  
+
 
   const weiter = () => {
     if (step >= 3) {
