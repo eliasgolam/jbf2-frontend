@@ -67,8 +67,13 @@ const KuendigungUnterzeichnen = () => {
     const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
     status['kk-kuendigung'] = true;
     localStorage.setItem('protokollStatus', JSON.stringify(status));
-
-    navigate('/beratung-abschliessen');
+    
+    // 🆕 Flag setzen, um automatische Weiterleitung zu steuern
+    sessionStorage.setItem('justSaved', 'true');
+    
+    // 🆕 Zurück zur Startansicht
+    navigate('/kuendigung-start');
+    
   }}
   className="px-6 py-3 bg-[#4B2E2B] text-white rounded-xl shadow hover:bg-[#3a221f]"
 >
@@ -93,6 +98,7 @@ const KuendigungUnterzeichnen = () => {
             />
           </div>
         )}
+        
       </div>
 
       <footer className="absolute bottom-4 text-center text-xs text-white z-10">

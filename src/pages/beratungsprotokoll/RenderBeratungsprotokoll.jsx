@@ -702,8 +702,7 @@ if (onClose) onClose();
 
       if (f.type === 'signature') {
         if (f.key === 'UnterschriftKunde') {
-          const fullWidth = mmToPx(113.6227, pageSizes[page].width);
-          const fullHeight = mmToPx(10.16, pageSizes[page].height);
+        
           const isSigned = !!antworten.signatureData?.UnterschriftKunde;
 
 
@@ -717,11 +716,12 @@ if (onClose) onClose();
                   position: 'absolute',
                   top: adjustedTop,
                   left: adjustedLeft,
-                  width: fullWidth,
-                  height: fullHeight,
+                  width: '100px',
+                  height: '30px',
                   objectFit: 'contain',
                   zIndex: 10
                 }}
+                
               />
             );
           }
@@ -754,8 +754,6 @@ if (onClose) onClose();
         }
 
         if (f.key === 'UnterschriftBerater') {
-          const fullWidth = mmToPx(50, pageSizes[page].width);
-          const fullHeight = mmToPx(10.16, pageSizes[page].height);
           const isSigned = !!antworten.signatureData?.UnterschriftBerater;
 
           if (isSigned) {
@@ -768,11 +766,12 @@ if (onClose) onClose();
                   position: 'absolute',
                   top: adjustedTop,
                   left: adjustedLeft,
-                  width: fullWidth,
-                  height: fullHeight,
+                  width: '100px',
+                  height: '30px',
                   objectFit: 'contain',
                   zIndex: 10
                 }}
+                
               />
             );
           }

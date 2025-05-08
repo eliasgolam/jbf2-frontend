@@ -109,6 +109,16 @@ const VAGStart = () => {
         )}
       </div>
 
+      <div className="flex justify-center mt-6">
+  <button
+    onClick={() => navigate('/beratung-abschliessen')}
+    className="px-6 py-2 text-sm rounded-full bg-white border border-[#8C3B4A] text-[#8C3B4A] hover:bg-[#fdf1f3] shadow"
+  >
+    ← Zurück zur Protokoll-Auswahl
+  </button>
+</div>
+
+
       <footer className="absolute bottom-4 text-center text-xs text-white z-10">
         <p>© 2025 JB Finanz AG. Alle Rechte vorbehalten.</p>
       </footer>

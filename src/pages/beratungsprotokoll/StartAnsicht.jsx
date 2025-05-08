@@ -8,9 +8,16 @@ const StartAnsicht = () => {
   const token = useMemo(() => uuidv4(), []);
   const shareLink = `${window.location.origin}/beratung/protokoll?token=${token}`;
   const navigate = useNavigate(); // Initialisiere den navigate Hook
-
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('loggedInUser'));
+    const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
+    const autoRedirect = localStorage.getItem('autoRedirect') === 'true';
+    const justSaved = sessionStorage.getItem('justSaved') === 'true';
+  
+    if (status.beratungsprotokoll === true && autoRedirect && !justSaved) {
+      navigate('/browserunterzeichnen');
+    }
+  
     if (!user?.email) return;
   
     fetch(`/api/status/${user.email}`)
@@ -21,9 +28,17 @@ const StartAnsicht = () => {
         }
       })
       .catch(() => {
-        // Fehler ignorieren – kein Redirect
+        // Fehler ignorieren
       });
   }, []);
+
+  useEffect(() => {
+    // ⚠️ Entferne die Trigger nach der ersten Verwendung
+    localStorage.removeItem('autoRedirect');
+    sessionStorage.removeItem('justSaved');
+  }, []);
+  
+  
   
 
   const handleNext = async () => {
@@ -127,6 +142,16 @@ const StartAnsicht = () => {
             </button>
           </div>
         )}
+
+<div className="flex justify-center mt-6">
+  <button
+    onClick={() => navigate('/beratung-abschliessen')}
+    className="px-6 py-2 text-sm rounded-full bg-white border border-[#8C3B4A] text-[#8C3B4A] hover:bg-[#fdf1f3] shadow"
+  >
+    ← Zurück zur Protokoll-Auswahl
+  </button>
+</div>
+
       </div>
 
       <footer className="absolute bottom-4 text-center text-xs text-white z-10">

@@ -75,8 +75,13 @@ const BrowserUnterzeichnen = () => {
     const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
     status.beratungsprotokoll = true;
     localStorage.setItem('protokollStatus', JSON.stringify(status));
-    localStorage.setItem('prozessAbgeschlossen', 'true');
-    navigate('/beratung-abschliessen');
+    
+    // 🆕 Füge dies hinzu:
+    sessionStorage.setItem('justSaved', 'true');
+    
+    // 🆕 Dann zurück zur Startseite:
+    navigate('/beratung/start');
+    
   }}
   className="px-6 py-3 bg-[#4B2E2B] text-white rounded-xl shadow hover:bg-[#3a221f]"
 >

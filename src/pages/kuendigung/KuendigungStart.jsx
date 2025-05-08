@@ -9,6 +9,22 @@ const KuendigungStart = () => {
   const shareLink = `${window.location.origin}/kuendigung/formular?token=${token}`;
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const autoRedirect = localStorage.getItem('autoRedirect') === 'true';
+    const justSaved = sessionStorage.getItem('justSaved') === 'true';
+    const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
+  
+    if (status['kk-kuendigung'] === true && autoRedirect && !justSaved) {
+      navigate('/kuendigung-unterzeichnen');
+    }
+  }, []);
+  
+  // 🔁 Flags zurücksetzen
+  useEffect(() => {
+    localStorage.removeItem('autoRedirect');
+    sessionStorage.removeItem('justSaved');
+  }, []);
+
   const handleNext = () => {
     const abgeschlossen = localStorage.getItem('kuendigungAbgeschlossen') === 'true';
     if (abgeschlossen) {
@@ -92,6 +108,16 @@ const KuendigungStart = () => {
             </button>
           </div>
         )}
+
+<div className="flex justify-center mt-6">
+  <button
+    onClick={() => navigate('/beratung-abschliessen')}
+    className="px-6 py-2 text-sm rounded-full bg-white border border-[#8C3B4A] text-[#8C3B4A] hover:bg-[#fdf1f3] shadow"
+  >
+    ← Zurück zur Protokoll-Auswahl
+  </button>
+</div>
+
       </div>
 
       <footer className="absolute bottom-4 text-center text-xs text-white z-10">

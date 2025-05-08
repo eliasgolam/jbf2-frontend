@@ -31,10 +31,14 @@ const ProtokollAuswahl = () => {
 
   const handleÖffnen = (id) => {
     if (id === 'beratungsprotokoll') {
+      localStorage.setItem('autoRedirect', 'true');
       navigate('/beratung/start');
-    } else if (id === 'kk-kuendigung') {
+    }
+    else if (id === 'kk-kuendigung') {
+      localStorage.setItem('autoRedirect', 'true');
       navigate('/kuendigung-start');
-    } else if (id === 'vag45') {
+    }
+     else if (id === 'vag45') {
       // Bei Auswahl von VAG 45 immer zu VAG Start weiterleiten
       localStorage.setItem('autoRedirect', 'true'); 
       navigate('/vag/start');
