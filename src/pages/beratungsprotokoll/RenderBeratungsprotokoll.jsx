@@ -56,6 +56,7 @@ const RenderBeratungsprotokoll = ({
   
     handleResize(); // Beim Laden direkt setzen
     window.addEventListener('resize', handleResize);
+    savePDF();
   
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -266,6 +267,8 @@ if (beraterName) {
 const pdfBytes = await pdfDoc.save();
 const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 const url = URL.createObjectURL(blob);
+if (onPDFGenerated) onPDFGenerated(url);
+
 
 // ✅ Nur localStorage verwenden wie bei Funktion A
 localStorage.setItem('antworten', JSON.stringify(antworten));
@@ -713,7 +716,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
                 alt="Unterschrift Kunde"
                 style={{
                   position: 'absolute',
-                  top: adjustedTop + 2,
+                  top: adjustedTop - mmToPx(4.615, pageSizes[page].height),
+
                   left: adjustedLeft,
                   width: `${width}px`,
                   height: `${height}px`,
@@ -730,7 +734,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               onClick={() => setActiveSigField('UnterschriftKunde')}
               style={{
                 position: 'absolute',
-                top: adjustedTop + 2,
+                top: adjustedTop - mmToPx(4.615, pageSizes[page].height),
+
                 left: adjustedLeft,
                 width: `${width}px`,
                 height: `${height}px`,
@@ -763,7 +768,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
                 alt="Unterschrift Berater"
                 style={{
                   position: 'absolute',
-                  top: adjustedTop + 2,
+                  top: adjustedTop - mmToPx(4.615, pageSizes[page].height),
+
 
                   left: adjustedLeft,
                   width: `${width}px`,
@@ -781,7 +787,8 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               onClick={() => setActiveSigField('UnterschriftBerater')}
               style={{
                 position: 'absolute',
-                top: adjustedTop + 2,
+                top: adjustedTop - mmToPx(4.615, pageSizes[page].height),
+
 
                 left: adjustedLeft,
                 width: `${width}px`,
