@@ -59,6 +59,8 @@ const BeratungsFlow = () => {
 
   return (
     <ThemenContainer
+      step={step}
+      setStep={setStep}
       antworten={antworten}
       setAntworten={setAntworten}
       onNext={weiter}
@@ -66,6 +68,7 @@ const BeratungsFlow = () => {
       onSkip={skip}
     />
   );
+  
 };
 
 export default BeratungsFlow;

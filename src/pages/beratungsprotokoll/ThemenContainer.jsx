@@ -37,8 +37,8 @@ const fragen = {
   ]
 };
 
-const ThemenContainer = ({ antworten, setAntworten, onNext, onBack, onSkip }) => {
-  const [step, setStep] = useState(0);
+const ThemenContainer = ({ step, setStep, antworten, setAntworten, onNext, onBack, onSkip }) => {
+
   const [form, setForm] = useState({
     anrede: '', vorname: '', nachname: '', geburtsdatum: '', adresse: '', plzOrt: '', telefon: '', email: ''
   });
