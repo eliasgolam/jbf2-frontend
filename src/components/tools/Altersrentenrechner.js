@@ -120,51 +120,40 @@ const [showCharts, setShowCharts] = useState(false);
   const eintrittsalter = parseInt(formData.eintrittsalter);
   const [gesamtluecke, setGesamtluecke] = useState(null);
   const jahreBisRente = 65 - eintrittsalter;
-  const [prognoseEinkommen, setPrognoseEinkommen] = useState(null);
   const benoetigt = Math.max(parseFloat(formData.benoetigtesEinkommen) || 0, 1);
 
 
 
 
   const handleBerechnen = () => {
-    // Alle Felder korrekt auslesen
-    console.log("FormData:", formData);
     const brutto = parseFloat(formData.bruttoLohn) || 0;
-    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;  // Sicherstellen, dass es eine Zahl ist
-    const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen) || 0;  // Monatliches Einkommen
-    
-
-    
-  console.log("guthabenBeiRentenbeginn:", guthabenBeiRentenbeginn);
-    // Überprüfen, ob alle Felder korrekt ausgefüllt sind
-    if (!brutto || !guthabenBeiRentenbeginn || !benoetigtMonatlich) {
-      alert("Bitte füllen Sie alle Felder korrekt aus.");
-      return;
-    }
+    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;
+    const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen) || 0;
   
-    // Berechnung der AHV-Rente basierend auf dem Bruttolohn
+    // Berechnung der AHV-Rente
     const ahv = berechneAhvRente(brutto);
   
-    // Gesamte Rentenberechnung: AHV + Guthaben bei Rentenbeginn
-    const gesamt = ahv + guthabenBeiRentenbeginn;
+    // Gesamte Rentenberechnung: AHV-Rente für 20 Jahre + Pensionskassenkapital
+    const gesamtRente = (ahv * 20) + guthabenBeiRentenbeginn;
+  
+    // Berechnung des benötigten Einkommens über 20 Jahre
+    const benoetigtJaehrlich = benoetigtMonatlich * 12 * 20;
   
     // Berechnung der monatlichen Lücke
-    const monatlicheLuecke = benoetigtMonatlich - (gesamt / 12);  // Gesamtrente durch 12 teilen, um monatlich zu berechnen
+    const monatlicheLuecke = benoetigtMonatlich - (gesamtRente / 12);
   
     // Berechnung der Gesamtlücke bis 85 Jahre (20 Jahre ab 65)
-    const gesamtluecke = monatlicheLuecke * 12 * 20;
+    const gesamtluecke = benoetigtJaehrlich - gesamtRente;
   
     // Zustände setzen
     setAhvRente(ahv);
-    setGesamtRente(gesamt);
+    setGesamtRente(gesamtRente);
     setLuecke(monatlicheLuecke);
     setGesamtluecke(gesamtluecke);
   
-    // Diagramm aktualisieren
     setAnimationKey((prev) => prev + 1);
     setShowCharts(true);
   };
-  
   
   
 
@@ -347,68 +336,49 @@ const [showCharts, setShowCharts] = useState(false);
         <p className="mt-2 font-bold text-[#2E7D32]">Gesamtrente: {formatCurrency(gesamtRente)}</p>
         <p className="mt-2 font-bold text-red-700">Monatliche Lücke: {formatCurrency(luecke)}</p>
         <p className="text-lg font-bold text-red-700">Gesamtlücke bis 85: {formatCurrency(luecke * 12 * 20)}</p>
-        <p className="mt-2">Prognose Einkommen: {formatCurrency(prognoseEinkommen)}</p>
       </div>
 
 
       {/* Rechte Spalte: Chart */}
       <div className="flex-1 w-full">
-        <ResponsiveContainer width="100%" height={220}>
-          <BarChart
-            key={animationKey}
-            data={[{
-              Rente: luecke || 0, // Balken für die monatliche Lücke
-            }]}
-            layout="vertical"
-            margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
-            barGap={10}
-          >
-            <XAxis
-              type="number"
-              domain={[0, benoetigt]} // Maximaler Wert = benötoigtes Einkommen
-              tickFormatter={(val) =>
-                val === 0 ? '0' : val === benoetigt ? `Bedarf: ${formatCurrency(val)}` : ''
-              }
-              tick={{ fontSize: 12, fill: '#888' }}
-            />
-            <YAxis type="category" hide />
-            <Tooltip formatter={(value) => formatCurrency(value)} cursor={{ fill: '#f0f0f0' }} />
-
-            {/* Balken für die monatliche Lücke */}
-            <Bar
-  dataKey="Rente"
-  stackId="a"
-  fill="#E57373"
-  animationDuration={2000}
-  style={visualisierungBalken(luecke, benoetigt)} // Dynamischer Balkenstil
+      <ResponsiveContainer width="100%" height={220}>
+      <BarChart
+  key={animationKey}
+  data={[{ Rente: luecke || 0, GesamtRente: gesamtRente }]}  // Hier stellen wir sicher, dass es ein Array ist
+  layout="vertical"
+  margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
+  barGap={10}
 >
 
-              <LabelList
-                dataKey="Rente"
-                content={({ x, y, width, height, value }) => {
-                  const minWidth = 100;
-                  const posX = x + width / 2;
-                  const posY = width > minWidth ? y + height / 2 : y - 6;
-                  const fill = width > minWidth ? 'white' : '#E57373';
+    <XAxis
+      type="number"
+      domain={[0, benoetigt]} // Maximaler Wert = benötoigtes Einkommen
+      tickFormatter={(val) =>
+        val === 0 ? '0' : val === benoetigt ? `Bedarf: ${formatCurrency(val)}` : ''
+      }
+      tick={{ fontSize: 12, fill: '#888' }}
+    />
+    <YAxis type="category" hide />
+    <Tooltip formatter={(value) => formatCurrency(value)} cursor={{ fill: '#f0f0f0' }} />
+    {/* Balken für die monatliche Lücke */}
+    <Bar
+  dataKey="Rente"
+  stackId="a"
+  fill="#E57373"  // Roter Balken für Lücke
+  animationDuration={2000}
+  style={visualisierungBalken(luecke, benoetigt)} // Dynamischer Balkenstil für die Lücke
+/>
+<Bar
+  dataKey="GesamtRente"
+  stackId="b"
+  fill="#2E7D32"  // Grüner Balken für Gesamtrente
+  animationDuration={2000}
+  style={visualisierungBalken(gesamtRente, benoetigt)} // Dynamischer Balkenstil für die Gesamtrente
+/>
 
-                  return (
-                    <text
-                      x={posX}
-                      y={posY}
-                      fill={fill}
-                      fontSize={14}
-                      fontWeight="bold"
-                      textAnchor="middle"
-                      alignmentBaseline={width > minWidth ? 'middle' : 'baseline'}
-                    >
-                      {`Lücke: ${formatCurrency(value)}`}
-                    </text>
-                  );
-                }}
-              />
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+  </BarChart>
+</ResponsiveContainer>
+
       </div>
     </div>
   </div>
