@@ -35,7 +35,7 @@ const KuendigungStart = () => {
     const abgeschlossen = localStorage.getItem(`kuendigungAbgeschlossen_${kundeId}`) === 'true';
 
     if (abgeschlossen) {
-      navigate('/kuendigung-unterzeichnen');
+      navigate('/kuendigung/unterzeichnen');
     } else {
       navigate('/kuendigung/formular');
     }
