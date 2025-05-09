@@ -13,16 +13,17 @@ const KuendigungStart = () => {
     const autoRedirect = localStorage.getItem('autoRedirect') === 'true';
     const justSaved = sessionStorage.getItem('justSaved') === 'true';
     const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
+  
     const kunde = JSON.parse(localStorage.getItem('ausgewaehlterKunde'));
     const kundeId = kunde?.email || 'default';
-
     const abgeschlossen = localStorage.getItem(`kuendigungAbgeschlossen_${kundeId}`) === 'true';
-
+  
+    // Nur weiterleiten, wenn redirect explizit erlaubt ist
     if (abgeschlossen && autoRedirect && !justSaved) {
       navigate('/kuendigung-unterzeichnen');
     }
   }, []);
-
+  
   useEffect(() => {
     localStorage.removeItem('autoRedirect');
     sessionStorage.removeItem('justSaved');
