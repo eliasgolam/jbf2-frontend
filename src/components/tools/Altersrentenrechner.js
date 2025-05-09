@@ -126,25 +126,23 @@ const [showCharts, setShowCharts] = useState(false);
 
 
   const handleBerechnen = () => {
-    // Eingabewerte: Bruttolohn, Guthaben bei Rentenbeginn, und monatliches benötigtes Einkommen
     const brutto = parseFloat(formData.bruttoLohn) || 0;
-    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;  // Sicherstellen, dass der Wert als Zahl behandelt wird
+    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0; // Korrekt auf den State zugreifen
     const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen) || 0; // Monatliches Einkommen
-  
+    
     // Überprüfen, ob alle Felder korrekt ausgefüllt sind
     if (!brutto || !guthabenBeiRentenbeginn || !benoetigtMonatlich) {
       alert("Bitte füllen Sie alle Felder korrekt aus.");
       return;
     }
   
-    // Umrechnung von monatlich auf jährlich
     const benoetigtJaehrlich = benoetigtMonatlich * 12;
   
     // Berechnung der AHV-Rente basierend auf dem Bruttolohn
     const ahv = berechneAhvRente(brutto);
   
     // Gesamte Rentenberechnung: AHV + Guthaben bei Rentenbeginn
-    const gesamt = ahv + guthabenBeiRentenbeginn;
+    const gesamt = ahv + guthabenBeiRentenbeginn;  // Korrekt hinzufügen
   
     // Berechnung der monatlichen Lücke
     const monatlicheLuecke = benoetigtMonatlich - ((ahv + guthabenBeiRentenbeginn) / 12);
@@ -159,7 +157,7 @@ const [showCharts, setShowCharts] = useState(false);
     setGesamtluecke(gesamtluecke);
   
     // Aktualisiere das Diagramm und führe die Animation aus
-    setAnimationKey(prev => prev + 1);
+    setAnimationKey((prev) => prev + 1);
     setShowCharts(true);
   };
   
@@ -168,8 +166,12 @@ const [showCharts, setShowCharts] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
+  
 
   return (
     <div className="min-h-screen text-[#4B2E2B] font-sans" style={{ backgroundImage: 'url("/wave-bg.jpg")', backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -320,26 +322,20 @@ const [showCharts, setShowCharts] = useState(false);
       Berechnen
     </button>
   </div>
+
+  
   {showCharts && (
   <div ref={chartRef}>
     <div className="mt-12 p-6 bg-white rounded-2xl border shadow flex flex-col md:flex-row gap-8 items-start">
-      {/* Linke Spalte: Renteninfos */}
- {/* Linke Spalte: Renteninfos */}
-<div className="flex-1 text-sm text-[#4B2E2B] space-y-1">
-  <h2 className="text-xl font-semibold mb-4">Berechnung der Altersrente</h2>
-  <p>AHV-Rente: {formatCurrency(ahvRente)}</p>
-  <p>Pensionskassen-Guthaben bei Rentenbeginn: {formatCurrency(guthabenBeiRentenbeginn)}</p>
-  <p className="mt-2 font-bold text-[#2E7D32]">Gesamtrente: {formatCurrency(gesamtRente)}</p>
-  
-  {/* Monatliche Lücke */}
-  <p className="mt-2 font-bold text-red-700">Monatliche Lücke: {formatCurrency(luecke)}</p>  
-
-  {/* Gesamtlücke bis 85 Jahre */}
-  <p className="text-lg font-bold text-red-700">Gesamtlücke bis 85: {formatCurrency(luecke * 12 * 20)}</p>
-
-  {/* Prognostiziertes Einkommen */}
-  <p className="mt-2">Prognose Einkommen: {formatCurrency(prognoseEinkommen)}</p> {/* Dies könnte als zusätzliche Berechnung erscheinen */}
-</div>
+      <div className="flex-1 text-sm text-[#4B2E2B] space-y-1">
+        <h2 className="text-xl font-semibold mb-4">Berechnung der Altersrente</h2>
+        <p>AHV-Rente: {formatCurrency(ahvRente)}</p>
+        <p>Pensionskassen-Guthaben bei Rentenbeginn: {formatCurrency(guthabenBeiRentenbeginn)}</p>
+        <p className="mt-2 font-bold text-[#2E7D32]">Gesamtrente: {formatCurrency(gesamtRente)}</p>
+        <p className="mt-2 font-bold text-red-700">Monatliche Lücke: {formatCurrency(luecke)}</p>
+        <p className="text-lg font-bold text-red-700">Gesamtlücke bis 85: {formatCurrency(luecke * 12 * 20)}</p>
+        <p className="mt-2">Prognose Einkommen: {formatCurrency(prognoseEinkommen)}</p>
+      </div>
 
 
       {/* Rechte Spalte: Chart */}
