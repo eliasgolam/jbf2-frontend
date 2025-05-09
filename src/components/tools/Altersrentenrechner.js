@@ -343,7 +343,7 @@ const [showCharts, setShowCharts] = useState(false);
       <div className="flex-1 text-sm text-[#4B2E2B] space-y-1">
         <h2 className="text-xl font-semibold mb-4">Berechnung der Altersrente</h2>
         <p>AHV-Rente: {formatCurrency(ahvRente)}</p>
-        <p>Pensionskassen-Guthaben bei Rentenbeginn: {formatCurrency(guthabenBeiRentenbeginn)}</p>
+        <p>Pensionskassen-Guthaben bei Rentenbeginn: {formatCurrency(formData.guthabenBeiRentenbeginn)}</p>
         <p className="mt-2 font-bold text-[#2E7D32]">Gesamtrente: {formatCurrency(gesamtRente)}</p>
         <p className="mt-2 font-bold text-red-700">Monatliche Lücke: {formatCurrency(luecke)}</p>
         <p className="text-lg font-bold text-red-700">Gesamtlücke bis 85: {formatCurrency(luecke * 12 * 20)}</p>
