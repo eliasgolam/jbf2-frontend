@@ -128,10 +128,14 @@ const [showCharts, setShowCharts] = useState(false);
 
   const handleBerechnen = () => {
     // Alle Felder korrekt auslesen
+    console.log("FormData:", formData);
     const brutto = parseFloat(formData.bruttoLohn) || 0;
     const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;  // Sicherstellen, dass es eine Zahl ist
     const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen) || 0;  // Monatliches Einkommen
     
+
+    
+  console.log("guthabenBeiRentenbeginn:", guthabenBeiRentenbeginn);
     // Überprüfen, ob alle Felder korrekt ausgefüllt sind
     if (!brutto || !guthabenBeiRentenbeginn || !benoetigtMonatlich) {
       alert("Bitte füllen Sie alle Felder korrekt aus.");
