@@ -13,9 +13,9 @@ const VAGStart = () => {
   const handleBrowser = () => {
     const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
     if (status.vag45 === true) {
-      navigate('/vag/unterzeichnen');
+      navigate('/vag/unterzeichnen'); // Wenn das Protokoll abgeschlossen ist
     } else {
-      navigate('/vag/flow');
+      navigate('/vag/flow'); // Wenn das Protokoll noch nicht abgeschlossen ist
     }
   };
   

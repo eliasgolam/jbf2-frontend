@@ -67,56 +67,27 @@ const VAGUnterzeichnen = () => {
           </button>
 
           <button
-          type="button"
-onClick={async () => {
-  console.log('👣 Button gedrückt: Weiter & abschließen');
-
-  const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
-  status.vag45 = true;
-  localStorage.setItem('protokollStatus', JSON.stringify(status));
-
-  const kundenId = antworten?.kundendaten?.kundenId;
-  console.log('🆔 Kunden-ID:', kundenId);
-
-  if (!kundenId) {
-    alert('❌ Keine Kunden-ID gefunden. Bitte Kunde erfassen.');
-    return;
-  }
-
-  try {
-    const res = await fetch(`https://jbf2-backend.onrender.com/api/kunden/${kundenId}/vag45`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(antworten)
-    });
-
-    if (!res.ok) {
-      const text = await res.text();
-      console.error('❌ Fehler vom Server:', text);
-      alert('Fehler beim Speichern. Status: ' + res.status);
-      return;
-    }
-
-    console.log('✅ Zustand gespeichert. Weiterleitung erfolgt ...');
+  type="button"
+  onClick={async () => {
+    console.log('👣 Button gedrückt: Weiter & abschließen');
     
-    // ✅ PDF-Viewer schließen, falls offen
-    setShowViewer(false);
-
+    const kunde = JSON.parse(localStorage.getItem('ausgewaehlterKunde'));
+    const kundeId = kunde?.email || 'default';
+    
+    // ✅ Speichern für spätere Logik (bereits vorhanden)
+    localStorage.setItem(`vag45Abgeschlossen_${kundeId}`, 'true');
+    
+    // ✅ NEU: Status für visuelle Anzeige in der Protokollübersicht
+    const status = JSON.parse(localStorage.getItem('protokollStatus')) || {};
+    status['vag45'] = true;
+    localStorage.setItem('protokollStatus', JSON.stringify(status));
+    
+    // 🆕 Flag setzen, um automatische Weiterleitung zu steuern
     sessionStorage.setItem('justSaved', 'true');
-    navigate('/vag/start', { replace: true });
     
-
-
-  } catch (err) {
-    console.error('❌ Netzwerkfehler:', err);
-    alert('Netzwerkfehler beim Speichern.');
-  }
-}}
-
-
-
+    // 🆕 Zurück zur Startansicht
+    navigate('/vag/start');
+  }}
   className="px-6 py-3 bg-[#4B2E2B] text-white rounded-xl shadow hover:bg-[#3a221f]"
 >
   Weiter & abschließen

@@ -45,7 +45,7 @@ return gespeicherteAntworten;
           setAntworten(data);
           localStorage.setItem('antworten', JSON.stringify(data));
         }}
-        onClose={() => navigate('/KuendigungUnterzeichnen')}
+        onClose={() => navigate('/kuendigung/unterzeichnen')}
         onPDFGenerated={(url) => setPdfUrl(url)}
       />
     );

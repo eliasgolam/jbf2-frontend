@@ -213,12 +213,13 @@ console.log('✅ DEBUG: pdfFieldMap', pdfFieldMap);
         const sigImage = await pdfDoc.embedPng(sigBytes);
       
         const heightMm = 11.6866;
+        // Y-Position auf 160.816mm setzen (wie in Code A)
         const yMm = 160.816 + SIGNATURE_OFFSET_KUNDE_MM;
       
         pages[3].drawImage(sigImage, {
-          x: mmToPt(92.8259),
-          y: mmToPt(yMm),
-          width: mmToPt(49.6839),
+          x: mmToPt(92.8259),  // Bleibt gleich
+          y: mmToPt(yMm),      // Y-Position angepasst
+          width: mmToPt(49.6839),  // Breite auf 49.6839mm setzen
           height: mmToPt(heightMm)
         });
       }
@@ -228,21 +229,21 @@ console.log('✅ DEBUG: pdfFieldMap', pdfFieldMap);
       
       
       
-
- // ✅ Signatur Berater
- if (antworten.signatureData?.UnterschriftBerater) {
-  const sigBytes = await fetch(antworten.signatureData.UnterschriftBerater).then(r => r.arrayBuffer());
-  const sigImage = await pdfDoc.embedPng(sigBytes);
-
-  const yMm = 135.1049 + SIGNATURE_OFFSET_BERATER_MM;
-
-  pages[3].drawImage(sigImage, {
-    x: mmToPt(141.0703),
-    y: mmToPt(yMm),
-    width: mmToPt(33.0737),
-    height: mmToPt(10.16)
-  });
-}
+      if (antworten.signatureData?.UnterschriftBerater) {
+        const sigBytes = await fetch(antworten.signatureData.UnterschriftBerater).then(r => r.arrayBuffer());
+        const sigImage = await pdfDoc.embedPng(sigBytes);
+      
+        // Y-Position auf 135.1049mm setzen (wie in Code A)
+        const yMm = 135.1049 + SIGNATURE_OFFSET_BERATER_MM;
+      
+        pages[3].drawImage(sigImage, {
+          x: mmToPt(141.0703),  // Bleibt gleich
+          y: mmToPt(yMm),       // Y-Position angepasst
+          width: mmToPt(33.0737),  // Breite auf 33.0737mm setzen
+          height: mmToPt(10.16)
+        });
+      }
+      
 
 
 

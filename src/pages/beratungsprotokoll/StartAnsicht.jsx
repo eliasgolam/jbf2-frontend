@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const StartAnsicht = () => {
   const [mode, setMode] = useState(null);
-  const token = useMemo(() => uuidv4(), []);
-  const shareLink = `${window.location.origin}/beratung/protokoll?token=${token}`;
+  const [shareLink, setShareLink] = useState("");  // Zustand für den ShareLink
   const navigate = useNavigate();
 
   // Prüfe, ob abgeschlossen wurde
@@ -55,6 +54,14 @@ const StartAnsicht = () => {
     }
   };
 
+  // Funktion zum Setzen des Links
+  const handleGenerateLink = () => {
+    const token = uuidv4();
+    const generatedLink = `${window.location.origin}/beratung/protokoll?token=${token}`;
+    setShareLink(generatedLink);  // Link setzen
+    setMode('link');  // 'link' anzeigen
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-cover bg-center px-6 text-[#4B2E2B] relative" style={{ backgroundImage: "url('/wave-bg.jpg')" }}>
       <div className="absolute inset-0 bg-[#00000070]" />
@@ -87,28 +94,10 @@ const StartAnsicht = () => {
               Per QR-Code senden
             </button>
             <button
-              onClick={() => {
-                if (shouldRedirectToSign()) navigate('/browserunterzeichnen');
-                else setMode('link');
-              }}
+              onClick={handleGenerateLink}  // Hier wird der Link generiert
               className="w-full py-3 bg-gray-100 text-[#4B2E2B] rounded-xl text-lg shadow hover:bg-gray-200"
             >
               Link generieren
-            </button>
-          </div>
-        )}
-
-        {mode === 'qr' && (
-          <div className="flex flex-col items-center gap-4 mt-6">
-            <QRCodeSVG value={shareLink} size={180} fgColor="#4B2E2B" />
-            <p className="text-sm text-center text-gray-700">
-              Scannen Sie diesen Code, um das Protokoll auszufüllen
-            </p>
-            <button
-              onClick={() => setMode(null)}
-              className="text-sm underline text-[#4B2E2B] hover:text-[#8C3B4A]"
-            >
-              Zurück zur Auswahl
             </button>
           </div>
         )}
@@ -118,7 +107,7 @@ const StartAnsicht = () => {
             <input
               type="text"
               readOnly
-              value={shareLink}
+              value={shareLink}  // Hier wird der generierte Link angezeigt
               className="w-full border px-3 py-2 rounded text-sm"
             />
             <p className="text-sm text-center text-gray-700">
