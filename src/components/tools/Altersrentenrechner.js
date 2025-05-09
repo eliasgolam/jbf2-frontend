@@ -76,6 +76,7 @@ const formatCurrency = (amount) => {
     return amount?.toLocaleString('de-CH', { style: 'currency', currency: 'CHF' }).replace('CHF', "'CHF");
   };
   
+  
 
 // Balken-Stil dynamisch berechnen
 const visualisierungBalken = (wert, maxWert) => ({
@@ -103,10 +104,10 @@ const Altersrentenrechner = () => {
     geburtsdatum: '',
     zivilstand: '',
     kinder: '',
-    bruttoLohn: '',
+    bruttoLohn: { raw: '', formatted: '' },
     lohnzuwachs: '',
-    guthabenBeiRentenbeginn: 0, // Sicherstellen, dass es initialisiert ist!
-    benoetigtesEinkommen: '', // Benötigtes Einkommen in der Pension
+    guthabenBeiRentenbeginn: { raw: '', formatted: '' },
+    benoetigtesEinkommen: { raw: '', formatted: '' },
   });
   
   
@@ -126,9 +127,10 @@ const [showCharts, setShowCharts] = useState(false);
 
 
   const handleBerechnen = () => {
-    const brutto = parseFloat(formData.bruttoLohn) || 0;
-    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;
-    const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen) || 0;
+    const brutto = parseFloat(formData.bruttoLohn.raw) || 0;
+    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn.raw) || 0;
+    const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen.raw) || 0;
+    
   
     // Berechnung der AHV-Rente
     const ahv = berechneAhvRente(brutto);
@@ -160,21 +162,21 @@ const [showCharts, setShowCharts] = useState(false);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
   
-    // Entfernen von nicht-numerischen Zeichen und Leerzeichen
-    let formattedValue = value.replace(/[^0-9]/g, '');
+    // Entfernen von nicht-numerischen Zeichen und Leerzeichen für den raw Wert
+    let rawValue = value.replace(/[^0-9]/g, '');
   
-    // Formatieren der Zahl
-    if (formattedValue) {
-      formattedValue = parseInt(formattedValue).toLocaleString('de-CH');
-    }
+    // Formatierung der Zahl mit Tausendertrennung für den formatierten Wert
+    let formattedValue = rawValue ? parseInt(rawValue).toLocaleString('de-CH') : '';
   
-    // Wenn der Benutzer etwas eingegeben hat, wird es im richtigen Format gesetzt
+    // Aktualisieren des States: raw und formatted Werte speichern
     setFormData((prevState) => ({
       ...prevState,
-      [name]: formattedValue,
+      [name]: {
+        raw: rawValue,  // Unformatierter Wert für Berechnungen
+        formatted: formattedValue,  // Formatierter Wert für die Anzeige im Input
+      },
     }));
   };
-  
   
   
 
@@ -277,8 +279,14 @@ const [showCharts, setShowCharts] = useState(false);
 
         <div>
           <label className="block text-sm font-medium text-[#4B2E2B]">Bruttolohn</label>
-          <input type="number" name="bruttoLohn" value={formData.bruttoLohn} onChange={handleInputChange}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]" />
+          <input
+  type="text"  // Wir verwenden "text", weil "number" keine Tausendertrennung unterstützt
+  name="bruttoLohn"
+  value={formData.bruttoLohn.formatted}  // Verwende den formatierten Wert für die Anzeige
+  onChange={handleInputChange}
+  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]"
+/>
+
         </div>
       </div>
 
@@ -300,10 +308,10 @@ const [showCharts, setShowCharts] = useState(false);
         <div>
           <label className="block text-sm font-medium text-[#4B2E2B]">Guthaben bei Rentenbeginn</label>
           <input
-  type="number"
+  type="text"  // Ändere von "number" zu "text", weil "number"-Felder keine Tausendertrennung anzeigen
   name="guthabenBeiRentenbeginn"
-  value={formData.guthabenBeiRentenbeginn}  // Bindung an den State
-  onChange={handleInputChange}
+  value={formData.guthabenBeiRentenbeginn.formatted}  // Verwende den formatierten Wert für die Anzeige
+  onChange={handleInputChange}  // Beim Ändern wird die Eingabe formatiert
   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]"
 />
 
@@ -313,12 +321,13 @@ const [showCharts, setShowCharts] = useState(false);
         <div>
   <label className="block text-sm font-medium text-[#4B2E2B]">Benötigtes Einkommen in der Pension (monatlich)</label>
   <input
-    type="number"
-    name="benoetigtesEinkommen"
-    value={formData.benoetigtesEinkommen}
-    onChange={handleInputChange}
-    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]"
-  />
+  type="text"  // Ändere von "number" zu "text", um Tausendertrennung zu ermöglichen
+  name="benoetigtesEinkommen"
+  value={formData.benoetigtesEinkommen.formatted}  // Verwende den formatierten Wert für die Anzeige
+  onChange={handleInputChange}  // Beim Ändern wird die Eingabe formatiert
+  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]"
+/>
+
 </div>
 
       </div>
@@ -342,10 +351,11 @@ const [showCharts, setShowCharts] = useState(false);
   <div className="flex-1 text-sm text-[#4B2E2B] space-y-1">
     <h2 className="text-xl font-semibold mb-4">Berechnung der Altersrente</h2>
     <p>AHV-Rente: {formatCurrency(ahvRente)}</p>
-<p>Pensionskassen-Guthaben bei Rentenbeginn: {formatCurrency(formData.guthabenBeiRentenbeginn)}</p>
+<p>Pensionskassen-Guthaben bei Rentenbeginn: {formatCurrency(formData.guthabenBeiRentenbeginn.raw)}</p>
 <p className="mt-2 font-bold text-[#2E7D32]">Gesamtrente: {formatCurrency(gesamtRente)}</p>
 <p className="mt-2 font-bold text-red-700">Monatliche Lücke: {formatCurrency(luecke)}</p>
 <p className="text-lg font-bold text-red-700">Gesamtlücke bis 85: {formatCurrency(gesamtluecke)}</p>
+
 
   </div>
 
