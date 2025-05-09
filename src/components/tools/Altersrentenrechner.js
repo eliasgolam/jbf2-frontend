@@ -127,7 +127,7 @@ const [showCharts, setShowCharts] = useState(false);
 
   const handleBerechnen = () => {
     const brutto = parseFloat(formData.bruttoLohn) || 0;
-    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0; // Korrekt auf den State zugreifen
+    const guthabenBeiRentenbeginn = formData.guthabenBeiRentenbeginn ? parseFloat(formData.guthabenBeiRentenbeginn) : 0;
     const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen) || 0; // Monatliches Einkommen
     
     // Überprüfen, ob alle Felder korrekt ausgefüllt sind
@@ -294,8 +294,14 @@ const [showCharts, setShowCharts] = useState(false);
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-[#4B2E2B]">Guthaben bei Rentenbeginn</label>
-          <input type="number" name="guthabenBeiRentenbeginn" value={formData.guthabenBeiRentenbeginn} onChange={handleInputChange}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]" />
+          <input
+  type="number"
+  name="guthabenBeiRentenbeginn"
+  value={formData.guthabenBeiRentenbeginn}
+  onChange={handleInputChange}
+  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]"
+/>
+
         </div>
 
         <div>
@@ -323,7 +329,7 @@ const [showCharts, setShowCharts] = useState(false);
     </button>
   </div>
 
-  
+
   {showCharts && (
   <div ref={chartRef}>
     <div className="mt-12 p-6 bg-white rounded-2xl border shadow flex flex-col md:flex-row gap-8 items-start">
