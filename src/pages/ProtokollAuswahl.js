@@ -37,14 +37,10 @@ const ProtokollAuswahl = () => {
     if (id === 'kk-kuendigung') {
       localStorage.setItem('autoRedirect', 'false'); // ❗ KEINE automatische Weiterleitung erzwingen
       navigate('/kuendigung-start');
-    }
-    
-     else if (id === 'vag45') {
+    } else if (id === 'vag45') {
       // Bei Auswahl von VAG 45 immer zu VAG Start weiterleiten
       localStorage.setItem('autoRedirect', 'true'); 
       navigate('/vag/start');
-    } else {
-      navigate(`/protokoll/${id}`);
     }
   };
   
