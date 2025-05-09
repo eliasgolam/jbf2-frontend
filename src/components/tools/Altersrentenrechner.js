@@ -127,25 +127,23 @@ const [showCharts, setShowCharts] = useState(false);
 
   const handleBerechnen = () => {
     const brutto = parseFloat(formData.bruttoLohn) || 0;
-    const guthabenBeiRentenbeginn = formData.guthabenBeiRentenbeginn ? parseFloat(formData.guthabenBeiRentenbeginn) : 0;
+    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;
     const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen) || 0; // Monatliches Einkommen
-    
+  
     // Überprüfen, ob alle Felder korrekt ausgefüllt sind
     if (!brutto || !guthabenBeiRentenbeginn || !benoetigtMonatlich) {
       alert("Bitte füllen Sie alle Felder korrekt aus.");
       return;
     }
   
-    const benoetigtJaehrlich = benoetigtMonatlich * 12;
-  
     // Berechnung der AHV-Rente basierend auf dem Bruttolohn
     const ahv = berechneAhvRente(brutto);
   
     // Gesamte Rentenberechnung: AHV + Guthaben bei Rentenbeginn
-    const gesamt = ahv + guthabenBeiRentenbeginn;  // Korrekt hinzufügen
+    const gesamt = ahv + guthabenBeiRentenbeginn;
   
     // Berechnung der monatlichen Lücke
-    const monatlicheLuecke = benoetigtMonatlich - ((ahv + guthabenBeiRentenbeginn) / 12);
+    const monatlicheLuecke = benoetigtMonatlich - (gesamt / 12); // Gesamtrente durch 12 teilen, um monatlich zu berechnen
   
     // Berechnung der Gesamtlücke bis 85 Jahre (20 Jahre ab 65)
     const gesamtluecke = monatlicheLuecke * 12 * 20;
@@ -160,7 +158,6 @@ const [showCharts, setShowCharts] = useState(false);
     setAnimationKey((prev) => prev + 1);
     setShowCharts(true);
   };
-  
   
   
 
@@ -301,6 +298,7 @@ const [showCharts, setShowCharts] = useState(false);
   onChange={handleInputChange}
   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]"
 />
+
 
         </div>
 
