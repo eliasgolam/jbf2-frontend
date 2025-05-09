@@ -4,17 +4,7 @@ import { FaChevronDown } from 'react-icons/fa';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, LabelList } from 'recharts';
 
 
-const berechnePrognoseEinkommen = (startLohn, wachstumProzent, jahre) => {
-  let summe = 0;
-  let lohn = startLohn;
 
-  for (let i = 0; i < jahre; i++) {
-    summe += lohn;
-    lohn *= 1 + (wachstumProzent / 100);
-  }
-
-  return summe;
-};
 
 // AHV Skala (gekürzt zur Übersicht – später kannst du alles einfügen)
 const ahvSkala = [
@@ -136,26 +126,43 @@ const [showCharts, setShowCharts] = useState(false);
 
 
   const handleBerechnen = () => {
+    // Eingabewerte: Bruttolohn, Guthaben bei Rentenbeginn, und monatliches benötigtes Einkommen
     const brutto = parseFloat(formData.bruttoLohn) || 0;
-    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;  
+    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;  // Sicherstellen, dass der Wert als Zahl behandelt wird
+    const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen) || 0; // Monatliches Einkommen
   
-    if (!brutto || !guthabenBeiRentenbeginn || !benoetigt) {
+    // Überprüfen, ob alle Felder korrekt ausgefüllt sind
+    if (!brutto || !guthabenBeiRentenbeginn || !benoetigtMonatlich) {
       alert("Bitte füllen Sie alle Felder korrekt aus.");
       return;
     }
   
-    // Berechne AHV-Rente basierend auf dem Bruttolohn
-    const ahv = berechneAhvRente(brutto); 
-    const gesamt = ahv + guthabenBeiRentenbeginn;
-    const luecke = benoetigt - gesamt;
+    // Umrechnung von monatlich auf jährlich
+    const benoetigtJaehrlich = benoetigtMonatlich * 12;
   
+    // Berechnung der AHV-Rente basierend auf dem Bruttolohn
+    const ahv = berechneAhvRente(brutto);
+  
+    // Gesamte Rentenberechnung: AHV + Guthaben bei Rentenbeginn
+    const gesamt = ahv + guthabenBeiRentenbeginn;
+  
+    // Berechnung der monatlichen Lücke
+    const monatlicheLuecke = benoetigtMonatlich - ((ahv + guthabenBeiRentenbeginn) / 12);
+  
+    // Berechnung der Gesamtlücke bis 85 Jahre (20 Jahre ab 65)
+    const gesamtluecke = monatlicheLuecke * 12 * 20;
+  
+    // Setze die Zustände mit den berechneten Werten
     setAhvRente(ahv);
     setGesamtRente(gesamt);
-    setLuecke(luecke);
+    setLuecke(monatlicheLuecke);
+    setGesamtluecke(gesamtluecke);
   
+    // Aktualisiere das Diagramm und führe die Animation aus
     setAnimationKey(prev => prev + 1);
     setShowCharts(true);
   };
+  
   
   
 
@@ -290,10 +297,16 @@ const [showCharts, setShowCharts] = useState(false);
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#4B2E2B]">Benötigtes Einkommen in der Pension</label>
-          <input type="number" name="benoetigtesEinkommen" value={formData.benoetigtesEinkommen} onChange={handleInputChange}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]" />
-        </div>
+  <label className="block text-sm font-medium text-[#4B2E2B]">Benötigtes Einkommen in der Pension (monatlich)</label>
+  <input
+    type="number"
+    name="benoetigtesEinkommen"
+    value={formData.benoetigtesEinkommen}
+    onChange={handleInputChange}
+    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]"
+  />
+</div>
+
       </div>
 
       {/* Der Schieberegler für Eintrittsalter wird entfernt */}
@@ -311,14 +324,23 @@ const [showCharts, setShowCharts] = useState(false);
   <div ref={chartRef}>
     <div className="mt-12 p-6 bg-white rounded-2xl border shadow flex flex-col md:flex-row gap-8 items-start">
       {/* Linke Spalte: Renteninfos */}
-      <div className="flex-1 text-sm text-[#4B2E2B] space-y-1">
-        <h2 className="text-xl font-semibold mb-4">Berechnung der Altersrente</h2>
-        <p>AHV-Rente: {formatCurrency(ahvRente)}</p>
-        <p>Pensionskassen-Guthaben bei Rentenbeginn: {formatCurrency(guthabenBeiRentenbeginn)}</p>
-        <p className="mt-2 font-bold text-[#2E7D32]">Gesamtrente: {formatCurrency(gesamtRente)}</p>
-        <p className="mt-2 font-bold text-red-700">Jährliche Lücke: {formatCurrency(luecke)}</p>
-        <p className="text-lg font-bold text-red-700">Gesamtlücke bis 65: {formatCurrency(luecke * jahreBisRente)}</p>
-      </div>
+ {/* Linke Spalte: Renteninfos */}
+<div className="flex-1 text-sm text-[#4B2E2B] space-y-1">
+  <h2 className="text-xl font-semibold mb-4">Berechnung der Altersrente</h2>
+  <p>AHV-Rente: {formatCurrency(ahvRente)}</p>
+  <p>Pensionskassen-Guthaben bei Rentenbeginn: {formatCurrency(guthabenBeiRentenbeginn)}</p>
+  <p className="mt-2 font-bold text-[#2E7D32]">Gesamtrente: {formatCurrency(gesamtRente)}</p>
+  
+  {/* Monatliche Lücke */}
+  <p className="mt-2 font-bold text-red-700">Monatliche Lücke: {formatCurrency(luecke)}</p>  
+
+  {/* Gesamtlücke bis 85 Jahre */}
+  <p className="text-lg font-bold text-red-700">Gesamtlücke bis 85: {formatCurrency(luecke * 12 * 20)}</p>
+
+  {/* Prognostiziertes Einkommen */}
+  <p className="mt-2">Prognose Einkommen: {formatCurrency(prognoseEinkommen)}</p> {/* Dies könnte als zusätzliche Berechnung erscheinen */}
+</div>
+
 
       {/* Rechte Spalte: Chart */}
       <div className="flex-1 w-full">
@@ -326,7 +348,7 @@ const [showCharts, setShowCharts] = useState(false);
           <BarChart
             key={animationKey}
             data={[{
-              Rente: gesamtRente || 0, // Nur der Balken für die effektive Rente
+              Rente: luecke || 0, // Balken für die monatliche Lücke
             }]}
             layout="vertical"
             margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
@@ -343,15 +365,22 @@ const [showCharts, setShowCharts] = useState(false);
             <YAxis type="category" hide />
             <Tooltip formatter={(value) => formatCurrency(value)} cursor={{ fill: '#f0f0f0' }} />
 
-            {/* Balken für die effektive Rente */}
-            <Bar dataKey="Rente" stackId="a" fill="#2E7D32" animationDuration={2000}>
+            {/* Balken für die monatliche Lücke */}
+            <Bar
+  dataKey="Rente"
+  stackId="a"
+  fill="#E57373"
+  animationDuration={2000}
+  style={visualisierungBalken(luecke, benoetigt)} // Dynamischer Balkenstil
+>
+
               <LabelList
                 dataKey="Rente"
                 content={({ x, y, width, height, value }) => {
                   const minWidth = 100;
                   const posX = x + width / 2;
                   const posY = width > minWidth ? y + height / 2 : y - 6;
-                  const fill = width > minWidth ? 'white' : '#2E7D32';
+                  const fill = width > minWidth ? 'white' : '#E57373';
 
                   return (
                     <text
@@ -363,7 +392,7 @@ const [showCharts, setShowCharts] = useState(false);
                       textAnchor="middle"
                       alignmentBaseline={width > minWidth ? 'middle' : 'baseline'}
                     >
-                      {`Rente: ${formatCurrency(value)}`}
+                      {`Lücke: ${formatCurrency(value)}`}
                     </text>
                   );
                 }}
@@ -375,9 +404,6 @@ const [showCharts, setShowCharts] = useState(false);
     </div>
   </div>
 )}
-
-
-
       </main>
 
       {/* Footer */}
