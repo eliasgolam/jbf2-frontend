@@ -104,7 +104,7 @@ const Altersrentenrechner = () => {
     kinder: '',
     bruttoLohn: '',
     lohnzuwachs: '',
-    guthabenBeiRentenbeginn: '', // Für das Guthaben bei Rentenbeginn
+    guthabenBeiRentenbeginn: 0,  // Setze den Standardwert auf 0
     benoetigtesEinkommen: '', // Benötigtes Einkommen in der Pension
   });
   
