@@ -72,9 +72,10 @@ const berechneAhvRente = (brutto) => {
   return ahvSkala[ahvSkala.length - 1].rente * 12;
 };
 
-// Tausendertrennung in CHF
-const formatCurrency = (amount) =>
-  amount?.toLocaleString('de-CH', { style: 'currency', currency: 'CHF' });
+const formatCurrency = (amount) => {
+    return amount?.toLocaleString('de-CH', { style: 'currency', currency: 'CHF' }).replace('CHF', "'CHF");
+  };
+  
 
 // Balken-Stil dynamisch berechnen
 const visualisierungBalken = (wert, maxWert) => ({
@@ -124,7 +125,6 @@ const [showCharts, setShowCharts] = useState(false);
 
 
 
-
   const handleBerechnen = () => {
     const brutto = parseFloat(formData.bruttoLohn) || 0;
     const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;
@@ -143,7 +143,7 @@ const [showCharts, setShowCharts] = useState(false);
     const monatlicheLuecke = benoetigtMonatlich - (gesamtRente / 12);
   
     // Berechnung der Gesamtlücke bis 85 Jahre (20 Jahre ab 65)
-    const gesamtluecke = benoetigtJaehrlich - gesamtRente;
+    const gesamtluecke = monatlicheLuecke * 12 * 20;
   
     // Zustände setzen
     setAhvRente(ahv);
@@ -159,12 +159,22 @@ const [showCharts, setShowCharts] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);  // Debugging: Prüfe, ob alle Felder korrekt erkannt werden
+  
+    // Entfernen von nicht-numerischen Zeichen und Leerzeichen
+    let formattedValue = value.replace(/[^0-9]/g, '');
+  
+    // Formatieren der Zahl
+    if (formattedValue) {
+      formattedValue = parseInt(formattedValue).toLocaleString('de-CH');
+    }
+  
+    // Wenn der Benutzer etwas eingegeben hat, wird es im richtigen Format gesetzt
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: formattedValue,
     }));
   };
+  
   
   
 
@@ -328,59 +338,57 @@ const [showCharts, setShowCharts] = useState(false);
 
   {showCharts && (
   <div ref={chartRef}>
-    <div className="mt-12 p-6 bg-white rounded-2xl border shadow flex flex-col md:flex-row gap-8 items-start">
-      <div className="flex-1 text-sm text-[#4B2E2B] space-y-1">
-        <h2 className="text-xl font-semibold mb-4">Berechnung der Altersrente</h2>
-        <p>AHV-Rente: {formatCurrency(ahvRente)}</p>
-        <p>Pensionskassen-Guthaben bei Rentenbeginn: {formatCurrency(formData.guthabenBeiRentenbeginn)}</p>
-        <p className="mt-2 font-bold text-[#2E7D32]">Gesamtrente: {formatCurrency(gesamtRente)}</p>
-        <p className="mt-2 font-bold text-red-700">Monatliche Lücke: {formatCurrency(luecke)}</p>
-        <p className="text-lg font-bold text-red-700">Gesamtlücke bis 85: {formatCurrency(luecke * 12 * 20)}</p>
-      </div>
+<div className="mt-12 p-6 bg-white rounded-2xl border shadow flex flex-col md:flex-row gap-8 items-start">
+  <div className="flex-1 text-sm text-[#4B2E2B] space-y-1">
+    <h2 className="text-xl font-semibold mb-4">Berechnung der Altersrente</h2>
+    <p>AHV-Rente: {formatCurrency(ahvRente)}</p>
+<p>Pensionskassen-Guthaben bei Rentenbeginn: {formatCurrency(formData.guthabenBeiRentenbeginn)}</p>
+<p className="mt-2 font-bold text-[#2E7D32]">Gesamtrente: {formatCurrency(gesamtRente)}</p>
+<p className="mt-2 font-bold text-red-700">Monatliche Lücke: {formatCurrency(luecke)}</p>
+<p className="text-lg font-bold text-red-700">Gesamtlücke bis 85: {formatCurrency(gesamtluecke)}</p>
 
+  </div>
 
-      {/* Rechte Spalte: Chart */}
-      <div className="flex-1 w-full">
-      <ResponsiveContainer width="100%" height={220}>
+  {/* Rechte Spalte: Chart */}
+  <div className="flex-1 w-full">
+    <ResponsiveContainer width="100%" height={220}>
       <BarChart
-  key={animationKey}
-  data={[{ Rente: luecke || 0, GesamtRente: gesamtRente }]}  // Hier stellen wir sicher, dass es ein Array ist
-  layout="vertical"
-  margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
-  barGap={10}
->
+        key={animationKey}
+        data={[{ Rente: luecke || 0, GesamtRente: gesamtRente }]}  // Hier stellen wir sicher, dass es ein Array ist
+        layout="vertical"
+        margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
+        barGap={10}
+      >
+        <XAxis
+          type="number"
+          domain={[0, benoetigt]} // Maximaler Wert = benötoigtes Einkommen
+          tickFormatter={(val) =>
+            val === 0 ? '0' : val === benoetigt ? `Bedarf: ${formatCurrency(val)}` : ''
+          }
+          tick={{ fontSize: 12, fill: '#888' }}
+        />
+        <YAxis type="category" hide />
+        <Tooltip formatter={(value) => formatCurrency(value)} cursor={{ fill: '#f0f0f0' }} />
+        {/* Balken für die monatliche Lücke */}
+        <Bar
+          dataKey="Rente"
+          stackId="a"
+          fill="#E57373"  // Roter Balken für Lücke
+          animationDuration={2000}
+          style={visualisierungBalken(luecke, benoetigt)} // Dynamischer Balkenstil für die Lücke
+        />
+        <Bar
+          dataKey="GesamtRente"
+          stackId="b"
+          fill="#2E7D32"  // Grüner Balken für Gesamtrente
+          animationDuration={2000}
+          style={visualisierungBalken(gesamtRente, benoetigt)} // Dynamischer Balkenstil für die Gesamtrente
+        />
+      </BarChart>
+    </ResponsiveContainer>
+  </div>
+</div>
 
-    <XAxis
-      type="number"
-      domain={[0, benoetigt]} // Maximaler Wert = benötoigtes Einkommen
-      tickFormatter={(val) =>
-        val === 0 ? '0' : val === benoetigt ? `Bedarf: ${formatCurrency(val)}` : ''
-      }
-      tick={{ fontSize: 12, fill: '#888' }}
-    />
-    <YAxis type="category" hide />
-    <Tooltip formatter={(value) => formatCurrency(value)} cursor={{ fill: '#f0f0f0' }} />
-    {/* Balken für die monatliche Lücke */}
-    <Bar
-  dataKey="Rente"
-  stackId="a"
-  fill="#E57373"  // Roter Balken für Lücke
-  animationDuration={2000}
-  style={visualisierungBalken(luecke, benoetigt)} // Dynamischer Balkenstil für die Lücke
-/>
-<Bar
-  dataKey="GesamtRente"
-  stackId="b"
-  fill="#2E7D32"  // Grüner Balken für Gesamtrente
-  animationDuration={2000}
-  style={visualisierungBalken(gesamtRente, benoetigt)} // Dynamischer Balkenstil für die Gesamtrente
-/>
-
-  </BarChart>
-</ResponsiveContainer>
-
-      </div>
-    </div>
   </div>
 )}
       </main>
