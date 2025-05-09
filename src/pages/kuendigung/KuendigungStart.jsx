@@ -18,7 +18,8 @@ const KuendigungStart = () => {
     const abgeschlossen = localStorage.getItem(`kuendigungAbgeschlossen_${kundeId}`) === 'true';
   
     if (abgeschlossen && autoRedirect && !justSaved) {
-      navigate('/kuendigung-unterzeichnen');
+      navigate('/kuendigung/unterzeichnen');
+
     }
   }, []);
   
