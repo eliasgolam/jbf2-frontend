@@ -38,6 +38,7 @@ console.log('🔑 Google Credential:', credentialResponse);
 console.log('📤 Gesendete Nutzerdaten:', userData);
 
 
+
       // Backend-Aufruf (achte auf http://localhost:5000)
       const res = await fetch(`${API_BASE}/api/user`, {
         method: 'POST',

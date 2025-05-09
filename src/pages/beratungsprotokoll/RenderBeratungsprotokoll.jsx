@@ -214,7 +214,7 @@ console.log('✅ DEBUG: pdfFieldMap', pdfFieldMap);
       
         const heightMm = 11.6866;
         // Y-Position auf 160.816mm setzen (wie in Code A)
-        const yMm = 160.816 + SIGNATURE_OFFSET_KUNDE_MM;
+        const yMm = 160.816  + SIGNATURE_OFFSET_KUNDE_MM;
       
         pages[3].drawImage(sigImage, {
           x: mmToPt(92.8259),  // Bleibt gleich
@@ -711,11 +711,12 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
 
       if (f.type === 'signature') {
         if (f.key === 'UnterschriftKunde') {
-          const fullWidth = mmToPx(113.6227, pageSizes[page].width);
+          const fullWidth = mmToPx(100, pageSizes[page].width);
           const fullHeight = mmToPx(10.16, pageSizes[page].height);
           const isSigned = !!antworten.signatureData?.UnterschriftKunde;
         
-          const topOffset = adjustedTop + mmToPx(SIGNATURE_OFFSET_KUNDE_MM, pageSizes[page].height);
+          const topOffset = adjustedTop + mmToPx(SIGNATURE_OFFSET_KUNDE_MM, pageSizes[page].height) - mmToPx(8, pageSizes[page].height);
+
         
           if (isSigned) {
             return (
@@ -766,7 +767,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
         
 
         if (f.key === 'UnterschriftBerater') {
-          const fullWidth = mmToPx(50, pageSizes[page].width);
+          const fullWidth = mmToPx(40, pageSizes[page].width);
           const fullHeight = mmToPx(10.16, pageSizes[page].height);
           const isSigned = !!antworten.signatureData?.UnterschriftBerater;
         
@@ -798,7 +799,7 @@ localStorage.setItem('antworten', JSON.stringify(antworten));
               style={{
                 position: 'absolute',
                 top: topOffset,
-                left: adjustedLeft,
+                left: adjustedLeft - mmToPx(7, pageSizes[page].width),  // 10 mm nach links verschieben
                 width: fullWidth,
                 height: fullHeight * 0.6,
                 backgroundColor: 'rgba(140, 59, 74, 0.5)',
