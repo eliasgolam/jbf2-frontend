@@ -104,9 +104,10 @@ const Altersrentenrechner = () => {
     kinder: '',
     bruttoLohn: '',
     lohnzuwachs: '',
-    guthabenBeiRentenbeginn: 0,  // Setze den Standardwert auf 0
+    guthabenBeiRentenbeginn: 0, // Sicherstellen, dass es initialisiert ist!
     benoetigtesEinkommen: '', // Benötigtes Einkommen in der Pension
   });
+  
   
 
 const chartRef = useRef(null);
@@ -126,10 +127,11 @@ const [showCharts, setShowCharts] = useState(false);
 
 
   const handleBerechnen = () => {
+    // Alle Felder korrekt auslesen
     const brutto = parseFloat(formData.bruttoLohn) || 0;
-    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;
-    const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen) || 0; // Monatliches Einkommen
-  
+    const guthabenBeiRentenbeginn = parseFloat(formData.guthabenBeiRentenbeginn) || 0;  // Sicherstellen, dass es eine Zahl ist
+    const benoetigtMonatlich = parseFloat(formData.benoetigtesEinkommen) || 0;  // Monatliches Einkommen
+    
     // Überprüfen, ob alle Felder korrekt ausgefüllt sind
     if (!brutto || !guthabenBeiRentenbeginn || !benoetigtMonatlich) {
       alert("Bitte füllen Sie alle Felder korrekt aus.");
@@ -143,31 +145,34 @@ const [showCharts, setShowCharts] = useState(false);
     const gesamt = ahv + guthabenBeiRentenbeginn;
   
     // Berechnung der monatlichen Lücke
-    const monatlicheLuecke = benoetigtMonatlich - (gesamt / 12); // Gesamtrente durch 12 teilen, um monatlich zu berechnen
+    const monatlicheLuecke = benoetigtMonatlich - (gesamt / 12);  // Gesamtrente durch 12 teilen, um monatlich zu berechnen
   
     // Berechnung der Gesamtlücke bis 85 Jahre (20 Jahre ab 65)
     const gesamtluecke = monatlicheLuecke * 12 * 20;
   
-    // Setze die Zustände mit den berechneten Werten
+    // Zustände setzen
     setAhvRente(ahv);
     setGesamtRente(gesamt);
     setLuecke(monatlicheLuecke);
     setGesamtluecke(gesamtluecke);
   
-    // Aktualisiere das Diagramm und führe die Animation aus
+    // Diagramm aktualisieren
     setAnimationKey((prev) => prev + 1);
     setShowCharts(true);
   };
   
   
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);  // Debugging: Prüfe, ob alle Felder korrekt erkannt werden
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
+  
   
 
   return (
@@ -294,7 +299,7 @@ const [showCharts, setShowCharts] = useState(false);
           <input
   type="number"
   name="guthabenBeiRentenbeginn"
-  value={formData.guthabenBeiRentenbeginn}
+  value={formData.guthabenBeiRentenbeginn}  // Bindung an den State
   onChange={handleInputChange}
   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-[#8C3B4A]"
 />
