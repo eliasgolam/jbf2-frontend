@@ -23,7 +23,7 @@ const profilbild = user.profilbild || "/default-profile.png";
     { title: 'Sparrechner', description: 'Vermögensentwicklung berechnen', animation: sparAnimation, path: `/tools/${bereich}/sparrechner` },
     { title: 'Zinsvergleich', description: 'Zinssätze im Vergleich', animation: zinsAnimation, path: `/tools/${bereich}/zinsvergleich` },
     { title: 'Starten oder Warten', description: 'Ertragsvergleich mit/ohne Wartezeit', animation: startenAnimation, path: `/tools/${bereich}/starten-oder-warten` },
-    { title: 'Rentenrechner', description: 'Vorsorgelücke erkennen & berechnen', animation: rentenAnimation, path: '/vorsorge/rentenrechner' },
+    { title: 'Altersrentenrechner', description: 'Berechnung der Altersrente und der Lücke', animation: rentenAnimation, path: '/tools/:bereich/altersrenten-rechner' },
     { title: 'Vorsorgerechner', description: 'Kapitalbedarf & Vorsorgeziel berechnen', animation: vorsorgeAnimation, path: '/vorsorge/vorsorgerechner' },
   ];
 

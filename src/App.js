@@ -14,6 +14,8 @@ import Sparrechner from './components/tools/sparrechner';
 import Zinsvergleich from './components/tools/Zinsvergleich';
 import StartenOderWarten from './components/tools/StartenOderWarten';
 import IVRechner from './components/tools/IVRechner';
+import Altersrentenrechner from './components/tools/Altersrentenrechner';
+
 
 
 import VorsorgeTools from './pages/VorsorgeTools';
@@ -86,6 +88,7 @@ function App() {
       <Route path="/tools/:bereich/zinsvergleich" element={<Zinsvergleich />} />
       <Route path="/tools/:bereich/starten-oder-warten" element={<StartenOderWarten />} />
       <Route path="/tools/:bereich/iv-rechner" element={<IVRechner />} />
+      <Route path="/tools/:bereich/altersrenten-rechner" element={<Altersrentenrechner />} />
       <Route path="/tools/:bereich/krankenkassenvergleich" element={<Krankenkassenvergleich />} />
       <Route path="/priminfo" element={<Priminfovergleich />} /> 
       <Route path="/fazit" element={<Fazit />} />
